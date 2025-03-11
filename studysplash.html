@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Mode</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: url('images/background.jpeg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            backdrop-filter: brightness(50%);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .category-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 150px;
+            height: 150px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            padding: 10px;
+        }
+        .category-button img {
+            width: 80px;
+            height: 80px;
+        }
+        .back-link {
+            margin-top: 20px;
+            text-decoration: none;
+            color: blue;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Select a Category</h1>
+        <div class="category-grid">
+            <script>
+                const categories = ["Question", "Pronoun", "Verb", "Adjective", "Preposition", "Travel", "Directions", "Numbers", "Noun", "Food", "Time"];
+                
+                categories.forEach(category => {
+                    document.write(`
+                        <a href="study.html?category=${category}" class="category-button">
+                            <span>${category}</span>
+                            <img src="images/${category.toLowerCase()}.png" alt="${category} icon">
+                        </a>
+                    `);
+                });
+            </script>
+        </div>
+        <a href="https://lt-aitools.github.io/indonesian-flashcards/" class="back-link">Back to main</a>
+    </div>
+</body>
+</html>
