@@ -109,7 +109,7 @@ body {
         // Load CSV Data
 
         let wordTracker = JSON.parse(localStorage.getItem("wordTracker")) || {};
-        let vocabulary = [];
+        
 
         async function loadCSV() {
             const response = await fetch("https://raw.githubusercontent.com/LT-aitools/indonesian-flashcards/refs/heads/main/Indonesian_vocabulary.csv");
@@ -149,12 +149,13 @@ body {
                 return aPriority - bPriority;
             });
 
-            if (vocabulary.length === 0) {
+            if (currentWordIndex >= vocabulary.length) {
                 alert("You've completed all words!");
                 return;
             }
 
             
+            if (currentWordIndex >= vocabulary.length) currentWordIndex = 0;
             const word = vocabulary[currentWordIndex];
             speakWord(word.english, 'en-US');
             document.getElementById('question').innerText = word.english;
@@ -175,9 +176,9 @@ body {
             document.getElementById('hint2').onclick = () => showHint(2);
             document.getElementById('reveal').onclick = () => revealAnswer(word);
             document.getElementById('example').onclick = showExample;
-            document.getElementById('correct').onclick = markCorrect;
-            document.getElementById('sorta').onclick = markSorta;
-            document.getElementById('incorrect').onclick = markIncorrect;
+            document.getElementById('correct').onclick = () => markCorrect(word);
+            document.getElementById('sorta').onclick = () => markSorta(word);
+            document.getElementById('incorrect').onclick = () => markIncorrect(word);
         }
 
         // Hints and Reveal
