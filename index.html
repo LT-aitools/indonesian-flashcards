@@ -19,11 +19,17 @@
         #correct, #incorrect {
             display: none;
         }
+        #answer {
+            color: green;
+            font-size: 20px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <h1>Indonesian Flashcard Game</h1>
     <h2 id="question">Loading...</h2>
+    <h3 id="answer"></h3>
     <button id="hint1">Hint 1</button>
     <button id="hint2">Hint 2</button>
     <button id="reveal">Reveal</button>
@@ -70,7 +76,8 @@
             }
             
             const word = vocabulary[currentWordIndex];
-            document.getElementById('question').innerText = `English: ${word.english}`;
+            document.getElementById('question').innerText = word.english;
+            document.getElementById('answer').innerText = "";
             document.getElementById('hint1').innerText = "Hint 1";
             document.getElementById('hint2').innerText = "Hint 2";
             document.getElementById('reveal').innerText = "Reveal";
@@ -95,7 +102,7 @@
         }
 
         function revealAnswer() {
-            document.getElementById('reveal').innerText = `Answer: ${vocabulary[currentWordIndex].indonesian}`;
+            document.getElementById('answer').innerText = vocabulary[currentWordIndex].indonesian;
             document.getElementById('correct').style.display = 'inline';
             document.getElementById('incorrect').style.display = 'inline';
         }
