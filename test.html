@@ -84,7 +84,7 @@
                 alert("You've completed all words!");
                 return;
             }
-            const word = vocabulary[currentWordIndex];
+            
             if (!word) return;
             speakWord(word.english, 'en-US');
             document.getElementById('question').innerText = word.english;
@@ -131,10 +131,10 @@
         window.onload = loadCSV;
 
         function showExample() {
-            const word = vocabulary[currentWordIndex];
+            
             document.getElementById('exampleSentence').innerText = word.exampleSentence;
             speakWord(word.exampleSentence, 'id-ID');
-            const word = vocabulary[currentWordIndex];
+            
             document.getElementById('exampleSentence').innerText = word.exampleSentence;
         }
 

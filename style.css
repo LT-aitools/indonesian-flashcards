@@ -13,7 +13,7 @@ body, html {
 
 /* Background image with opacity */
 .background {
-    background-image: url('images/background.jpg');
+    background-image: url('images/background.jpeg');
     background-size: cover;
     background-position: center;
     opacity: 0.5;
