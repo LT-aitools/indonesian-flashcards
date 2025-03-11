@@ -170,6 +170,11 @@
         function speakWord(word, lang) {
             if (word) {
                 const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(word)}&tl=${lang}&client=gtx`);
+                document.body.addEventListener('click', () => {
+                    audio.play();
+                }, { once: true });
+            }
+        }&tl=${lang}&client=gtx`);
                 audio.play();
             }
         }
