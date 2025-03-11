@@ -85,9 +85,9 @@
                 return;
             }
             
-            if (!word) return;
+            if (!vocabulary[currentWordIndex]) return;
             speakWord(vocabulary[currentWordIndex].english, 'en-US');
-            document.getElementById('question').innerText = word.english;
+            document.getElementById('question').innerText = vocabulary[currentWordIndex].english;
             document.getElementById('answer').innerText = "";
             document.getElementById('exampleSentence').innerText = "";
             document.getElementById('hint1').style.display = 'inline';
@@ -116,7 +116,7 @@
             document.getElementById('correct').style.display = 'inline';
             document.getElementById('sorta').style.display = 'inline';
             document.getElementById('incorrect').style.display = 'inline';
-            speakWord(word.indonesian, 'id-ID');
+            speakWord(vocabulary[currentWordIndex].indonesian, 'id-ID');
             speakWord(vocabulary[currentWordIndex].indonesian, 'id-ID');
             document.getElementById('answer').innerText = word.indonesian;
             document.getElementById('hint1').style.display = 'none';
@@ -132,10 +132,10 @@
 
         function showExample() {
             
-            document.getElementById('exampleSentence').innerText = word.exampleSentence;
+            document.getElementById('exampleSentence').innerText = vocabulary[currentWordIndex].exampleSentence;
             speakWord(word.exampleSentence, 'id-ID');
             
-            document.getElementById('exampleSentence').innerText = word.exampleSentence;
+            document.getElementById('exampleSentence').innerText = vocabulary[currentWordIndex].exampleSentence;
         }
 
         function markCorrect() {
