@@ -16,6 +16,15 @@
             font-size: 16px;
             cursor: pointer;
         }
+        #correct {
+            background-color: lightgreen;
+        }
+        #incorrect {
+            background-color: lightcoral;
+        }
+        #reveal {
+            background-color: yellow;
+        }
         #correct, #incorrect, #example {
             display: none;
         }
@@ -38,11 +47,11 @@
     <h3 id="exampleSentence"></h3>
     <button id="hint1">Hint 1</button>
     <button id="hint2">Hint 2</button>
-    <button id="reveal">Reveal</button>
+    <button id="reveal">Reveal 👀</button>
     <br>
+    <button id="correct" style="display: none;">Correct ✅</button>
+    <button id="incorrect" style="display: none;">Incorrect ❌</button>
     <button id="example" style="display: none;">Example</button>
-    <button id="correct" style="display: none;">Correct</button>
-    <button id="incorrect" style="display: none;">Incorrect</button>
 
     <script>
         const vocabulary = [];

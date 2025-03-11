@@ -41,7 +41,7 @@
     </style>
 </head>
 <body>
-    <h1>Indonesian Flashcard Game</h1>
+    <h1 style="color: grey;">Indonesian Flashcard Game</h1>
     <h2 id="question">Loading...</h2>
     <h3 id="answer"></h3>
     <h3 id="exampleSentence"></h3>
@@ -87,6 +87,7 @@
 
         // Display next word
         function showNextWord() {
+            speakWord(vocabulary[currentWordIndex].indonesian);
             if (currentWordIndex >= vocabulary.length) {
                 alert("You've completed all words!");
                 return;
@@ -156,6 +157,13 @@
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
             }
+        }
+
+        // Text-to-speech function
+        function speakWord(word) {
+            const utterance = new SpeechSynthesisUtterance(word);
+            utterance.lang = 'id-ID';
+            speechSynthesis.speak(utterance);
         }
 
         // Start game when page loads
