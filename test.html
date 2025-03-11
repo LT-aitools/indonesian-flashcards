@@ -169,10 +169,10 @@
         // Text-to-speech function
         function speakWord(word, lang) {
             if (word) {
-                const utterance = new SpeechSynthesisUtterance(word);
-                utterance.lang = lang;
-                speechSynthesis.speak(utterance);
+                const audio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(word)}&tl=${lang}&client=gtx`);
+                audio.play();
             }
+        }
         }
 
         // Start game when page loads
