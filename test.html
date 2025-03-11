@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indonesian Flashcards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #correct, #incorrect, #example {
+            display: none;
+        }
+        #answer {
+            color: green;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        #exampleSentence {
+            color: blue;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Indonesian Flashcard Game</h1>
+    <h2 id="question">Loading...</h2>
+    <h3 id="answer"></h3>
+    <h3 id="exampleSentence"></h3>
+    <button id="hint1">Hint 1</button>
+    <button id="hint2">Hint 2</button>
+    <button id="reveal">Reveal</button>
+    <button id="example" style="display: none;">Example</button>
+    <br>
+    <button id="correct">Correct</button>
+    <button id="incorrect">Incorrect</button>
+
+    <script>
+        const vocabulary = [];
+        let currentWordIndex = 0;
+        let incorrectWords = [];
+
+        // Load CSV Data
+        async function loadCSV() {
+            const response = await fetch('Indonesian_vocabulary.csv'); // Replace with actual path
+            const data = await response.text();
+            parseCSV(data);
+        }
+
+        // Parse CSV and store words
+        function parseCSV(data) {
+            const rows = data.split('\n').map(row => row.split(','));
+            rows.shift(); // Remove headers
+            rows.forEach(row => {
+                vocabulary.push({
+                    english: row[1],
+                    indonesian: row[2],
+                    exampleSentence: row[3] // Column 4 (Example Sentence Combined)
+                });
+            });
+            startGame();
+        }
+
+        // Shuffle and start game
+        function startGame() {
+            shuffleArray(vocabulary);
+            showNextWord();
+        }
+
+        // Display next word
+        function showNextWord() {
+            if (currentWordIndex >= vocabulary.length) {
+                alert("You've completed all words!");
+                return;
+            }
+            
+            const word = vocabulary[currentWordIndex];
+            document.getElementById('question').innerText = word.english;
+            document.getElementById('answer').innerText = "";
+            document.getElementById('exampleSentence').innerText = "";
+            document.getElementById('hint1').style.display = 'inline';
+            document.getElementById('hint2').style.display = 'inline';
+            document.getElementById('hint1').innerText = "Hint 1";
+            document.getElementById('hint2').innerText = "Hint 2";
+            document.getElementById('reveal').innerText = "Reveal";
+            document.getElementById('hint1').onclick = () => showHint(1);
+            document.getElementById('hint2').onclick = () => showHint(2);
+            document.getElementById('reveal').onclick = revealAnswer;
+            document.getElementById('example').onclick = showExample;
+            document.getElementById('correct').onclick = markCorrect;
+            document.getElementById('incorrect').onclick = markIncorrect;
+            
+            document.getElementById('correct').style.display = 'none';
+            document.getElementById('incorrect').style.display = 'none';
+            document.getElementById('example').style.display = 'none';
+        }
+
+        // Hints and Reveal
+        function showHint(level) {
+            const word = vocabulary[currentWordIndex];
+            if (level === 1) {
+                document.getElementById('hint1').innerText = `First letter: ${word.indonesian.charAt(0)}`;
+            } else if (level === 2) {
+                document.getElementById('hint2').innerText = `Hint: ${word.indonesian.charAt(0)}${'-'.repeat(word.indonesian.length - 1)}`;
+            }
+        }
+
+        function revealAnswer() {
+            document.getElementById('answer').innerText = vocabulary[currentWordIndex].indonesian;
+            document.getElementById('hint1').style.display = 'none';
+            document.getElementById('hint2').style.display = 'none';
+            document.getElementById('example').style.display = 'inline';
+        }
+
+        function showExample() {
+            document.getElementById('exampleSentence').innerText = vocabulary[currentWordIndex].exampleSentence;
+            document.getElementById('correct').style.display = 'inline';
+            document.getElementById('incorrect').style.display = 'inline';
+        }
+
+        // Track progress
+        function markCorrect() {
+            currentWordIndex++;
+            showNextWord();
+        }
+
+        function markIncorrect() {
+            incorrectWords.push(vocabulary[currentWordIndex]);
+            currentWordIndex++;
+            showNextWord();
+        }
+
+        // Shuffle helper function
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Start game when page loads
+        window.onload = loadCSV;
+    </script>
+</body>
+</html>
