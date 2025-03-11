@@ -39,10 +39,10 @@
     <button id="hint1">Hint 1</button>
     <button id="hint2">Hint 2</button>
     <button id="reveal">Reveal</button>
-    <button id="example" style="display: none;">Example</button>
     <br>
-    <button id="correct">Correct</button>
-    <button id="incorrect">Incorrect</button>
+    <button id="example" style="display: none;">Example</button>
+    <button id="correct" style="display: none;">Correct</button>
+    <button id="incorrect" style="display: none;">Incorrect</button>
 
     <script>
         const vocabulary = [];
@@ -91,17 +91,17 @@
             document.getElementById('hint2').style.display = 'inline';
             document.getElementById('hint1').innerText = "Hint 1";
             document.getElementById('hint2').innerText = "Hint 2";
-            document.getElementById('reveal').innerText = "Reveal";
+            document.getElementById('reveal').style.display = 'inline';
+            document.getElementById('example').style.display = 'none';
+            document.getElementById('correct').style.display = 'none';
+            document.getElementById('incorrect').style.display = 'none';
+            
             document.getElementById('hint1').onclick = () => showHint(1);
             document.getElementById('hint2').onclick = () => showHint(2);
             document.getElementById('reveal').onclick = revealAnswer;
             document.getElementById('example').onclick = showExample;
             document.getElementById('correct').onclick = markCorrect;
             document.getElementById('incorrect').onclick = markIncorrect;
-            
-            document.getElementById('correct').style.display = 'none';
-            document.getElementById('incorrect').style.display = 'none';
-            document.getElementById('example').style.display = 'none';
         }
 
         // Hints and Reveal
@@ -118,13 +118,15 @@
             document.getElementById('answer').innerText = vocabulary[currentWordIndex].indonesian;
             document.getElementById('hint1').style.display = 'none';
             document.getElementById('hint2').style.display = 'none';
+            document.getElementById('reveal').style.display = 'none';
             document.getElementById('example').style.display = 'inline';
+            document.getElementById('correct').style.display = 'inline';
+            document.getElementById('incorrect').style.display = 'inline';
         }
 
         function showExample() {
             document.getElementById('exampleSentence').innerText = vocabulary[currentWordIndex].exampleSentence;
-            document.getElementById('correct').style.display = 'inline';
-            document.getElementById('incorrect').style.display = 'inline';
+            document.getElementById('example').style.display = 'none';
         }
 
         // Track progress
