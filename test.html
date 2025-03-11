@@ -168,8 +168,33 @@
 
         // Text-to-speech function
         function speakWord(word, lang) {
-            if (word) {
-                const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(word)}&tl=${lang}&client=tw-ob`;
+            if (!word) return;
+            
+            const apiKey = '5hTwF87ZlTwAE4Koj0yi9yzaIUh8AF0rCTgpoizyxyI0lgudcTkDJQQJ99BCACYeBjFXJ3w3AAAYACOGgTlf'; // Replace with your actual Azure API key
+            const region = 'eastus'; // Replace with your Azure region (e.g., eastus, westeurope)
+            const url = `https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`;
+            
+            const body = {
+                text: word,
+                voice: lang === 'id-ID' ? 'id-ID-GadisNeural' : 'en-US-JennyNeural',
+            };
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Ocp-Apim-Subscription-Key': apiKey,
+                    'Content-Type': 'application/ssml+xml',
+                    'X-Microsoft-OutputFormat': 'audio-16khz-32kbitrate-mono-mp3'
+                },
+                body: `<speak version='1.0' xml:lang='${lang}'><voice xml:lang='${lang}' xml:gender='Female' name='${body.voice}'>${word}</voice></speak>`
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                const audio = new Audio(URL.createObjectURL(blob));
+                audio.play();
+            })
+            .catch(error => console.error('Error playing audio:', error));
+        }&tl=${lang}&client=tw-ob`;
                 fetch(url, { method: 'GET' })
                     .then(response => response.blob())
                     .then(blob => {
