@@ -60,6 +60,7 @@
 
         // Load CSV Data
         async function loadCSV() {
+            console.log('Attempting to load CSV...');
             const response = await fetch('Indonesian_vocabulary.csv'); // Replace with actual path
             const data = await response.text();
             parseCSV(data);
@@ -89,7 +90,7 @@
         function showNextWord() {
             const word = vocabulary[currentWordIndex];
             speakWord(word.english, 'en-US');
-            speakWord(vocabulary[currentWordIndex].indonesian);
+            
             if (currentWordIndex >= vocabulary.length) {
                 alert("You've completed all words!");
                 return;
@@ -172,6 +173,7 @@
                 utterance.lang = lang;
                 speechSynthesis.speak(utterance);
             }
+        }
         }
         function speakWord(word, lang) {
             if (word) {
