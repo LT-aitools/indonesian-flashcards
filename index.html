@@ -41,7 +41,7 @@
     </style>
 </head>
 <body>
-    <h1>Indonesian Flashcard Game</h1>
+    <h1 style="color: lightgrey; margin-bottom: 20px;">Indonesian Flashcard Game</h1>
     <h2 id="question">Loading...</h2>
     <h3 id="answer"></h3>
     <h3 id="exampleSentence"></h3>
@@ -60,6 +60,7 @@
 
         // Load CSV Data
         async function loadCSV() {
+            console.log('Attempting to load CSV...');
             const response = await fetch('Indonesian_vocabulary.csv'); // Replace with actual path
             const data = await response.text();
             parseCSV(data);
@@ -93,6 +94,9 @@
             }
             
             const word = vocabulary[currentWordIndex];
+            if (!word) return;
+            speakWord(word.english, 'en-US');
+            
             document.getElementById('question').innerText = word.english;
             document.getElementById('answer').innerText = "";
             document.getElementById('exampleSentence').innerText = "";
@@ -124,7 +128,9 @@
         }
 
         function revealAnswer() {
-            document.getElementById('answer').innerText = vocabulary[currentWordIndex].indonesian;
+            const word = vocabulary[currentWordIndex];
+            speakWord(word.indonesian, 'id-ID');
+            document.getElementById('answer').innerText = word.indonesian;
             document.getElementById('hint1').style.display = 'none';
             document.getElementById('hint2').style.display = 'none';
             document.getElementById('reveal').style.display = 'none';
@@ -134,7 +140,9 @@
         }
 
         function showExample() {
-            document.getElementById('exampleSentence').innerText = vocabulary[currentWordIndex].exampleSentence;
+            const word = vocabulary[currentWordIndex];
+            speakWord(word.exampleSentence, 'id-ID');
+            document.getElementById('exampleSentence').innerText = word.exampleSentence;
             document.getElementById('example').style.display = 'none';
         }
 
@@ -155,6 +163,15 @@
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Text-to-speech function
+        function speakWord(word, lang) {
+            if (word) {
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = lang;
+                speechSynthesis.speak(utterance);
             }
         }
 
