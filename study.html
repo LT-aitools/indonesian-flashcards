@@ -76,6 +76,27 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
+
+        function playAudio(word, sentence) {
+            // Use the Web Speech API to read the text
+            const speech = new SpeechSynthesisUtterance();
+            
+            // Set the language to Indonesian
+            speech.lang = 'id-ID';
+            
+            // First read the word
+            speech.text = word;
+            window.speechSynthesis.speak(speech);
+            
+            // Then read the sentence after the word is finished
+            speech.onend = function() {
+                if (sentence) {
+                    const sentenceSpeech = new SpeechSynthesisUtterance(sentence);
+                    sentenceSpeech.lang = 'id-ID';
+                    window.speechSynthesis.speak(sentenceSpeech);
+                }
+            };
+        }
     </script>
     <style>
         body {
@@ -84,6 +105,8 @@
             position: relative;
             overflow-y: auto;
             margin: 0;
+            padding: 0;
+            min-height: 100vh;
         }
         body::before {
             content: "";
@@ -100,34 +123,30 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             padding: 20px;
             min-height: 100vh;
+            box-sizing: border-box;
         }
         h1 {
             margin-bottom: 20px;
+            text-align: center;
         }
         .word-container {
             display: grid;
-            grid-template-columns: repeat(2, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
             max-width: 900px;
             width: 100%;
             justify-content: center;
         }
-        @media (max-width: 768px) {
-            .word-container {
-                grid-template-columns: 1fr;
-            }
-        }
         .word-card {
             background: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 400px;
-            margin-bottom: 20px;
+            box-sizing: border-box;
         }
         .word-grid {
             display: grid;
@@ -140,6 +159,12 @@
             align-items: center;
             padding: 10px;
         }
+        .play-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
         .play-button img {
             width: 36px;
             height: 36px;
@@ -147,18 +172,19 @@
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
+            grid-template-rows: auto auto;
             gap: 10px;
             text-align: center;
         }
         .grid-item {
-            padding: 10px;
+            padding: 8px;
         }
         .nav-buttons {
             display: flex;
             gap: 10px;
             justify-content: center;
             margin-top: 20px;
+            flex-wrap: wrap;
         }
         .nav-button {
             text-decoration: none;
@@ -166,6 +192,38 @@
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
+            border: none;
+            font-size: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .word-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid-container {
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(4, auto);
+            }
+            
+            .play-button img {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .word-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .play-button-container {
+                padding: 5px 10px 10px;
+            }
         }
     </style>
 </head>
@@ -173,10 +231,10 @@
     <div class="container">
         <h1 id="category-title"></h1>
         <div id="word-container" class="word-container"></div>
-        <button class="nav-button" onclick="nextWords()">Next</button>
         <div class="nav-buttons">
-            <a href="https://lt-aitools.github.io/indonesian-flashcards/studysplash.html" class="nav-button">Back to Categories</a>
-            <a href="https://lt-aitools.github.io/indonesian-flashcards/index.html" class="nav-button">Back to Main</a>
+            <button class="nav-button" onclick="nextWords()">Next</button>
+            <a href="studysplash.html" class="nav-button">Back to Categories</a>
+            <a href="index.html" class="nav-button">Back to Main</a>
         </div>
     </div>
 </body>
