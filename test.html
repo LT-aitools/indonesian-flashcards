@@ -41,7 +41,7 @@
     </style>
 </head>
 <body>
-    <h1 style="color: grey;">Indonesian Flashcard Game</h1>
+    <h1 style="color: lightgrey; margin-bottom: 20px;">Indonesian Flashcard Game</h1>
     <h2 id="question">Loading...</h2>
     <h3 id="answer"></h3>
     <h3 id="exampleSentence"></h3>
@@ -87,6 +87,8 @@
 
         // Display next word
         function showNextWord() {
+            const word = vocabulary[currentWordIndex];
+            speakWord(word.english, 'en-US');
             speakWord(vocabulary[currentWordIndex].indonesian);
             if (currentWordIndex >= vocabulary.length) {
                 alert("You've completed all words!");
@@ -125,6 +127,8 @@
         }
 
         function revealAnswer() {
+            const word = vocabulary[currentWordIndex];
+            speakWord(word.indonesian, 'id-ID');
             document.getElementById('answer').innerText = vocabulary[currentWordIndex].indonesian;
             document.getElementById('hint1').style.display = 'none';
             document.getElementById('hint2').style.display = 'none';
@@ -135,6 +139,8 @@
         }
 
         function showExample() {
+            const word = vocabulary[currentWordIndex];
+            speakWord(word.exampleSentence, 'id-ID');
             document.getElementById('exampleSentence').innerText = vocabulary[currentWordIndex].exampleSentence;
             document.getElementById('example').style.display = 'none';
         }
@@ -160,10 +166,19 @@
         }
 
         // Text-to-speech function
-        function speakWord(word) {
-            const utterance = new SpeechSynthesisUtterance(word);
-            utterance.lang = 'id-ID';
-            speechSynthesis.speak(utterance);
+        function speakWord(word, lang) {
+            if (word) {
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = lang;
+                speechSynthesis.speak(utterance);
+            }
+        }
+        function speakWord(word, lang) {
+            if (word) {
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = lang;
+                speechSynthesis.speak(utterance);
+            }
         }
 
         // Start game when page loads
