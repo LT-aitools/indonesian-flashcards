@@ -39,7 +39,7 @@
     <button id="hint1">Hint 1</button>
     <button id="hint2">Hint 2</button>
     <button id="reveal">Reveal</button>
-    <button id="example">Example</button>
+    <button id="example" style="display: none;">Example</button>
     <br>
     <button id="correct">Correct</button>
     <button id="incorrect">Incorrect</button>
@@ -87,6 +87,8 @@
             document.getElementById('question').innerText = word.english;
             document.getElementById('answer').innerText = "";
             document.getElementById('exampleSentence').innerText = "";
+            document.getElementById('hint1').style.display = 'inline';
+            document.getElementById('hint2').style.display = 'inline';
             document.getElementById('hint1').innerText = "Hint 1";
             document.getElementById('hint2').innerText = "Hint 2";
             document.getElementById('reveal').innerText = "Reveal";
