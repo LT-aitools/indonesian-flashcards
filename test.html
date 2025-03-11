@@ -1,56 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indonesian Flashcards</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-            position: relative;
-            background: url('images/background.jpeg') no-repeat center center fixed;
-            background-size: cover;
-        }
-        button {
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        #correct { background-color: lightgreen; }
-        #sorta { background-color: lightsalmon; }
-        #incorrect { background-color: lightcoral; }
-        #reveal { background-color: yellow; }
-        #correct, #sorta, #incorrect, #example { display: none; }
-        #answer { color: green; font-size: 20px; margin-top: 10px; }
-        #exampleSentence { color: blue; font-size: 18px; margin-top: 10px; }
-
-        /* Background Overlay */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            z-index: -1;
-        }
-
-        /* Back to Main Button */
-        #backToMain {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background-color: lightgray;
-            padding: 10px;
-            font-size: 14px;
-        }
-    </style>
+    <title>Indonesian Flashcard Game (Test)</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1 style="color: lightgrey; margin-bottom: 20px;">Indonesian Flashcard Game</h1>
-    <h2 id="question">Loading...</h
+    <!-- Background Overlay for better readability -->
+    <div class="background"></div>
+    <div class="overlay"></div>
+
+    <!-- Page Title -->
+    <h1 class="page-title">Indonesian Flashcard Game (Test Mode)</h1>
+
+    <div class="game-container">
+        <h2 id="question">Loading...</h2>
+        <h3 id="answer"></h3>
+        <h3 id="exampleSentence"></h3>
+
+        <button id="hint1">Hint 1</button>
+        <button id="hint2">Hint 2</button>
+        <button id="reveal">Reveal 👀</button>
+        <br>
+        <button id="correct">Correct ✅</button>
+        <button id="sorta">Sorta 🫤</button>
+        <button id="incorrect">Incorrect ❌</button>
+        <button id="example">Example</button>
+
+        <!-- Back to Main -->
+        <button id="backToMain" onclick="window.location.href='https://lt-aitools.github.io/indonesian-flashcards/'">
+            Back to Main
+        </button>
+    </div>
+
+    <script>
+        const vocabulary = [];
+        let currentWordIndex = 0;
+        let incorrectWords = [];
+
+        const azureApiKey = "5hTwF87ZlTwAE4Koj0yi9yzaIUh8AF0rCTgpoizyxyI0lgudcTkDJQQJ99BCACYeBjFXJ3w3AAAYACOGgTlf";
+        const azureRegion = "eastus";
+
+        async function loadCSV() {
+            try {
+                const response = await fetch('Indonesian_vocabulary.csv');
+                const data = await response.text();
+                parseCSV(data);
+            } catch (error) {
+                console.error("Error loading CSV:", error);
+            }
+        }
+
+        function parseCSV(data) {
+            const rows = data.split('\n').map(row => row.split(','));
+            rows.shift();
+            rows.forEach(row => {
+                vocabulary.push({
+                    english: row[1],
+                    indonesian: row[2],
+                    exampleSentence: row[3]
+                });
+            });
+            startGame();
+        }
+
+        function startGame() {
+            if (vocabulary.length === 0) {
+                alert("No words found. Check the CSV file!");
+                return;
+            }
+            shuffleArray(vocabulary);
+            showNextWord();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function showNextWord() {
+            if (currentWordIndex >= vocabulary.length) {
+                alert("You've completed all words!");
+                return;
+            }
+
+            const wordData = vocabulary[currentWordIndex];
+            if (!wordData) return;
+
+            // Reset UI
+            document.getElementById("question").innerText = wordData.english;
+            document.getElementById("answer").innerText = "";
+            document.getElementById("exampleSentence").innerText = "";
+            document.getElementById("hint1").innerText = "Hint 1";
+            document.getElementById("hint2").innerText = "Hint 2";
+
+            document.getElementById("hint1").style.display = "inline";
+            document.getElementById("hint2").style.display = "inline";
+            document.getElementById("reveal").style.display = "inline";
+
+            document.getElementById("example").style.display = "none";
+            document.getElementById("correct").style.display = "none";
+            document.getElementById("sorta").style.display = "none";
+            document.getElementById("incorrect").style.display = "none";
+
+            // Speak English word
+            speakWord(wordData.english, "en-US");
+
+            // Event Listeners
+            document.getElementById("hint1").onclick = () => showHint(1);
+            document.getElementById("hint2").onclick = () => showHint(2);
+            document.getElementById("reveal").onclick = revealAnswer;
+            document.getElementById("example").onclick = showExample;
+            document.getElementById("correct").onclick = markCorrect;
+            document.getElementById("sorta").onclick = markSorta;
+            document.getElementById("incorrect").onclick = markIncorrect;
+        }
+
+        function revealAnswer() {
+            const wordData = vocabulary[currentWordIndex];
+            document.getElementById("answer").innerText = wordData.indonesian;
+
+            document.getElementById("hint1").style.display = "none";
+            document.getElementById("hint2").style.display = "none";
+            document.getElementById("reveal").style.display = "none";
+
+            document.getElementById("example").style.display = "inline";
+            document.getElementById("correct").style.display = "inline";
+            document.getElementById("sorta").style.display = "inline";
+            document.getElementById("incorrect").style.display = "inline";
+
+            speakWord(wordData.indonesian, "id-ID");
+        }
+
+        function showExample() {
+            const wordData = vocabulary[currentWordIndex];
+            const [indoPart, engPart] = wordData.exampleSentence.split(" - ");
+
+            document.getElementById("exampleSentence").innerText = wordData.exampleSentence;
+            if (indoPart) {
+                speakWord(indoPart, "id-ID").then(() => {
+                    if (engPart) speakWord(engPart, "en-US");
+                });
+            } else if (engPart) {
+                speakWord(engPart, "en-US");
+            }
+        }
+
+        async function speakWord(word, lang) {
+            try {
+                const tokenResponse = await fetch(`https://${azureRegion}.api.cognitive.microsoft.com/sts/v1.0/issueToken`, {
+                    method: "POST",
+                    headers: { "Ocp-Apim-Subscription-Key": azureApiKey }
+                });
+
+                if (!tokenResponse.ok) throw new Error("Failed to obtain an access token");
+
+                const accessToken = await tokenResponse.text();
+
+                const ttsResponse = await fetch(`https://${azureRegion}.tts.speech.microsoft.com/cognitiveservices/v1`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/ssml+xml",
+                        "Authorization": `Bearer ${accessToken}`,
+                        "X-Microsoft-OutputFormat": "audio-16khz-32kbitrate-mono-mp3"
+                    },
+                    body: `<speak version='1.0' xml:lang='${lang}'><voice name='${lang === "id-ID" ? "id-ID-GadisNeural" : "en-US-JennyNeural"}'>${word}</voice></speak>`
+                });
+
+                if (!ttsResponse.ok) throw new Error("TTS request failed");
+
+                const audioBlob = await ttsResponse.blob();
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audio = new Audio(audioUrl);
+                audio.play();
+            } catch (error) {
+                console.error("Azure TTS Error:", error);
+            }
+        }
+
+        window.onload = loadCSV;
+    </script>
+</body>
+</html>
