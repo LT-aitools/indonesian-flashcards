@@ -8,7 +8,7 @@
     <script>
         let words = [];
         let currentIndex = 0;
-        const wordsPerPage = 5;
+        const wordsPerPage = 6;
 
         async function loadWords() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -74,6 +74,7 @@
             background: url('images/background.jpeg') no-repeat center center fixed;
             background-size: cover;
             position: relative;
+            overflow-y: auto;
         }
         body::before {
             content: "";
@@ -92,20 +93,26 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            min-height: 100vh;
         }
         h1 {
             margin-bottom: 20px;
         }
+        .word-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            justify-content: center;
+            text-align: center;
+        }
         .word-card {
-            display: flex;
-            flex-direction: column;
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px;
-            width: 80%;
-            max-width: 600px;
+            width: 100%;
+            max-width: 400px;
         }
         .grid-container {
             display: grid;
@@ -131,7 +138,7 @@
 <body onload="loadWords()">
     <div class="container">
         <h1 id="category-title"></h1>
-        <div id="word-container"></div>
+        <div id="word-container" class="word-container"></div>
         <button class="nav-button" onclick="nextWords()">Next</button>
         <a href="index.html" class="nav-button">Back to Categories</a>
     </div>
