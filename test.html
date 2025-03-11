@@ -86,7 +86,7 @@
             }
             
             if (!word) return;
-            speakWord(word.english, 'en-US');
+            speakWord(vocabulary[currentWordIndex].english, 'en-US');
             document.getElementById('question').innerText = word.english;
             document.getElementById('answer').innerText = "";
             document.getElementById('exampleSentence').innerText = "";
