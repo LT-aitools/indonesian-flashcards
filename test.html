@@ -19,13 +19,16 @@
         #correct {
             background-color: lightgreen;
         }
+        #sorta {
+            background-color: #FFD580;
+        }
         #incorrect {
             background-color: lightcoral;
         }
         #reveal {
             background-color: yellow;
         }
-        #correct, #incorrect, #example {
+        #correct, #sorta, #incorrect, #example {
             display: none;
         }
         #answer {
@@ -50,47 +53,55 @@
     <button id="reveal">Reveal 👀</button>
     <br>
     <button id="correct" style="display: none;">Correct ✅</button>
+    <button id="sorta" style="display: none;">Sorta 🫤</button>
     <button id="incorrect" style="display: none;">Incorrect ❌</button>
     <button id="example" style="display: none;">Example</button>
 
     <script>
         const vocabulary = [];
         let currentWordIndex = 0;
-        let incorrectWords = [];
+        let reviewQueue = [];
 
-        // Load CSV Data
         async function loadCSV() {
             console.log('Attempting to load CSV...');
-            const response = await fetch('Indonesian_vocabulary.csv'); // Replace with actual path
+            const response = await fetch('Indonesian_vocabulary.csv');
             const data = await response.text();
             parseCSV(data);
         }
 
-        // Parse CSV and store words
         function parseCSV(data) {
-            const rows = data.split('\n').map(row => row.split(','));
-            rows.shift(); // Remove headers
+            const rows = data.split('\\n').map(row => row.match(/(?:"([^"]+)")|([^,]+)/g));
+            rows.shift();
             rows.forEach(row => {
                 vocabulary.push({
-                    english: row[1],
-                    indonesian: row[2],
-                    exampleSentence: row[3] // Column 4 (Example Sentence Combined)
+                    english: row[1] ? row[1].replace(/"/g, '') : '',
+                    indonesian: row[2] ? row[2].replace(/"/g, '') : '',
+                    exampleSentence: row[3] ? row[3].replace(/"/g, '') : ''
                 });
             });
             startGame();
         }
 
-        // Shuffle and start game
         function startGame() {
             shuffleArray(vocabulary);
             showNextWord();
         }
 
-        // Display next word
         function showNextWord() {
+            if (vocabulary.length === 0) {
+                if (reviewQueue.length === 0) {
+                    alert("You've completed all words!");
+                    return;
+                }
+                vocabulary.push(...reviewQueue);
+                reviewQueue = [];
+                shuffleArray(vocabulary);
+            }
             if (currentWordIndex >= vocabulary.length) {
-                alert("You've completed all words!");
-                return;
+                currentWordIndex = 0;
+                shuffleArray(reviewQueue);
+                vocabulary.push(...reviewQueue);
+                reviewQueue = [];
             }
             
             const word = vocabulary[currentWordIndex];
@@ -102,11 +113,10 @@
             document.getElementById('exampleSentence').innerText = "";
             document.getElementById('hint1').style.display = 'inline';
             document.getElementById('hint2').style.display = 'inline';
-            document.getElementById('hint1').innerText = "Hint 1";
-            document.getElementById('hint2').innerText = "Hint 2";
             document.getElementById('reveal').style.display = 'inline';
             document.getElementById('example').style.display = 'none';
             document.getElementById('correct').style.display = 'none';
+            document.getElementById('sorta').style.display = 'none';
             document.getElementById('incorrect').style.display = 'none';
             
             document.getElementById('hint1').onclick = () => showHint(1);
@@ -114,17 +124,8 @@
             document.getElementById('reveal').onclick = revealAnswer;
             document.getElementById('example').onclick = showExample;
             document.getElementById('correct').onclick = markCorrect;
+            document.getElementById('sorta').onclick = markSorta;
             document.getElementById('incorrect').onclick = markIncorrect;
-        }
-
-        // Hints and Reveal
-        function showHint(level) {
-            const word = vocabulary[currentWordIndex];
-            if (level === 1) {
-                document.getElementById('hint1').innerText = `First letter: ${word.indonesian.charAt(0)}`;
-            } else if (level === 2) {
-                document.getElementById('hint2').innerText = `Hint: ${word.indonesian.charAt(0)}${'-'.repeat(word.indonesian.length - 1)}`;
-            }
         }
 
         function revealAnswer() {
@@ -136,29 +137,32 @@
             document.getElementById('reveal').style.display = 'none';
             document.getElementById('example').style.display = 'inline';
             document.getElementById('correct').style.display = 'inline';
+            document.getElementById('sorta').style.display = 'inline';
             document.getElementById('incorrect').style.display = 'inline';
         }
 
-        function showExample() {
-            const word = vocabulary[currentWordIndex];
-            speakWord(word.exampleSentence, 'id-ID');
-            document.getElementById('exampleSentence').innerText = word.exampleSentence;
-            document.getElementById('example').style.display = 'none';
+        function markCorrect() {
+          let word = vocabulary[currentWordIndex]; 
+          vocabulary.splice(currentWordIndex, 1);
+          reviewQueue.push(word);
+          showNextWord();
         }
 
-        // Track progress
-        function markCorrect() {
-            currentWordIndex++;
+
+        function markSorta() {
+            let word = vocabulary.splice(currentWordIndex, 1)[0];
+            currentWordIndex++; 
+            reviewQueue.unshift(word); // Returns sooner but not immediately
             showNextWord();
         }
 
         function markIncorrect() {
-            incorrectWords.push(vocabulary[currentWordIndex]);
-            currentWordIndex++;
+            let word = vocabulary.splice(currentWordIndex, 1)[0];
+            currentWordIndex++; 
+            reviewQueue.splice(Math.min(5, reviewQueue.length), 0, word); // Returns after 5 words
             showNextWord();
         }
 
-        // Shuffle helper function
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -166,46 +170,6 @@
             }
         }
 
-        // Text-to-speech function
-        function speakWord(word, lang) {
-            if (!word) return;
-            
-            const apiKey = '5hTwF87ZlTwAE4Koj0yi9yzaIUh8AF0rCTgpoizyxyI0lgudcTkDJQQJ99BCACYeBjFXJ3w3AAAYACOGgTlf'; // Replace with your actual Azure API key
-            const region = 'eastus'; // Replace with your Azure region (e.g., eastus, westeurope)
-            const url = `https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`;
-            
-            const body = {
-                text: word,
-                voice: lang === 'id-ID' ? 'id-ID-GadisNeural' : 'en-US-JennyNeural',
-            };
-            
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Ocp-Apim-Subscription-Key': apiKey,
-                    'Content-Type': 'application/ssml+xml',
-                    'X-Microsoft-OutputFormat': 'audio-16khz-32kbitrate-mono-mp3'
-                },
-                body: `<speak version='1.0' xml:lang='${lang}'><voice xml:lang='${lang}' xml:gender='Female' name='${body.voice}'>${word}</voice></speak>`
-            })
-            .then(response => response.blob())
-            .then(blob => {
-                const audio = new Audio(URL.createObjectURL(blob));
-                audio.play();
-            })
-            .catch(error => console.error('Error playing audio:', error));
-        }&tl=${lang}&client=tw-ob`;
-                fetch(url, { method: 'GET' })
-                    .then(response => response.blob())
-                    .then(blob => {
-                        const audio = new Audio(URL.createObjectURL(blob));
-                        audio.play();
-                    })
-                    .catch(error => console.error('Error playing audio:', error));
-            }
-        }
-                
-            // Start game when page loads
         window.onload = loadCSV;
     </script>
 </body>
