@@ -108,8 +108,7 @@
         }
 
         function revealAnswer() {
-            const word = vocabulary[currentWordIndex];
-            document.getElementById('answer').innerText = word.indonesian;
+            document.getElementById('answer').innerText = vocabulary[currentWordIndex].indonesian;
             document.getElementById('hint1').style.display = 'none';
             document.getElementById('hint2').style.display = 'none';
             document.getElementById('reveal').style.display = 'none';
