@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +7,6 @@
     <title>Indonesian Flashcards</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
-/* Remove background from body */
 /* Ensure body is structured properly */
 body {
     font-family: Arial, sans-serif;
@@ -41,39 +41,57 @@ body {
     border-radius: 10px;
 }
 
-        
-        button {
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        #correct {
-            background-color: lightgreen;
-        }
-        #incorrect {
-            background-color: lightcoral;
-        }
-        #reveal {
-            background-color: yellow;
-        }
-        #correct, #incorrect, #example {
-            display: none;
-        }
-        #answer {
-            color: green;
-            font-size: 20px;
-            margin-top: 10px;
-        }
-        #exampleSentence {
-            color: blue;
-            font-size: 18px;
-            margin-top: 10px;
-        }
+/* Button Styling */
+button {
+    margin: 10px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#correct {
+    background-color: lightgreen;
+}
+#sorta {
+    background-color: lightorange; /* Light orange color */
+}
+#incorrect {
+    background-color: lightcoral;
+}
+#reveal {
+    background-color: yellow;
+}
+#correct, #sorta, #incorrect, #example {
+    display: none;
+}
+#answer {
+    color: green;
+    font-size: 20px;
+    margin-top: 10px;
+}
+#exampleSentence {
+    color: blue;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+/* Back to Main button styling */
+.back-button {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    background-color: lightblue;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: black;
+}
+.back-button:hover {
+    background-color: deepskyblue;
+}
     </style>
 </head>
 <body>
-    <div class="background"></div> <!-- Background image -->
+    <div class="background"></div>
     <div id="content">
         <h1 style="color: darkgrey; margin-bottom: 20px;">Indonesian Flashcard Game</h1>
         <h2 id="question">Loading...</h2>
@@ -84,17 +102,13 @@ body {
         <button id="reveal">Reveal 👀</button>
         <br>
         <button id="correct" style="display: none;">Correct ✅</button>
+        <button id="sorta" style="display: none;">Sorta 🫤</button>
         <button id="incorrect" style="display: none;">Incorrect ❌</button>
         <button id="example" style="display: none;">Example</button>
-
-</a>
     </div>
-                    <!-- Back to Main Button -->
-        <a href="https://lt-aitools.github.io/indonesian-flashcards/"
-           style="display: inline-block; margin-top: 20px; text-decoration: none; 
-                  background-color: lightblue; padding: 10px 20px; border-radius: 5px;">
-           Back to Main
-    <div>
+
+    <!-- Back to Main Button (properly placed under the content div) -->
+    <a href="https://lt-aitools.github.io/indonesian-flashcards/" class="back-button">Back to Main</a>
 
     <script>
         const vocabulary = [];
@@ -150,6 +164,7 @@ body {
             document.getElementById('reveal').style.display = 'inline';
             document.getElementById('example').style.display = 'none';
             document.getElementById('correct').style.display = 'none';
+            document.getElementById('sorta').style.display = 'none';
             document.getElementById('incorrect').style.display = 'none';
             
             document.getElementById('hint1').onclick = () => showHint(1);
@@ -157,17 +172,8 @@ body {
             document.getElementById('reveal').onclick = revealAnswer;
             document.getElementById('example').onclick = showExample;
             document.getElementById('correct').onclick = markCorrect;
+            document.getElementById('sorta').onclick = markSorta;
             document.getElementById('incorrect').onclick = markIncorrect;
-        }
-
-        // Hints and Reveal
-        function showHint(level) {
-            const word = vocabulary[currentWordIndex];
-            if (level === 1) {
-                document.getElementById('hint1').innerText = `First letter: ${word.indonesian.charAt(0)}`;
-            } else if (level === 2) {
-                document.getElementById('hint2').innerText = `Hint: ${word.indonesian.charAt(0)}${'-'.repeat(word.indonesian.length - 1)}`;
-            }
         }
 
         function revealAnswer() {
@@ -179,17 +185,15 @@ body {
             document.getElementById('reveal').style.display = 'none';
             document.getElementById('example').style.display = 'inline';
             document.getElementById('correct').style.display = 'inline';
+            document.getElementById('sorta').style.display = 'inline';
             document.getElementById('incorrect').style.display = 'inline';
         }
 
-        function showExample() {
-            const word = vocabulary[currentWordIndex];
-            speakWord(word.exampleSentence, 'id-ID');
-            document.getElementById('exampleSentence').innerText = word.exampleSentence;
-            document.getElementById('example').style.display = 'none';
+        function markSorta() {
+            currentWordIndex++;
+            showNextWord();
         }
 
-        // Track progress
         function markCorrect() {
             currentWordIndex++;
             showNextWord();
@@ -199,23 +203,6 @@ body {
             incorrectWords.push(vocabulary[currentWordIndex]);
             currentWordIndex++;
             showNextWord();
-        }
-
-        // Shuffle helper function
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
-
-        // Text-to-speech function
-        function speakWord(word, lang) {
-            if (word) {
-                const utterance = new SpeechSynthesisUtterance(word);
-                utterance.lang = lang;
-                speechSynthesis.speak(utterance);
-            }
         }
 
         // Start game when page loads
