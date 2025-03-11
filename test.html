@@ -6,32 +6,41 @@
     <title>Indonesian Flashcards</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
-
-       body {
+/* Remove background from body */
+/* Ensure body is structured properly */
+body {
     font-family: Arial, sans-serif;
     text-align: center;
-    margin: 50px;
-    background: url('images/background.jpeg') no-repeat center center fixed;
-    background-size: cover;
-    position: relative;
+    margin: 0; /* Remove margin to prevent misalignment */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-/* White overlay with transparency */
-.background-overlay {
+/* Background image div */
+.background {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.5); /* 50% white transparency */
-    z-index: 0; /* Make sure it's above the background but behind content */
+    background: url('images/background.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    opacity: 0.2; /* Adjusted to give the whitewashed effect */
+    z-index: -1;
 }
 
-/* Ensure content is above the overlay */
+/* Ensure content stays above the background */
 #content {
     position: relative;
     z-index: 1;
+    background: rgba(255, 255, 255, 0.8); /* Optional: Helps readability */
+    padding: 20px;
+    border-radius: 10px;
 }
+
         
         button {
             margin: 10px;
@@ -64,17 +73,20 @@
     </style>
 </head>
 <body>
-    <h1 style="color: lightgrey; margin-bottom: 20px;">Indonesian Flashcard Game</h1>
-    <h2 id="question">Loading...</h2>
-    <h3 id="answer"></h3>
-    <h3 id="exampleSentence"></h3>
-    <button id="hint1">Hint 1</button>
-    <button id="hint2">Hint 2</button>
-    <button id="reveal">Reveal 👀</button>
-    <br>
-    <button id="correct" style="display: none;">Correct ✅</button>
-    <button id="incorrect" style="display: none;">Incorrect ❌</button>
-    <button id="example" style="display: none;">Example</button>
+    <div class="background"></div> <!-- Background image -->
+    <div id="content">
+        <h1 style="color: darkgrey; margin-bottom: 20px;">Indonesian Flashcard Game</h1>
+        <h2 id="question">Loading...</h2>
+        <h3 id="answer"></h3>
+        <h3 id="exampleSentence"></h3>
+        <button id="hint1">Hint 1</button>
+        <button id="hint2">Hint 2</button>
+        <button id="reveal">Reveal 👀</button>
+        <br>
+        <button id="correct" style="display: none;">Correct ✅</button>
+        <button id="incorrect" style="display: none;">Incorrect ❌</button>
+        <button id="example" style="display: none;">Example</button>
+    </div>
 
     <script>
         const vocabulary = [];
