@@ -74,6 +74,11 @@ body {
             font-size: 18px;
             margin-top: 10px;
         }
+        #stats {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
     </style>
 </head>
 <body>
@@ -91,20 +96,42 @@ body {
         <button id="sorta" style="display: none; background-color: lightorange;">Sorta 🫤</button>
         <button id="incorrect" style="display: none;">Incorrect ❌</button>
         <button id="example" style="display: none;">Example</button>
-
-</a>
+        <div id="stats"></div>
     </div>
-                    <!-- Back to Main Button -->
-        <a href="https://lt-aitools.github.io/indonesian-flashcards/"
-           style="display: inline-block; margin-top: 20px; text-decoration: none; 
-                  background-color: lightblue; padding: 10px 20px; border-radius: 5px;">
-           Back to Main
-    <div>
+    <!-- Back to Main Button -->
+    <a href="https://lt-aitools.github.io/indonesian-flashcards/"
+        style="display: inline-block; margin-top: 20px; text-decoration: none; 
+                background-color: lightblue; padding: 10px 20px; border-radius: 5px;">
+        Back to Main
+    </a>
 
     <script>
         const vocabulary = [];
         let currentWordIndex = 0;
-        let incorrectWords = [];
+        
+        // Spaced repetition system data structure
+        let wordStats = {};
+        
+        // Constants for spaced repetition - words to see before showing again
+        const CORRECT_INTERVAL = 50; // Show this word again after 50 other words
+        const SORTA_INTERVAL = 20;   // Show this word again after 20 other words
+        const INCORRECT_INTERVAL = 10; // Show this word again after 10 other words
+        
+        // Global counter for words seen in the session
+        let globalWordCounter = 0;
+        
+        // Load word stats from localStorage
+        function loadWordStats() {
+            const savedStats = localStorage.getItem('indonesianFlashcardStats');
+            if (savedStats) {
+                wordStats = JSON.parse(savedStats);
+            }
+        }
+        
+        // Save word stats to localStorage
+        function saveWordStats() {
+            localStorage.setItem('indonesianFlashcardStats', JSON.stringify(wordStats));
+        }
 
         // Load CSV Data
         async function loadCSV() {
@@ -119,30 +146,112 @@ body {
             const rows = data.split('\n').map(row => row.split(','));
             rows.shift(); // Remove headers
             rows.forEach(row => {
+                // Add the importance weight from column G (index 6)
+                const importanceWeight = row[6] ? parseInt(row[6]) : 3; // Default to 3 if missing
+                
                 vocabulary.push({
                     english: row[1],
                     indonesian: row[2],
-                    exampleSentence: row[3] // Column 4 (Example Sentence Combined)
+                    exampleSentence: row[3], // Column 4 (Example Sentence Combined)
+                    importance: importanceWeight // Add importance weight
                 });
             });
+            
+            // Load saved word stats
+            loadWordStats();
+            
+            // Initialize stats for new words
+            vocabulary.forEach(word => {
+                const wordKey = `${word.english}:${word.indonesian}`;
+                if (!wordStats[wordKey]) {
+                    wordStats[wordKey] = {
+                        correctCount: 0,
+                        sortaCount: 0,
+                        incorrectCount: 0,
+                        lastSeenCount: 0,
+                        nextReviewCount: 0, // 0 means ready to be shown
+                        importance: word.importance || 3, // Store importance in stats
+                        level: 1
+                    };
+                } else {
+                    // Update importance in case it changed in the CSV
+                    wordStats[wordKey].importance = word.importance || wordStats[wordKey].importance;
+                }
+            });
+            
             startGame();
         }
 
         // Shuffle and start game
         function startGame() {
-            shuffleArray(vocabulary);
+            // First, assign scores to each word based on importance and next review count
+            vocabulary.forEach(word => {
+                const wordKey = `${word.english}:${word.indonesian}`;
+                const stats = wordStats[wordKey];
+                const importanceScore = (6 - stats.importance) * 10; // Invert so 5 is lowest score (highest priority)
+                const reviewScore = stats.nextReviewCount - globalWordCounter;
+                
+                // Calculate priority score - lower is higher priority
+                // Words past due (negative reviewScore) get highest priority
+                let priorityScore = reviewScore;
+                
+                // If the word is due for review (reviewScore <= 0), prioritize by importance
+                if (reviewScore <= 0) {
+                    priorityScore = importanceScore;
+                } else {
+                    // For words not yet due, adjust their priority based on importance
+                    // More important words (higher weight) get lower interval multipliers
+                    const importanceFactor = 1 - ((stats.importance - 1) * 0.15); // 1.0 to 0.4 factor
+                    priorityScore = reviewScore * importanceFactor;
+                }
+                
+                // Store the priority score for sorting
+                stats.priorityScore = priorityScore;
+            });
+            
+            // Sort by priority score (lower is higher priority)
+            vocabulary.sort((a, b) => {
+                const keyA = `${a.english}:${a.indonesian}`;
+                const keyB = `${b.english}:${b.indonesian}`;
+                const scoreA = wordStats[keyA].priorityScore;
+                const scoreB = wordStats[keyB].priorityScore;
+                return scoreA - scoreB;
+            });
+            
             showNextWord();
         }
 
         // Display next word
         function showNextWord() {
             if (currentWordIndex >= vocabulary.length) {
-                alert("You've completed all words!");
+                // Reset if we've gone through all words
+                currentWordIndex = 0;
+                startGame();
                 return;
             }
             
             const word = vocabulary[currentWordIndex];
             if (!word) return;
+            
+            // Get current word stats
+            const wordKey = `${word.english}:${word.indonesian}`;
+            const stats = wordStats[wordKey];
+            
+            // Check if it's time to review this word
+            if (stats.nextReviewCount && stats.nextReviewCount > globalWordCounter) {
+                // Skip this word if it's not time to review yet
+                currentWordIndex++;
+                showNextWord();
+                return;
+            }
+            
+            // Update last seen counter
+            stats.lastSeenCount = globalWordCounter;
+            // Increment global counter for each word shown
+            globalWordCounter++;
+            saveWordStats();
+            
+            // Display word
             speakWord(word.english, 'en-US');
             
             document.getElementById('question').innerText = word.english;
@@ -157,7 +266,9 @@ body {
             document.getElementById('correct').style.display = 'none';
             document.getElementById('sorta').style.display = 'none';
             document.getElementById('incorrect').style.display = 'none';
-
+            
+            // Display stats
+            updateStatsDisplay(wordKey);
             
             document.getElementById('hint1').onclick = () => showHint(1);
             document.getElementById('hint2').onclick = () => showHint(2);
@@ -198,20 +309,90 @@ body {
             document.getElementById('example').style.display = 'inline';
         }
 
-        // Track progress
-        function markSorta() {
+        // Track progress with spaced repetition
+        function markCorrect() {
+            const word = vocabulary[currentWordIndex];
+            const wordKey = `${word.english}:${word.indonesian}`;
+            const stats = wordStats[wordKey];
+            
+            // Update stats
+            stats.correctCount++;
+            
+            // Set next review based on word count and importance
+            // More important words (higher weight) get shorter intervals
+            const importanceFactor = 1.5 - (stats.importance * 0.1); // Ranges from 1.0 to 0.5
+            const adjustedInterval = Math.round(CORRECT_INTERVAL * importanceFactor);
+            
+            stats.nextReviewCount = globalWordCounter + adjustedInterval;
+            
+            saveWordStats();
             currentWordIndex++;
             showNextWord();
         }
-        function markCorrect() {
+        
+        function markSorta() {
+            const word = vocabulary[currentWordIndex];
+            const wordKey = `${word.english}:${word.indonesian}`;
+            const stats = wordStats[wordKey];
+            
+            // Update stats
+            stats.sortaCount++;
+            
+            // Set next review based on word count and importance
+            const importanceFactor = 1.5 - (stats.importance * 0.1); // Ranges from 1.0 to 0.5
+            const adjustedInterval = Math.round(SORTA_INTERVAL * importanceFactor);
+            
+            stats.nextReviewCount = globalWordCounter + adjustedInterval;
+            
+            saveWordStats();
             currentWordIndex++;
             showNextWord();
         }
 
         function markIncorrect() {
-            incorrectWords.push(vocabulary[currentWordIndex]);
+            const word = vocabulary[currentWordIndex];
+            const wordKey = `${word.english}:${word.indonesian}`;
+            const stats = wordStats[wordKey];
+            
+            // Update stats
+            stats.incorrectCount++;
+            
+            // Set next review based on word count and importance
+            const importanceFactor = 1.5 - (stats.importance * 0.1); // Ranges from 1.0 to 0.5
+            const adjustedInterval = Math.round(INCORRECT_INTERVAL * importanceFactor);
+            
+            stats.nextReviewCount = globalWordCounter + adjustedInterval;
+            
+            saveWordStats();
             currentWordIndex++;
             showNextWord();
+        }
+        
+        // Display stats for current word
+        function updateStatsDisplay(wordKey) {
+            const stats = wordStats[wordKey];
+            const statsElement = document.getElementById('stats');
+            
+            if (stats) {
+                const totalReviews = stats.correctCount + stats.sortaCount + stats.incorrectCount;
+                let accuracy = 0;
+                if (totalReviews > 0) {
+                    accuracy = Math.round((stats.correctCount / totalReviews) * 100);
+                }
+                
+                let nextReviewIn = stats.nextReviewCount ? stats.nextReviewCount - globalWordCounter : 0;
+                if (nextReviewIn < 0) nextReviewIn = 0;
+                
+                statsElement.innerHTML = `
+                    Times seen: ${totalReviews} | 
+                    Correct: ${stats.correctCount} | 
+                    Sorta: ${stats.sortaCount} | 
+                    Incorrect: ${stats.incorrectCount} | 
+                    Accuracy: ${accuracy}%
+                `;
+            } else {
+                statsElement.innerHTML = 'New word';
+            }
         }
 
         // Shuffle helper function
