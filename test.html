@@ -7,24 +7,31 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
 
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-            background: url('images/background.jpeg') no-repeat center center fixed;
-            background-size: cover;
-            position: relative;
-        }
-        .background-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            opacity: 0.8;
-            z-index: -1;
-        }
+       body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 50px;
+    background: url('images/background.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+}
+
+/* White overlay with transparency */
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5); /* 50% white transparency */
+    z-index: 0; /* Make sure it's above the background but behind content */
+}
+
+/* Ensure content is above the overlay */
+#content {
+    position: relative;
+    z-index: 1;
+}
         
         button {
             margin: 10px;
