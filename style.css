@@ -47,7 +47,7 @@ body, html {
     justify-content: space-around;
     align-items: center;
     height: 100vh;
-    padding-top: 80px; /* Prevents overlap with title */
+    padding-top: 50px; /* Prevents overlap with title */
 }
 
 /* Left side - Study Mode */
@@ -85,7 +85,7 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    padding-top: 15px; /* Reduced top padding to move text up */
 }
 
 .button:hover {
@@ -95,15 +95,16 @@ body, html {
 /* Text above the image */
 .button-label {
     text-align: center;
-    padding: 10px;
+    padding: 2px;
     font-size: 18px;
     line-height: 1.2;
+    margin-bottom: 15px; /* Added more space between text and image */
 }
 
 /* Image inside button */
 .button img {
-    width: 170px;
-    height: 170px;
+    width: 150px;
+    height: 150px;
     object-fit: cover;
     border-radius: 8px;
 }
@@ -125,8 +126,8 @@ body, html {
     .container {
         flex-direction: column;
         justify-content: flex-start;
-        padding-top: 70px;
-        padding-bottom: 40px;
+        padding-top: 60px;
+        padding-bottom: 60px;
         height: auto;
     }
 
@@ -146,16 +147,18 @@ body, html {
         height: 45vw; 
         max-width: 200px;
         max-height: 200px;
+        padding-top: 10px; /* Reduced for smaller buttons */
     }
 
     .button-label {
-        font-size: 16px;
-        padding: 8px;
+        font-size: 14px;
+        padding: 2px;
+        margin-bottom: 8px; /* Reduced for smaller buttons */
     }
 
     .button img {
-        width: 60%;
-        height: 60%;
+        width: 100px;
+        height: 100px;
     }
 }
 
@@ -177,6 +180,6 @@ body, html {
 
     .button-label {
         font-size: 15px;
+        margin-bottom: 12px;
     }
 }
-
