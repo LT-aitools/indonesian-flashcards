@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indonesian Flashcards - Level 3</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/background.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        #content {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #correct {
+            background-color: lightgreen;
+        }
+        #sorta {
+            background-color: lightsalmon;
+        }
+        #incorrect {
+            background-color: lightcoral;
+        }
+        #reveal {
+            background-color: yellow;
+        }
+        #correct, #sorta, #incorrect {
+            display: none;
+        }
+        #answer {
+            color: green;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        #stats {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div id="content">
+        <h1 style="color: darkgrey; margin-bottom: 20px;">Indonesian Flashcard Game - Level 3</h1>
+        
+        <div style="margin-bottom: 20px;">
+            <label for="categoryFilter" style="margin-right: 10px;">Category:</label>
+            <select id="categoryFilter" style="padding: 5px; font-size: 16px;">
+                <option value="all">Show All</option>
+            </select>
+        </div>
+        
+        <h2 id="question">Loading...</h2>
+        <h3 id="answer"></h3>
+        <button id="hint1">Hint 1</button>
+        <button id="hint2">Hint 2</button>
+        <button id="reveal">Reveal 👀</button>
+        <br>
+        <button id="correct" style="display: none;">Correct ✅</button>
+        <button id="sorta" style="display: none;">Sorta 🫤</button>
+        <button id="incorrect" style="display: none;">Incorrect ❌</button>
+        <div id="stats"></div>
+    </div>
+    
+    <a href="https://lt-aitools.github.io/indonesian-flashcards/"
+        style="display: inline-block; margin-top: 20px; text-decoration: none; 
+                background-color: lightblue; padding: 10px 20px; border-radius: 5px;">
+        Back to Main
+    </a>
+
+    <script>
+        // Data structures
+        const vocabulary = [];
+        let filteredVocabulary = [];
+        let currentWordIndex = 0;
+        let categories = [];
+        let currentCategory = "all";
+        
+        // Word stats
+        let wordStats = {};
+        
+        // Spaced repetition intervals (in word count)
+        const CORRECT_INTERVAL = 50;
+        const SORTA_INTERVAL = 20;
+        const INCORRECT_INTERVAL = 10;
+        
+        // Global counter
+        let globalWordCounter = 0;
+        
+        // Initial setup
+        window.onload = function() {
+            loadCSV();
+        };
+
+        // Load CSV Data
+        async function loadCSV() {
+            try {
+                console.log('Attempting to load CSV...');
+                const response = await fetch("https://raw.githubusercontent.com/LT-aitools/indonesian-flashcards/refs/heads/main/Indonesian_vocabulary.csv");
+                const data = await response.text();
+                parseCSV(data);
+            } catch (error) {
+                console.error("Error loading CSV:", error);
+                document.getElementById('question').innerText = "Error loading vocabulary data.";
+            }
+        }
+
+        // Parse CSV and store words
+        function parseCSV(data) {
+            try {
+                const rows = data.split('\n').map(row => row.split(','));
+                rows.shift(); // Remove headers
+                
+                // Extract unique categories
+                const categorySet = new Set();
+                
+                rows.forEach(row => {
+                    // Add the importance weight from column G (index 6)
+                    const importanceWeight = row[6] ? parseInt(row[6]) : 3; // Default to 3 if missing
+                    const category = row[0] ? row[0].trim() : "Uncategorized";
+                    
+                    // Add to category set
+                    categorySet.add(category);
+                    
+                    // Only add words that have example sentences
+                    if (row[4] && row[4].trim() && row[5] && row[5].trim()) {
+                        vocabulary.push({
+                            type: category, // Store the category/type
+                            english: row[1],
+                            indonesian: row[2],
+                            exampleIndo: row[4], // Column E (index 4) - Example in Indonesian
+                            exampleEnglish: row[5], // Column F (index 5) - Example in English
+                            importance: importanceWeight // Add importance weight
+                        });
+                    }
+                });
+                
+                // Convert Set to Array and sort alphabetically
+                categories = Array.from(categorySet).sort();
+                
+                // Populate dropdown with categories
+                const dropdown = document.getElementById('categoryFilter');
+                categories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = category;
+                    dropdown.appendChild(option);
+                });
+                
+                // Add event listener to dropdown
+                dropdown.addEventListener('change', function() {
+                    currentCategory = this.value;
+                    // Save selected category to localStorage
+                    localStorage.setItem('selectedCategory', currentCategory);
+                    filterByCategory();
+                    // Reset and restart with filtered vocabulary
+                    currentWordIndex = 0;
+                    startGame();
+                });
+                
+                // Check if we have a saved category preference
+                const savedCategory = localStorage.getItem('selectedCategory');
+                if (savedCategory && categories.includes(savedCategory)) {
+                    dropdown.value = savedCategory;
+                    currentCategory = savedCategory;
+                }
+                
+                // Load saved word stats
+                loadWordStats();
+                
+                // Initialize stats for new words
+                vocabulary.forEach(word => {
+                    const wordKey = `${word.english}:${word.indonesian}:3`; // Add level identifier
+                    if (!wordStats[wordKey]) {
+                        wordStats[wordKey] = {
+                            correctCount: 0,
+                            sortaCount: 0,
+                            incorrectCount: 0,
+                            lastSeenCount: 0,
+                            nextReviewCount: 0, // 0 means ready to be shown
+                            importance: word.importance || 3, // Store importance in stats
+                            level: 3 // Level 3 - sentence translation
+                        };
+                    } else {
+                        // Update importance in case it changed in the CSV
+                        wordStats[wordKey].importance = word.importance || wordStats[wordKey].importance;
+                    }
+                });
+                
+                // Initial filtering by category and randomization
+                filterByCategory();
+                
+                // Add randomness to the initial global counter so sessions don't always start from the same point
+                globalWordCounter = Math.floor(Math.random() * 10);
+                
+                startGame();
+            } catch (error) {
+                console.error("Error parsing CSV:", error);
+                document.getElementById('question').innerText = "Error processing vocabulary data.";
+            }
+        }
+        
+        // Filter vocabulary by selected category
+        function filterByCategory() {
+            try {
+                if (currentCategory === "all") {
+                    filteredVocabulary = [...vocabulary]; // Use all vocabulary
+                } else {
+                    filteredVocabulary = vocabulary.filter(word => word.type === currentCategory);
+                }
+                
+                // Filter out words without example sentences
+                filteredVocabulary = filteredVocabulary.filter(word => 
+                    word.exampleIndo && word.exampleIndo.trim() && 
+                    word.exampleEnglish && word.exampleEnglish.trim()
+                );
+                
+                // Randomize the initial order of the filtered vocabulary
+                shuffleArray(filteredVocabulary);
+                
+                // Update debug message if no words in category
+                if (filteredVocabulary.length === 0) {
+                    document.getElementById('question').innerText = "No words with example sentences found in this category";
+                    // Hide all buttons
+                    document.getElementById('hint1').style.display = 'none';
+                    document.getElementById('hint2').style.display = 'none';
+                    document.getElementById('reveal').style.display = 'none';
+                }
+            } catch (error) {
+                console.error("Error filtering by category:", error);
+            }
+        }
+
+        // Load word stats from localStorage
+        function loadWordStats() {
+            try {
+                const savedStats = localStorage.getItem('indonesianFlashcardStats');
+                if (savedStats) {
+                    wordStats = JSON.parse(savedStats);
+                }
+            } catch (error) {
+                console.error("Error loading word stats:", error);
+                wordStats = {};
+            }
+        }
+        
+        // Save word stats to localStorage
+        function saveWordStats() {
+            try {
+                localStorage.setItem('indonesianFlashcardStats', JSON.stringify(wordStats));
+            } catch (error) {
+                console.error("Error saving word stats:", error);
+            }
+        }
+        
+        // Shuffle and start game
+        function startGame() {
+            try {
+                // First, assign scores to each word based on importance and next review count
+                filteredVocabulary.forEach(word => {
+                    const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
+                    const stats = wordStats[wordKey];
+                    const importanceScore = (6 - stats.importance) * 10; // Invert so 5 is lowest score (highest priority)
+                    const reviewScore = stats.nextReviewCount - globalWordCounter;
+                    
+                    // Calculate priority score - lower is higher priority
+                    // Words past due (negative reviewScore) get highest priority
+                    let priorityScore = reviewScore;
+                    
+                    // If the word is due for review (reviewScore <= 0), prioritize by importance
+                    if (reviewScore <= 0) {
+                        priorityScore = importanceScore;
+                    } else {
+                        // For words not yet due, adjust their priority based on importance
+                        // More important words (higher weight) get lower interval multipliers
+                        const importanceFactor = 1 - ((stats.importance - 1) * 0.15); // 1.0 to 0.4 factor
+                        priorityScore = reviewScore * importanceFactor;
+                    }
+                    
+                    // Store the priority score for sorting
+                    stats.priorityScore = priorityScore;
+                });
+                
+                // Sort by priority score (lower is higher priority)
+                filteredVocabulary.sort((a, b) => {
+                    const keyA = `${a.english}:${a.indonesian}:3`;
+                    const keyB = `${b.english}:${b.indonesian}:3`;
+                    const scoreA = wordStats[keyA].priorityScore;
+                    const scoreB = wordStats[keyB].priorityScore;
+                    return scoreA - scoreB;
+                });
+                
+                showNextWord();
+            } catch (error) {
+                console.error("Error in startGame:", error);
+            }
+        }
+
+        // Display next word
+        function showNextWord() {
+            try {
+                if (filteredVocabulary.length === 0) {
+                    document.getElementById('question').innerText = "No words with example sentences found in this category";
+                    // Hide all buttons
+                    document.getElementById('hint1').style.display = 'none';
+                    document.getElementById('hint2').style.display = 'none';
+                    document.getElementById('reveal').style.display = 'none';
+                    return;
+                }
+                
+                if (currentWordIndex >= filteredVocabulary.length) {
+                    // Reset if we've gone through all words
+                    currentWordIndex = 0;
+                    startGame();
+                    return;
+                }
+                
+                const word = filteredVocabulary[currentWordIndex];
+                if (!word) return;
+                
+                // Skip if no example sentence
+                if (!word.exampleIndo || !word.exampleEnglish) {
+                    currentWordIndex++;
+                    showNextWord();
+                    return;
+                }
+                
+                // Get current word stats
+                const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
+                const stats = wordStats[wordKey];
+                
+                // Check if it's time to review this word
+                if (stats.nextReviewCount && stats.nextReviewCount > globalWordCounter) {
+                    // Skip this word if it's not time to review yet
+                    currentWordIndex++;
+                    showNextWord();
+                    return;
+                }
+                
+                // Update last seen counter
+                stats.lastSeenCount = globalWordCounter;
+                // Increment global counter for each word shown
+                globalWordCounter++;
+                saveWordStats();
+                
+                // Display Indonesian example sentence
+                speakWord(word.exampleIndo, 'id-ID');
+                
+                document.getElementById('question').innerText = word.exampleIndo;
+                document.getElementById('answer').innerText = "";
+                document.getElementById('hint1').style.display = 'inline';
+                document.getElementById('hint2').style.display = 'inline';
+                document.getElementById('hint1').innerText = "Hint 1";
+                document.getElementById('hint2').innerText = "Hint 2";
+                document.getElementById('reveal').style.display = 'inline';
+                document.getElementById('correct').style.display = 'none';
+                document.getElementById('sorta').style.display = 'none';
+                document.getElementById('incorrect').style.display = 'none';
+                
+                // Hide stats initially
+                document.getElementById('stats').innerHTML = '';
+                
+                document.getElementById('hint1').onclick = () => showHint(1);
+                document.getElementById('hint2').onclick = () => showHint(2);
+                document.getElementById('reveal').onclick = revealAnswer;
+                document.getElementById('correct').onclick = markCorrect;
+                document.getElementById('sorta').onclick = markSorta;
+                document.getElementById('incorrect').onclick = markIncorrect;
+            } catch (error) {
+                console.error("Error in showNextWord:", error);
+            }
+        }
+
+        // Hints and Reveal for Level 3
+        function showHint(level) {
+            try {
+                const word = filteredVocabulary[currentWordIndex];
+                if (!word) return;
+                
+                if (level === 1) {
+                    // First hint shows the Indonesian word
+                    speakWord(word.indonesian, 'id-ID');
+                    document.getElementById('hint1').innerText = `Indonesian word: ${word.indonesian}`;
+                } else if (level === 2) {
+                    // Second hint shows the English word
+                    speakWord(word.english, 'en-US');
+                    document.getElementById('hint2').innerText = `English word: ${word.english}`;
+                }
+            } catch (error) {
+                console.error("Error showing hint:", error);
+            }
+        }
+
+        function revealAnswer() {
+            try {
+                const word = filteredVocabulary[currentWordIndex];
+                if (!word) return;
+                
+                const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
+                const stats = wordStats[wordKey];
+                
+                // Show the English translation of the sentence
+                speakWord(word.exampleEnglish, 'en-US');
+                document.getElementById('answer').innerText = word.exampleEnglish;
+                document.getElementById('hint1').style.display = 'none';
+                document.getElementById('hint2').style.display = 'none';
+                document.getElementById('reveal').style.display = 'none';
+                document.getElementById('correct').style.display = 'inline';
+                document.getElementById('sorta').style.display = 'inline';
+                document.getElementById('incorrect').style.display = 'inline';
+                
+                // Now show stats after revealing the answer
+                updateStatsDisplay(wordKey);
+            } catch (error) {
+                console.error("Error in revealAnswer:", error);
+            }
+        }
+
+        // Track progress with spaced repetition
+        function markCorrect() {
+            try {
+                const word = filteredVocabulary[currentWordIndex];
+                const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
+                const stats = wordStats[wordKey];
+                
+                // Update stats
+                stats.correctCount++;
+                
+                // Set next review based on word count and importance
+                // More important words (higher weight) get shorter intervals
+                const importanceFactor = 1.5 - (stats.importance * 0.1); // Ranges from 1.0 to 0.5
+                const adjustedInterval = Math.round(CORRECT_INTERVAL * importanceFactor);
+                
+                stats.nextReviewCount = globalWordCounter + adjustedInterval;
+                
+                saveWordStats();
+                
+                // Shuffle the filtered vocabulary array slightly to make next word less predictable
+                // We'll shuffle the next 5 words (or fewer if not enough words remain)
+                const startIdx = currentWordIndex + 1;
+                const endIdx = Math.min(startIdx + 5, filteredVocabulary.length);
+                
+                if (startIdx < filteredVocabulary.length) {
+                    // Extract the slice of words to shuffle
+                    const sliceToShuffle = filteredVocabulary.slice(startIdx, endIdx);
+                    // Shuffle this slice
+                    shuffleArray(sliceToShuffle);
+                    // Put the shuffled slice back into the filtered vocabulary
+                    for (let i = 0; i < sliceToShuffle.length; i++) {
+                        filteredVocabulary[startIdx + i] = sliceToShuffle[i];
+                    }
+                }
+                
+                currentWordIndex++;
+                showNextWord();
+            } catch (error) {
+                console.error("Error marking correct:", error);
+                currentWordIndex++;
+                showNextWord();
+            }
+        }
+        
+        function markSorta() {
+            try {
+                const word = filteredVocabulary[currentWordIndex];
+                const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
+                const stats = wordStats[wordKey];
+                
+                // Update stats
+                stats.sortaCount++;
+                
+                // Set next review based on word count and importance
+                const importanceFactor = 1.5 - (stats.importance * 0.1); // Ranges from 1.0 to 0.5
+                const adjustedInterval = Math.round(SORTA_INTERVAL * importanceFactor);
+                
+                stats.nextReviewCount = globalWordCounter + adjustedInterval;
+                
+                saveWordStats();
+                
+                // Shuffle the filtered vocabulary array slightly to make next word less predictable
+                const startIdx = currentWordIndex + 1;
+                const endIdx = Math.min(startIdx + 5, filteredVocabulary.length);
+                
+                if (startIdx < filteredVocabulary.length) {
+                    const sliceToShuffle = filteredVocabulary.slice(startIdx, endIdx);
+                    shuffleArray(sliceToShuffle);
+                    for (let i = 0; i < sliceToShuffle.length; i++) {
+                        filteredVocabulary[startIdx + i] = sliceToShuffle[i];
+                    }
+                }
+                
+                currentWordIndex++;
+                showNextWord();
+            } catch (error) {
+                console.error("Error marking sorta:", error);
+                currentWordIndex++;
+                showNextWord();
+            }
+        }
+
+        function markIncorrect() {
+            try {
+                const word = filteredVocabulary[currentWordIndex];
+                const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
+                const stats = wordStats[wordKey];
+                
+                // Update stats
+                stats.incorrectCount++;
+                
+                // Set next review based on word count and importance
+                const importanceFactor = 1.5 - (stats.importance * 0.1); // Ranges from 1.0 to 0.5
+                const adjustedInterval = Math.round(INCORRECT_INTERVAL * importanceFactor);
+                
+                stats.nextReviewCount = globalWordCounter + adjustedInterval;
+                
+                saveWordStats();
+                
+                // Shuffle the filtered vocabulary array slightly to make next word less predictable
+                const startIdx = currentWordIndex + 1;
+                const endIdx = Math.min(startIdx + 5, filteredVocabulary.length);
+                
+                if (startIdx < filteredVocabulary.length) {
+                    const sliceToShuffle = filteredVocabulary.slice(startIdx, endIdx);
+                    shuffleArray(sliceToShuffle);
+                    for (let i = 0; i < sliceToShuffle.length; i++) {
+                        filteredVocabulary[startIdx + i] = sliceToShuffle[i];
+                    }
+                }
+                
+                currentWordIndex++;
+                showNextWord();
+            } catch (error) {
+                console.error("Error marking incorrect:", error);
+                currentWordIndex++;
+                showNextWord();
+            }
+        }
+        
+        // Display stats for current word
+        function updateStatsDisplay(wordKey) {
+            try {
+                const stats = wordStats[wordKey];
+                const statsElement = document.getElementById('stats');
+                
+                if (stats) {
+                    const totalReviews = stats.correctCount + stats.sortaCount + stats.incorrectCount;
+                    let accuracy = 0;
+                    if (totalReviews > 0) {
+                        accuracy = Math.round((stats.correctCount / totalReviews) * 100);
+                    }
+                    
+                    statsElement.innerHTML = `
+                        Times seen: ${totalReviews} | 
+                        Correct: ${stats.correctCount} | 
+                        Sorta: ${stats.sortaCount} | 
+                        Incorrect: ${stats.incorrectCount} | 
+                        Accuracy: ${accuracy}%
+                    `;
+                } else {
+                    statsElement.innerHTML = 'New word';
+                }
+            } catch (error) {
+                console.error("Error updating stats display:", error);
+            }
+        }
+        
+        // Text-to-speech function
+        function speakWord(word, lang) {
+            try {
+                if (word) {
+                    const utterance = new SpeechSynthesisUtterance(word);
+                    utterance.lang = lang;
+                    speechSynthesis.speak(utterance);
+                }
+            } catch (error) {
+                console.error("Error with text-to-speech:", error);
+            }
+        }
+
+        // Shuffle helper function
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+    </script>
+</body>
+</html>
