@@ -121,6 +121,34 @@
         }
 
         window.onload = loadCSV;
+
+        async function speakWord(word, lang) {
+            try {
+                const tokenResponse = await fetch(`https://${azureRegion}.api.cognitive.microsoft.com/sts/v1.0/issueToken`, {
+                    method: "POST",
+                    headers: { "Ocp-Apim-Subscription-Key": azureApiKey }
+                });
+                if (!tokenResponse.ok) throw new Error("Failed to obtain an access token");
+                const accessToken = await tokenResponse.text();
+
+                const ttsResponse = await fetch(`https://${azureRegion}.tts.speech.microsoft.com/cognitiveservices/v1`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/ssml+xml",
+                        "Authorization": `Bearer ${accessToken}`,
+                        "X-Microsoft-OutputFormat": "audio-16khz-32kbitrate-mono-mp3"
+                    },
+                    body: `<speak version='1.0' xml:lang='${lang}'><voice name='en-US-JennyNeural'>${word}</voice></speak>`
+                });
+                if (!ttsResponse.ok) throw new Error("TTS request failed");
+                const audioBlob = await ttsResponse.blob();
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audio = new Audio(audioUrl);
+                audio.play();
+            } catch (error) {
+                console.error("Azure TTS Error:", error);
+            }
+        }
     </script>
 </body>
 </html>
