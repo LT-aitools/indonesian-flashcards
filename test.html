@@ -88,7 +88,9 @@
 
         // Display next word
         function showNextWord() {
-            const word = vocabulary[currentWordIndex];
+            
+            if (!word) return;
+            speakWord(word.english, 'en-US');
             speakWord(word.english, 'en-US');
             
             if (currentWordIndex >= vocabulary.length) {
@@ -173,9 +175,7 @@
                 utterance.lang = lang;
                 speechSynthesis.speak(utterance);
             }
-        }
-        }
-        function speakWord(word, lang) {
+        }(word, lang) {
             if (word) {
                 const utterance = new SpeechSynthesisUtterance(word);
                 utterance.lang = lang;
