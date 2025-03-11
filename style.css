@@ -107,3 +107,76 @@ body, html {
     object-fit: cover;
     border-radius: 8px;
 }
+
+/* Responsive Design Adjustments */
+@media screen and (max-width: 768px) {
+
+    body, html {
+        overflow-y: auto; /* Allow vertical scrolling */
+        overflow-x: hidden;
+    }
+
+    .page-title {
+        font-size: 28px;
+        top: 15px;
+        padding: 0 10px;
+    }
+
+    .container {
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 70px;
+        padding-bottom: 40px;
+        height: auto;
+    }
+
+    .left, .right {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .button-grid {
+        grid-template-columns: 1fr 1fr;
+        justify-items: center;
+        gap: 15px;
+    }
+
+    .button {
+        width: 45vw;
+        height: 45vw; 
+        max-width: 200px;
+        max-height: 200px;
+    }
+
+    .button-label {
+        font-size: 16px;
+        padding: 8px;
+    }
+
+    .button img {
+        width: 60%;
+        height: 60%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .page-title {
+        font-size: 24px;
+    }
+
+    .button-grid {
+        grid-template-columns: 1fr; /* Single column on smaller screens */
+    }
+
+    .button {
+        width: 70vw;
+        height: 70vw;
+        max-width: 250px;
+        max-height: 250px;
+    }
+
+    .button-label {
+        font-size: 15px;
+    }
+}
+
