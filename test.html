@@ -101,13 +101,23 @@
             document.getElementById('hint1').onclick = () => showHint(1);
             document.getElementById('hint2').onclick = () => showHint(2);
             document.getElementById('reveal').onclick = revealAnswer;
-            document.getElementById('example').onclick = showExample;
+            document.getElementById('example').onclick = () => showExample();
             document.getElementById('correct').onclick = markCorrect;
             document.getElementById('sorta').onclick = markSorta;
             document.getElementById('incorrect').onclick = markIncorrect;
         }
 
         function revealAnswer() {
+            const word = vocabulary[currentWordIndex];
+            document.getElementById('answer').innerText = word.indonesian;
+            document.getElementById('hint1').style.display = 'none';
+            document.getElementById('hint2').style.display = 'none';
+            document.getElementById('reveal').style.display = 'none';
+            document.getElementById('example').style.display = 'inline';
+            document.getElementById('correct').style.display = 'inline';
+            document.getElementById('sorta').style.display = 'inline';
+            document.getElementById('incorrect').style.display = 'inline';
+            speakWord(word.indonesian, 'id-ID');
             const word = vocabulary[currentWordIndex];
             speakWord(word.indonesian, 'id-ID');
             document.getElementById('answer').innerText = word.indonesian;
@@ -121,6 +131,30 @@
         }
 
         window.onload = loadCSV;
+
+        function showExample() {
+            const word = vocabulary[currentWordIndex];
+            document.getElementById('exampleSentence').innerText = word.exampleSentence;
+            speakWord(word.exampleSentence, 'id-ID');
+            const word = vocabulary[currentWordIndex];
+            document.getElementById('exampleSentence').innerText = word.exampleSentence;
+        }
+
+        function markCorrect() {
+            currentWordIndex++;
+            showNextWord();
+        }
+
+        function markSorta() {
+            currentWordIndex++;
+            showNextWord();
+        }
+
+        function markIncorrect() {
+            incorrectWords.push(vocabulary[currentWordIndex]);
+            currentWordIndex++;
+            showNextWord();
+        }
 
         async function speakWord(word, lang) {
             try {
