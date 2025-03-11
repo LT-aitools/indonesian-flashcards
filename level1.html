@@ -267,8 +267,8 @@ body {
             document.getElementById('sorta').style.display = 'none';
             document.getElementById('incorrect').style.display = 'none';
             
-            // Display stats
-            updateStatsDisplay(wordKey);
+            // Hide stats initially
+            document.getElementById('stats').innerHTML = '';
             
             document.getElementById('hint1').onclick = () => showHint(1);
             document.getElementById('hint2').onclick = () => showHint(2);
@@ -291,6 +291,8 @@ body {
 
         function revealAnswer() {
             const word = vocabulary[currentWordIndex];
+            const wordKey = `${word.english}:${word.indonesian}`;
+            
             speakWord(word.indonesian, 'id-ID');
             document.getElementById('answer').innerText = word.indonesian;
             document.getElementById('hint1').style.display = 'none';
@@ -300,6 +302,9 @@ body {
             document.getElementById('correct').style.display = 'inline';
             document.getElementById('sorta').style.display = 'inline';
             document.getElementById('incorrect').style.display = 'inline';
+            
+            // Now show stats after revealing the answer
+            updateStatsDisplay(wordKey);
         }
 
         function showExample() {
