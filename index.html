@@ -16,6 +16,9 @@
             font-size: 16px;
             cursor: pointer;
         }
+        #correct, #incorrect {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -76,6 +79,9 @@
             document.getElementById('reveal').onclick = revealAnswer;
             document.getElementById('correct').onclick = markCorrect;
             document.getElementById('incorrect').onclick = markIncorrect;
+            
+            document.getElementById('correct').style.display = 'none';
+            document.getElementById('incorrect').style.display = 'none';
         }
 
         // Hints and Reveal
@@ -90,6 +96,8 @@
 
         function revealAnswer() {
             document.getElementById('reveal').innerText = `Answer: ${vocabulary[currentWordIndex].indonesian}`;
+            document.getElementById('correct').style.display = 'inline';
+            document.getElementById('incorrect').style.display = 'inline';
         }
 
         // Track progress
