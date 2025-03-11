@@ -16,12 +16,17 @@
             font-size: 16px;
             cursor: pointer;
         }
-        #correct, #incorrect {
+        #correct, #incorrect, #example {
             display: none;
         }
         #answer {
             color: green;
             font-size: 20px;
+            margin-top: 10px;
+        }
+        #exampleSentence {
+            color: blue;
+            font-size: 18px;
             margin-top: 10px;
         }
     </style>
@@ -30,9 +35,11 @@
     <h1>Indonesian Flashcard Game</h1>
     <h2 id="question">Loading...</h2>
     <h3 id="answer"></h3>
+    <h3 id="exampleSentence"></h3>
     <button id="hint1">Hint 1</button>
     <button id="hint2">Hint 2</button>
     <button id="reveal">Reveal</button>
+    <button id="example">Example</button>
     <br>
     <button id="correct">Correct</button>
     <button id="incorrect">Incorrect</button>
@@ -56,7 +63,8 @@
             rows.forEach(row => {
                 vocabulary.push({
                     english: row[1],
-                    indonesian: row[2]
+                    indonesian: row[2],
+                    exampleSentence: row[3] // Column 4 (Example Sentence Combined)
                 });
             });
             startGame();
@@ -78,17 +86,20 @@
             const word = vocabulary[currentWordIndex];
             document.getElementById('question').innerText = word.english;
             document.getElementById('answer').innerText = "";
+            document.getElementById('exampleSentence').innerText = "";
             document.getElementById('hint1').innerText = "Hint 1";
             document.getElementById('hint2').innerText = "Hint 2";
             document.getElementById('reveal').innerText = "Reveal";
             document.getElementById('hint1').onclick = () => showHint(1);
             document.getElementById('hint2').onclick = () => showHint(2);
             document.getElementById('reveal').onclick = revealAnswer;
+            document.getElementById('example').onclick = showExample;
             document.getElementById('correct').onclick = markCorrect;
             document.getElementById('incorrect').onclick = markIncorrect;
             
             document.getElementById('correct').style.display = 'none';
             document.getElementById('incorrect').style.display = 'none';
+            document.getElementById('example').style.display = 'none';
         }
 
         // Hints and Reveal
@@ -103,6 +114,13 @@
 
         function revealAnswer() {
             document.getElementById('answer').innerText = vocabulary[currentWordIndex].indonesian;
+            document.getElementById('hint1').style.display = 'none';
+            document.getElementById('hint2').style.display = 'none';
+            document.getElementById('example').style.display = 'inline';
+        }
+
+        function showExample() {
+            document.getElementById('exampleSentence').innerText = vocabulary[currentWordIndex].exampleSentence;
             document.getElementById('correct').style.display = 'inline';
             document.getElementById('incorrect').style.display = 'inline';
         }
