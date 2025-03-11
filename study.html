@@ -43,6 +43,31 @@
             }
         }
 
+        function getIndonesianVoice() {
+            const voices = speechSynthesis.getVoices();
+            return voices.find(voice => voice.lang === "id-ID") || voices.find(voice => voice.lang.startsWith("id")) || null;
+        }
+
+        function playAudio(word, sentence) {
+            speechSynthesis.onvoiceschanged = () => {
+                const indonesianVoice = getIndonesianVoice();
+                const utterance1 = new SpeechSynthesisUtterance(word);
+                const utterance2 = new SpeechSynthesisUtterance(sentence);
+                
+                utterance1.lang = "id-ID";
+                utterance2.lang = "id-ID";
+                
+                if (indonesianVoice) {
+                    utterance1.voice = indonesianVoice;
+                    utterance2.voice = indonesianVoice;
+                }
+                
+                speechSynthesis.speak(utterance1);
+                speechSynthesis.speak(utterance2);
+            };
+            speechSynthesis.getVoices(); // Trigger voice loading
+        }
+
         function displayWords() {
             const container = document.getElementById("word-container");
             container.innerHTML = "";
@@ -71,15 +96,6 @@
                 displayWords();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
-        }
-
-        function playAudio(word, sentence) {
-            const utterance1 = new SpeechSynthesisUtterance(word);
-            const utterance2 = new SpeechSynthesisUtterance(sentence);
-            utterance1.lang = "id-ID";
-            utterance2.lang = "id-ID";
-            speechSynthesis.speak(utterance1);
-            speechSynthesis.speak(utterance2);
         }
     </script>
     <style>
