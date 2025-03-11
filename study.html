@@ -57,6 +57,9 @@
                             <div class="grid-item word-id" style="font-size: 18px;"><strong>${word[2]?.trim() || ''}</strong></div>
                             <div class="grid-item example-id" style="font-size: 14px;">${word[4]?.trim() || ''}</div>
                         </div>
+                        <button class="play-button" onclick="playAudio('${word[2]?.trim()}', '${word[4]?.trim()}')">
+                            <img src="images/play-btn.png" alt="Play">
+                        </button>
                     </div>
                 `;
             });
@@ -66,7 +69,17 @@
             if (currentIndex + wordsPerPage < words.length) {
                 currentIndex += wordsPerPage;
                 displayWords();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
+        }
+
+        function playAudio(word, sentence) {
+            const utterance1 = new SpeechSynthesisUtterance(word);
+            const utterance2 = new SpeechSynthesisUtterance(sentence);
+            utterance1.lang = "id-ID";
+            utterance2.lang = "id-ID";
+            speechSynthesis.speak(utterance1);
+            speechSynthesis.speak(utterance2);
         }
     </script>
     <style>
@@ -113,6 +126,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
+            position: relative;
         }
         .grid-container {
             display: grid;
@@ -133,6 +147,18 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .play-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .play-button img {
+            width: 24px;
+            height: 24px;
+        }
     </style>
 </head>
 <body onload="loadWords()">
@@ -140,7 +166,10 @@
         <h1 id="category-title"></h1>
         <div id="word-container" class="word-container"></div>
         <button class="nav-button" onclick="nextWords()">Next</button>
-        <a href="index.html" class="nav-button">Back to Categories</a>
+        <div class="nav-buttons">
+            <a href="https://lt-aitools.github.io/indonesian-flashcards/studysplash.html" class="nav-button">Back to Categories</a>
+            <a href="https://lt-aitools.github.io/indonesian-flashcards/index.html" class="nav-button">Back to Main</a>
+        </div>
     </div>
 </body>
 </html>
