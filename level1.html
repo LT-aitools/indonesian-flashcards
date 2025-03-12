@@ -285,12 +285,21 @@
         // Shuffle and start game
         function startGame() {
             try {
+                // If the filtered vocabulary is empty, no need to proceed
+                if (filteredVocabulary.length === 0) {
+                    return;
+                }
+                
                 // First, assign scores to each word based on importance and next review count
                 filteredVocabulary.forEach(word => {
+                    if (!word) return; // Skip if word is undefined
+                    
                     const wordKey = `${word.english}:${word.indonesian}`;
                     const stats = wordStats[wordKey];
-                    const importanceScore = (6 - stats.importance) * 10; // Invert so 5 is lowest score (highest priority)
-                    const reviewScore = stats.nextReviewCount - globalWordCounter;
+                    if (!stats) return; // Skip if stats is undefined
+                    
+                    const importanceScore = (6 - (stats.importance || 3)) * 10; // Invert so 5 is lowest score (highest priority)
+                    const reviewScore = (stats.nextReviewCount || 0) - globalWordCounter;
                     
                     // Calculate priority score - lower is higher priority
                     // Words past due (negative reviewScore) get highest priority
@@ -302,7 +311,7 @@
                     } else {
                         // For words not yet due, adjust their priority based on importance
                         // More important words (higher weight) get lower interval multipliers
-                        const importanceFactor = 1 - ((stats.importance - 1) * 0.15); // 1.0 to 0.4 factor
+                        const importanceFactor = 1 - (((stats.importance || 3) - 1) * 0.15); // 1.0 to 0.4 factor
                         priorityScore = reviewScore * importanceFactor;
                     }
                     
@@ -312,13 +321,22 @@
                 
                 // Sort by priority score (lower is higher priority)
                 filteredVocabulary.sort((a, b) => {
+                    if (!a || !b) return 0;
+                    
                     const keyA = `${a.english}:${a.indonesian}`;
                     const keyB = `${b.english}:${b.indonesian}`;
-                    const scoreA = wordStats[keyA].priorityScore;
-                    const scoreB = wordStats[keyB].priorityScore;
+                    
+                    const statsA = wordStats[keyA];
+                    const statsB = wordStats[keyB];
+                    
+                    if (!statsA || !statsB) return 0;
+                    
+                    const scoreA = statsA.priorityScore || 0;
+                    const scoreB = statsB.priorityScore || 0;
                     return scoreA - scoreB;
                 });
                 
+                currentWordIndex = 0;
                 showNextWord();
             } catch (error) {
                 console.error("Error in startGame:", error);
@@ -337,30 +355,85 @@
                     return;
                 }
                 
-                if (currentWordIndex >= filteredVocabulary.length) {
-                    // Reset if we've gone through all words
-                    currentWordIndex = 0;
-                    startGame();
-                    return;
+                // Track how many words we've checked to prevent infinite loops
+                let wordsChecked = 0;
+                
+                while (wordsChecked < filteredVocabulary.length) {
+                    if (currentWordIndex >= filteredVocabulary.length) {
+                        // Reset if we've gone through all words
+                        currentWordIndex = 0;
+                    }
+                    
+                    const word = filteredVocabulary[currentWordIndex];
+                    if (!word) {
+                        currentWordIndex++;
+                        wordsChecked++;
+                        continue;
+                    }
+                    
+                    // Get current word stats
+                    const wordKey = `${word.english}:${word.indonesian}`;
+                    const stats = wordStats[wordKey];
+                    
+                    // Check if it's time to review this word
+                    if (stats.nextReviewCount && stats.nextReviewCount > globalWordCounter) {
+                        // Skip this word if it's not time to review yet
+                        currentWordIndex++;
+                        wordsChecked++;
+                        continue;
+                    }
+                    
+                    // If we got here, we found a word to show
+                    break;
+                }
+                
+                // If we've checked all words and none are due, enter fallback mode based on importance
+                if (wordsChecked >= filteredVocabulary.length) {
+                    console.log("All words reviewed - using fallback mode based on importance");
+                    
+                    // Sort words by importance (higher importance first)
+                    let importanceSortedWords = [...filteredVocabulary];
+                    importanceSortedWords.sort((a, b) => {
+                        const aKey = `${a.english}:${a.indonesian}`;
+                        const bKey = `${b.english}:${b.indonesian}`;
+                        const aImportance = wordStats[aKey].importance || 3;
+                        const bImportance = wordStats[bKey].importance || 3;
+                        return bImportance - aImportance; // Higher importance first
+                    });
+                    
+                    // Get the highest importance level
+                    const highestImportance = wordStats[`${importanceSortedWords[0].english}:${importanceSortedWords[0].indonesian}`].importance || 5;
+                    
+                    // Filter words at the highest importance level
+                    const highestImportanceWords = importanceSortedWords.filter(word => {
+                        const key = `${word.english}:${word.indonesian}`;
+                        const importance = wordStats[key].importance || 3;
+                        return importance >= highestImportance - 1; // Include words at highest importance and one level below
+                    });
+                    
+                    // Shuffle just these high importance words
+                    shuffleArray(highestImportanceWords);
+                    
+                    // Pick a random one from this subset
+                    const selectedWord = highestImportanceWords[0];
+                    
+                    // Find this word in the filtered vocabulary to get its index
+                    for (let i = 0; i < filteredVocabulary.length; i++) {
+                        if (filteredVocabulary[i].english === selectedWord.english && 
+                            filteredVocabulary[i].indonesian === selectedWord.indonesian) {
+                            currentWordIndex = i;
+                            break;
+                        }
+                    }
                 }
                 
                 const word = filteredVocabulary[currentWordIndex];
-                if (!word) return;
-                
-                // Get current word stats
-                const wordKey = `${word.english}:${word.indonesian}`;
-                const stats = wordStats[wordKey];
-                
-                // Check if it's time to review this word
-                if (stats.nextReviewCount && stats.nextReviewCount > globalWordCounter) {
-                    // Skip this word if it's not time to review yet
-                    currentWordIndex++;
-                    showNextWord();
-                    return;
-                }
                 
                 // Update last seen counter
+                const wordKey = `${word.english}:${word.indonesian}`;
+                const stats = wordStats[wordKey];
                 stats.lastSeenCount = globalWordCounter;
+                
                 // Increment global counter for each word shown
                 globalWordCounter++;
                 saveWordStats();
@@ -393,6 +466,9 @@
                 document.getElementById('incorrect').onclick = markIncorrect;
             } catch (error) {
                 console.error("Error in showNextWord:", error);
+                // Emergency recovery - reset vocabulary and start over
+                currentWordIndex = 0;
+                document.getElementById('question').innerText = "An error occurred. Try refreshing the page.";
             }
         }
 
@@ -599,117 +675,6 @@
                 }
             } catch (error) {
                 console.error("Error updating stats display:", error);
-            }
-        }
-        
-        // Update debug info
-        function updateDebugInfo(word, stats) {
-            try {
-                const debugDiv = document.getElementById('debugInfo');
-                
-                // Calculate next review counts for each response type
-                const correctNextReview = globalWordCounter + Math.round(CORRECT_INTERVAL * (1.5 - (stats.importance * 0.1)));
-                const sortaNextReview = globalWordCounter + Math.round(SORTA_INTERVAL * (1.5 - (stats.importance * 0.1)));
-                const incorrectNextReview = globalWordCounter + Math.round(INCORRECT_INTERVAL * (1.5 - (stats.importance * 0.1)));
-                
-                // Generate debug text
-                let debugText = `
-                    <strong>Spaced Repetition Debug Info</strong><br>
-                    Category: ${word.type}<br>
-                    Global Word Counter: ${globalWordCounter}<br>
-                    This word's importance: ${stats.importance}/5<br>
-                    Last seen at counter: ${stats.lastSeenCount || 'Never'}<br>
-                    Scheduled next review at counter: ${stats.nextReviewCount || 'First review'}<br>
-                    Words seen since last review: ${globalWordCounter - (stats.lastSeenCount || 0)}<br>
-                    <br>
-                    If marked "Correct": Next review after ${correctNextReview - globalWordCounter} more words<br>
-                    If marked "Sorta": Next review after ${sortaNextReview - globalWordCounter} more words<br>
-                    If marked "Incorrect": Next review after ${incorrectNextReview - globalWordCounter} more words<br>
-                    <br>
-                    <em>Upcoming words in queue (next 5):</em><br>
-                `;
-                
-                // Add upcoming words info
-                const upcomingWordsText = getUpcomingWordsDebug(5);
-                debugText += upcomingWordsText;
-                
-                // Update the debug div
-                debugDiv.innerHTML = debugText;
-                debugDiv.style.display = 'block';
-            } catch (error) {
-                console.error("Error updating debug info:", error);
-                document.getElementById('debugInfo').innerHTML = "Error generating debug info: " + error.message;
-                document.getElementById('debugInfo').style.display = 'block';
-            }
-        }
-
-        // Function to get upcoming words for debug display
-        function getUpcomingWordsDebug(count) {
-            try {
-                // Create a copy of vocabulary for sorting
-                const upcomingWords = [...filteredVocabulary];
-                
-                // Sort by priority score
-                upcomingWords.forEach(word => {
-                    const wordKey = `${word.english}:${word.indonesian}`;
-                    const stats = wordStats[wordKey];
-                    const importanceScore = (6 - (stats.importance || 3)) * 10;
-                    const reviewScore = (stats.nextReviewCount || 0) - globalWordCounter;
-                    
-                    let priorityScore = reviewScore;
-                    if (reviewScore <= 0) {
-                        priorityScore = importanceScore;
-                    } else {
-                        const importanceFactor = 1 - (((stats.importance || 3) - 1) * 0.15);
-                        priorityScore = reviewScore * importanceFactor;
-                    }
-                    stats.priorityScore = priorityScore;
-                });
-                
-                upcomingWords.sort((a, b) => {
-                    const keyA = `${a.english}:${a.indonesian}`;
-                    const keyB = `${b.english}:${b.indonesian}`;
-                    const scoreA = wordStats[keyA].priorityScore;
-                    const scoreB = wordStats[keyB].priorityScore;
-                    return scoreA - scoreB;
-                });
-                
-                // Create debug text for upcoming words
-                let debugText = '';
-                let i = 0;
-                let displayedWords = 0;
-                
-                // Get current word for comparison
-                const currentWord = filteredVocabulary[currentWordIndex];
-                
-                while (displayedWords < count && i < upcomingWords.length) {
-                    const word = upcomingWords[i];
-                    const wordKey = `${word.english}:${word.indonesian}`;
-                    const stats = wordStats[wordKey];
-                    
-                    // Skip current word
-                    if (currentWord && 
-                        word.english === currentWord.english &&
-                        word.indonesian === currentWord.indonesian) {
-                        i++;
-                        continue;
-                    }
-                    
-                    // Check if word is due for review
-                    if (stats.nextReviewCount && stats.nextReviewCount > globalWordCounter) {
-                        const dueIn = stats.nextReviewCount - globalWordCounter;
-                        debugText += `${displayedWords + 1}. "${word.english}" - due in ${dueIn} words (importance: ${stats.importance})<br>`;
-                    } else {
-                        debugText += `${displayedWords + 1}. "${word.english}" - due now (importance: ${stats.importance})<br>`;
-                    }
-                    
-                    displayedWords++;
-                    i++;
-                }
-                
-                return debugText;
-            } catch (error) {
-                return "Error generating upcoming words info: " + error.message;
             }
         }
 

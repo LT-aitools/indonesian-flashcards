@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indonesian Flashcards</title>
+    <title>Indonesian Flashcards - Level 2</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <style>
         body {
@@ -78,7 +78,7 @@
 <body>
     <div class="background"></div>
     <div id="content">
-        <h1 style="color: darkgrey; margin-bottom: 20px;">Indonesian Flashcard Game</h1>
+        <h1 style="color: darkgrey; margin-bottom: 20px;">Indonesian Flashcard Game - Level 2</h1>
         
         <div style="margin-bottom: 20px;">
             <label for="categoryFilter" style="margin-right: 10px;">Category:</label>
@@ -166,6 +166,8 @@
                         english: row[1],
                         indonesian: row[2],
                         exampleSentence: row[3], // Column D (index 3) - Example Sentence
+                        exampleIndo: row[4], // Column E (index 4) - Example in Indonesian
+                        exampleEnglish: row[5], // Column F (index 5) - Example in English
                         importance: importanceWeight // Add importance weight
                     });
                 });
@@ -214,7 +216,7 @@
                             lastSeenCount: 0,
                             nextReviewCount: 0, // 0 means ready to be shown
                             importance: word.importance || 3, // Store importance in stats
-                            level: 1
+                            level: 2 // Changed to level 2
                         };
                     } else {
                         // Update importance in case it changed in the CSV
@@ -285,21 +287,12 @@
         // Shuffle and start game
         function startGame() {
             try {
-                // If the filtered vocabulary is empty, no need to proceed
-                if (filteredVocabulary.length === 0) {
-                    return;
-                }
-                
                 // First, assign scores to each word based on importance and next review count
                 filteredVocabulary.forEach(word => {
-                    if (!word) return; // Skip if word is undefined
-                    
                     const wordKey = `${word.english}:${word.indonesian}`;
                     const stats = wordStats[wordKey];
-                    if (!stats) return; // Skip if stats is undefined
-                    
-                    const importanceScore = (6 - (stats.importance || 3)) * 10; // Invert so 5 is lowest score (highest priority)
-                    const reviewScore = (stats.nextReviewCount || 0) - globalWordCounter;
+                    const importanceScore = (6 - stats.importance) * 10; // Invert so 5 is lowest score (highest priority)
+                    const reviewScore = stats.nextReviewCount - globalWordCounter;
                     
                     // Calculate priority score - lower is higher priority
                     // Words past due (negative reviewScore) get highest priority
@@ -311,7 +304,7 @@
                     } else {
                         // For words not yet due, adjust their priority based on importance
                         // More important words (higher weight) get lower interval multipliers
-                        const importanceFactor = 1 - (((stats.importance || 3) - 1) * 0.15); // 1.0 to 0.4 factor
+                        const importanceFactor = 1 - ((stats.importance - 1) * 0.15); // 1.0 to 0.4 factor
                         priorityScore = reviewScore * importanceFactor;
                     }
                     
@@ -321,28 +314,20 @@
                 
                 // Sort by priority score (lower is higher priority)
                 filteredVocabulary.sort((a, b) => {
-                    if (!a || !b) return 0;
-                    
                     const keyA = `${a.english}:${a.indonesian}`;
                     const keyB = `${b.english}:${b.indonesian}`;
-                    
-                    const statsA = wordStats[keyA];
-                    const statsB = wordStats[keyB];
-                    
-                    if (!statsA || !statsB) return 0;
-                    
-                    const scoreA = statsA.priorityScore || 0;
-                    const scoreB = statsB.priorityScore || 0;
+                    const scoreA = wordStats[keyA].priorityScore;
+                    const scoreB = wordStats[keyB].priorityScore;
                     return scoreA - scoreB;
                 });
                 
-                currentWordIndex = 0;
                 showNextWord();
             } catch (error) {
                 console.error("Error in startGame:", error);
             }
         }
 
+        // Display next word
         // Display next word
         function showNextWord() {
             try {
@@ -387,13 +372,44 @@
                     break;
                 }
                 
-                // If we've checked all words and none are due, reset the next review time for the first word
-                // to prevent infinite loops
+                // If we've checked all words and none are due, enter fallback mode based on importance
                 if (wordsChecked >= filteredVocabulary.length) {
-                    const word = filteredVocabulary[0];
-                    const wordKey = `${word.english}:${word.indonesian}`;
-                    wordStats[wordKey].nextReviewCount = 0; // Force this word to be reviewable
-                    currentWordIndex = 0;
+                    console.log("All words reviewed - using fallback mode based on importance");
+                    
+                    // Sort words by importance (higher importance first)
+                    let importanceSortedWords = [...filteredVocabulary];
+                    importanceSortedWords.sort((a, b) => {
+                        const aKey = `${a.english}:${a.indonesian}`;
+                        const bKey = `${b.english}:${b.indonesian}`;
+                        const aImportance = wordStats[aKey].importance || 3;
+                        const bImportance = wordStats[bKey].importance || 3;
+                        return bImportance - aImportance; // Higher importance first
+                    });
+                    
+                    // Get the highest importance level
+                    const highestImportance = wordStats[`${importanceSortedWords[0].english}:${importanceSortedWords[0].indonesian}`].importance || 5;
+                    
+                    // Filter words at the highest importance level
+                    const highestImportanceWords = importanceSortedWords.filter(word => {
+                        const key = `${word.english}:${word.indonesian}`;
+                        const importance = wordStats[key].importance || 3;
+                        return importance >= highestImportance - 1; // Include words at highest importance and one level below
+                    });
+                    
+                    // Shuffle just these high importance words
+                    shuffleArray(highestImportanceWords);
+                    
+                    // Pick a random one from this subset
+                    const selectedWord = highestImportanceWords[0];
+                    
+                    // Find this word in the filtered vocabulary to get its index
+                    for (let i = 0; i < filteredVocabulary.length; i++) {
+                        if (filteredVocabulary[i].english === selectedWord.english && 
+                            filteredVocabulary[i].indonesian === selectedWord.indonesian) {
+                            currentWordIndex = i;
+                            break;
+                        }
+                    }
                 }
                 
                 const word = filteredVocabulary[currentWordIndex];
@@ -407,10 +423,10 @@
                 globalWordCounter++;
                 saveWordStats();
                 
-                // Display word
-                speakWord(word.english, 'en-US');
+                // Display word - LEVEL 2 CHANGE: Now showing Indonesian word first
+                speakWord(word.indonesian, 'id-ID');
                 
-                document.getElementById('question').innerText = word.english;
+                document.getElementById('question').innerText = word.indonesian;
                 document.getElementById('answer').innerText = "";
                 document.getElementById('exampleSentence').innerText = "";
                 document.getElementById('hint1').style.display = 'inline';
@@ -435,22 +451,26 @@
                 document.getElementById('incorrect').onclick = markIncorrect;
             } catch (error) {
                 console.error("Error in showNextWord:", error);
-                // Emergency recovery - reset vocabulary and start over
-                currentWordIndex = 0;
-                document.getElementById('question').innerText = "An error occurred. Try refreshing the page.";
             }
         }
 
-        // Hints and Reveal
+        // Hints and Reveal - LEVEL 2 CHANGES
         function showHint(level) {
             try {
                 const word = filteredVocabulary[currentWordIndex];
                 if (!word) return;
                 
                 if (level === 1) {
-                    document.getElementById('hint1').innerText = `First letter: ${word.indonesian.charAt(0)}`;
+                    // First hint is now the word type (category) without the "Type:" prefix
+                    document.getElementById('hint1').innerText = `${word.type}`;
                 } else if (level === 2) {
-                    document.getElementById('hint2').innerText = `Hint: ${word.indonesian.charAt(0)}${'-'.repeat(word.indonesian.length - 1)}`;
+                    // Second hint is the example sentence in Indonesian
+                    if (word.exampleIndo) {
+                        speakWord(word.exampleIndo, 'id-ID');
+                        document.getElementById('hint2').innerText = `Example: ${word.exampleIndo}`;
+                    } else {
+                        document.getElementById('hint2').innerText = "No example available";
+                    }
                 }
             } catch (error) {
                 console.error("Error showing hint:", error);
@@ -465,8 +485,9 @@
                 const wordKey = `${word.english}:${word.indonesian}`;
                 const stats = wordStats[wordKey];
                 
-                speakWord(word.indonesian, 'id-ID');
-                document.getElementById('answer').innerText = word.indonesian;
+                // LEVEL 2 CHANGE: Now speaking English word
+                speakWord(word.english, 'en-US');
+                document.getElementById('answer').innerText = word.english;
                 document.getElementById('hint1').style.display = 'none';
                 document.getElementById('hint2').style.display = 'none';
                 document.getElementById('reveal').style.display = 'none';
@@ -485,13 +506,16 @@
         function showExample() {
             try {
                 const word = filteredVocabulary[currentWordIndex];
-                if (!word || !word.exampleSentence) {
+                if (!word || !word.exampleIndo || !word.exampleEnglish) {
                     document.getElementById('exampleSentence').innerText = "No example sentence available.";
                     return;
                 }
                 
-                speakWord(word.exampleSentence, 'id-ID');
-                document.getElementById('exampleSentence').innerText = word.exampleSentence;
+                // LEVEL 2 CHANGE: Display both Indonesian and English sentences
+                speakWord(word.exampleIndo, 'id-ID');
+                document.getElementById('exampleSentence').innerHTML = 
+                    `<div>${word.exampleIndo}</div>
+                     <div>${word.exampleEnglish}</div>`;
                 document.getElementById('example').style.display = 'inline';
             } catch (error) {
                 console.error("Error in showExample:", error);
@@ -646,7 +670,7 @@
                 console.error("Error updating stats display:", error);
             }
         }
-
+        
         // Text-to-speech function
         function speakWord(word, lang) {
             try {
