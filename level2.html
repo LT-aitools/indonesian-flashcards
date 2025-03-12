@@ -328,6 +328,7 @@
         }
 
         // Display next word
+        // Display next word
         function showNextWord() {
             try {
                 if (filteredVocabulary.length === 0) {
@@ -339,30 +340,85 @@
                     return;
                 }
                 
-                if (currentWordIndex >= filteredVocabulary.length) {
-                    // Reset if we've gone through all words
-                    currentWordIndex = 0;
-                    startGame();
-                    return;
+                // Track how many words we've checked to prevent infinite loops
+                let wordsChecked = 0;
+                
+                while (wordsChecked < filteredVocabulary.length) {
+                    if (currentWordIndex >= filteredVocabulary.length) {
+                        // Reset if we've gone through all words
+                        currentWordIndex = 0;
+                    }
+                    
+                    const word = filteredVocabulary[currentWordIndex];
+                    if (!word) {
+                        currentWordIndex++;
+                        wordsChecked++;
+                        continue;
+                    }
+                    
+                    // Get current word stats
+                    const wordKey = `${word.english}:${word.indonesian}`;
+                    const stats = wordStats[wordKey];
+                    
+                    // Check if it's time to review this word
+                    if (stats.nextReviewCount && stats.nextReviewCount > globalWordCounter) {
+                        // Skip this word if it's not time to review yet
+                        currentWordIndex++;
+                        wordsChecked++;
+                        continue;
+                    }
+                    
+                    // If we got here, we found a word to show
+                    break;
+                }
+                
+                // If we've checked all words and none are due, enter fallback mode based on importance
+                if (wordsChecked >= filteredVocabulary.length) {
+                    console.log("All words reviewed - using fallback mode based on importance");
+                    
+                    // Sort words by importance (higher importance first)
+                    let importanceSortedWords = [...filteredVocabulary];
+                    importanceSortedWords.sort((a, b) => {
+                        const aKey = `${a.english}:${a.indonesian}`;
+                        const bKey = `${b.english}:${b.indonesian}`;
+                        const aImportance = wordStats[aKey].importance || 3;
+                        const bImportance = wordStats[bKey].importance || 3;
+                        return bImportance - aImportance; // Higher importance first
+                    });
+                    
+                    // Get the highest importance level
+                    const highestImportance = wordStats[`${importanceSortedWords[0].english}:${importanceSortedWords[0].indonesian}`].importance || 5;
+                    
+                    // Filter words at the highest importance level
+                    const highestImportanceWords = importanceSortedWords.filter(word => {
+                        const key = `${word.english}:${word.indonesian}`;
+                        const importance = wordStats[key].importance || 3;
+                        return importance >= highestImportance - 1; // Include words at highest importance and one level below
+                    });
+                    
+                    // Shuffle just these high importance words
+                    shuffleArray(highestImportanceWords);
+                    
+                    // Pick a random one from this subset
+                    const selectedWord = highestImportanceWords[0];
+                    
+                    // Find this word in the filtered vocabulary to get its index
+                    for (let i = 0; i < filteredVocabulary.length; i++) {
+                        if (filteredVocabulary[i].english === selectedWord.english && 
+                            filteredVocabulary[i].indonesian === selectedWord.indonesian) {
+                            currentWordIndex = i;
+                            break;
+                        }
+                    }
                 }
                 
                 const word = filteredVocabulary[currentWordIndex];
-                if (!word) return;
-                
-                // Get current word stats
-                const wordKey = `${word.english}:${word.indonesian}`;
-                const stats = wordStats[wordKey];
-                
-                // Check if it's time to review this word
-                if (stats.nextReviewCount && stats.nextReviewCount > globalWordCounter) {
-                    // Skip this word if it's not time to review yet
-                    currentWordIndex++;
-                    showNextWord();
-                    return;
-                }
                 
                 // Update last seen counter
+                const wordKey = `${word.english}:${word.indonesian}`;
+                const stats = wordStats[wordKey];
                 stats.lastSeenCount = globalWordCounter;
+                
                 // Increment global counter for each word shown
                 globalWordCounter++;
                 saveWordStats();
