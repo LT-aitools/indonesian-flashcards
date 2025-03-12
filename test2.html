@@ -9,6 +9,11 @@
         let words = [];
         let currentIndex = 0;
         const wordsPerPage = 6;
+        
+        // Voice selection
+        let selectedVoice = null;
+        let voices = [];
+        let speechSynthesisInitialized = false;
 
         async function loadWords() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -76,6 +81,225 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
+
+        // Initialize voice options
+        function initSpeechSynthesis() {
+            if (speechSynthesisInitialized) return;
+            
+            // Load available voices
+            voices = window.speechSynthesis.getVoices();
+            
+            // Initialize voice selector
+            const voiceSelect = document.getElementById('voice-select');
+            
+            // Clear voice select
+            while (voiceSelect.options.length > 1) {
+                voiceSelect.remove(1);
+            }
+            
+            // Add all voices to the selector
+            voices.forEach(voice => {
+                const option = document.createElement('option');
+                option.value = voice.name;
+                option.textContent = `${voice.name} (${voice.lang})`;
+                voiceSelect.appendChild(option);
+                
+                // Auto-select an Indonesian voice if available
+                if ((voice.lang.includes('id') || voice.name.toLowerCase().includes('indonesia')) && !selectedVoice) {
+                    voiceSelect.value = voice.name;
+                    selectedVoice = voice;
+                }
+            });
+            
+            // If no Indonesian voice was found, look for other Asian voices that might work well
+            if (!selectedVoice) {
+                const asianVoices = voices.filter(voice => 
+                    voice.lang.includes('ms') || // Malay
+                    voice.lang.includes('fil') || // Filipino
+                    voice.lang.includes('th') || // Thai
+                    voice.lang.includes('vi') || // Vietnamese
+                    voice.lang.includes('zh') // Chinese (often available on iOS)
+                );
+                
+                if (asianVoices.length > 0) {
+                    selectedVoice = asianVoices[0];
+                    voiceSelect.value = selectedVoice.name;
+                }
+            }
+            
+            console.log("Available voices:", voices.map(v => `${v.name} (${v.lang})`));
+            console.log("Selected voice:", selectedVoice ? selectedVoice.name : "None");
+            
+            speechSynthesisInitialized = true;
+        }
+        
+        // Update selected voice when the user changes selection
+        function updateSelectedVoice() {
+            const voiceSelect = document.getElementById('voice-select');
+            const selectedName = voiceSelect.value;
+            
+            if (selectedName) {
+                selectedVoice = voices.find(voice => voice.name === selectedName);
+                console.log("Selected voice changed to:", selectedVoice ? selectedVoice.name : "None");
+                
+                // Save to localStorage for future visits
+                localStorage.setItem('selectedVoice', selectedName);
+            } else {
+                selectedVoice = null;
+                localStorage.removeItem('selectedVoice');
+            }
+            
+            // Test the selected voice
+            testSelectedVoice();
+        }
+        
+        // Test the selected voice with a simple Indonesian phrase
+        function testSelectedVoice() {
+            if (!selectedVoice) return;
+            
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            // Show feedback
+            showFeedback("Testing voice...");
+            
+            const testSpeech = new SpeechSynthesisUtterance("Selamat pagi");
+            testSpeech.voice = selectedVoice;
+            testSpeech.lang = 'id-ID';
+            testSpeech.rate = 0.9; // Slightly slower rate for better pronunciation
+            
+            testSpeech.onend = function() {
+                hideFeedback();
+            };
+            
+            testSpeech.onerror = function() {
+                showFeedback("Voice test failed");
+                setTimeout(hideFeedback, 2000);
+            };
+            
+            window.speechSynthesis.speak(testSpeech);
+        }
+        
+        // Load the selected voice from localStorage on page load
+        function loadSavedVoice() {
+            const savedVoice = localStorage.getItem('selectedVoice');
+            if (savedVoice && voices.length > 0) {
+                const voice = voices.find(v => v.name === savedVoice);
+                if (voice) {
+                    selectedVoice = voice;
+                    const voiceSelect = document.getElementById('voice-select');
+                    voiceSelect.value = savedVoice;
+                }
+            }
+        }
+        
+        // Feedback element management
+        let feedbackElement = null;
+        
+        function showFeedback(message) {
+            // Create feedback element if it doesn't exist
+            if (!feedbackElement) {
+                feedbackElement = document.createElement('div');
+                feedbackElement.className = 'speech-feedback';
+                feedbackElement.style.position = 'fixed';
+                feedbackElement.style.bottom = '20px';
+                feedbackElement.style.left = '50%';
+                feedbackElement.style.transform = 'translateX(-50%)';
+                feedbackElement.style.backgroundColor = 'rgba(0,0,0,0.7)';
+                feedbackElement.style.color = 'white';
+                feedbackElement.style.padding = '10px 20px';
+                feedbackElement.style.borderRadius = '5px';
+                feedbackElement.style.zIndex = '1000';
+                document.body.appendChild(feedbackElement);
+            }
+            
+            feedbackElement.textContent = message;
+            feedbackElement.style.display = 'block';
+        }
+        
+        function hideFeedback() {
+            if (feedbackElement) {
+                feedbackElement.style.display = 'none';
+            }
+        }
+        
+        // The main audio playing function
+        function playAudio(word, sentence) {
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            // Make sure TTS is initialized
+            if (!speechSynthesisInitialized) {
+                initSpeechSynthesis();
+            }
+            
+            // Show feedback
+            showFeedback(`Speaking: ${word}`);
+            
+            // First, speak the word
+            const wordUtterance = new SpeechSynthesisUtterance(word);
+            wordUtterance.lang = 'id-ID';
+            wordUtterance.rate = 0.9; // Slightly slower for better pronunciation
+            
+            // Use selected voice if available
+            if (selectedVoice) {
+                wordUtterance.voice = selectedVoice;
+            }
+            
+            // After word is spoken, speak the sentence
+            wordUtterance.onend = function() {
+                if (sentence) {
+                    showFeedback(`Speaking: ${sentence}`);
+                    
+                    const sentenceUtterance = new SpeechSynthesisUtterance(sentence);
+                    sentenceUtterance.lang = 'id-ID';
+                    sentenceUtterance.rate = 0.85; // Even slower for sentences
+                    
+                    if (selectedVoice) {
+                        sentenceUtterance.voice = selectedVoice;
+                    }
+                    
+                    sentenceUtterance.onend = function() {
+                        hideFeedback();
+                    };
+                    
+                    sentenceUtterance.onerror = function() {
+                        showFeedback("Error speaking sentence");
+                        setTimeout(hideFeedback, 2000);
+                    };
+                    
+                    window.speechSynthesis.speak(sentenceUtterance);
+                } else {
+                    hideFeedback();
+                }
+            };
+            
+            wordUtterance.onerror = function() {
+                showFeedback("Error speaking word");
+                setTimeout(hideFeedback, 2000);
+            };
+            
+            window.speechSynthesis.speak(wordUtterance);
+        }
+        
+        // Voice initialization timing logic
+        window.addEventListener('DOMContentLoaded', function() {
+            // Try to initialize immediately
+            setTimeout(function() {
+                initSpeechSynthesis();
+                loadSavedVoice();
+            }, 100);
+        });
+        
+        // Different browsers handle voice loading differently
+        if (window.speechSynthesis) {
+            if (window.speechSynthesis.onvoiceschanged !== undefined) {
+                window.speechSynthesis.onvoiceschanged = function() {
+                    initSpeechSynthesis();
+                    loadSavedVoice();
+                };
+            }
+        }
     </script>
     <style>
         body {
@@ -84,6 +308,8 @@
             position: relative;
             overflow-y: auto;
             margin: 0;
+            padding: 0;
+            min-height: 100vh;
         }
         body::before {
             content: "";
@@ -100,34 +326,67 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             padding: 20px;
             min-height: 100vh;
+            box-sizing: border-box;
         }
         h1 {
             margin-bottom: 20px;
+            text-align: center;
+        }
+        .voice-selector {
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 90%;
+            width: 600px;
+        }
+        .voice-selector label {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .voice-selector select {
+            padding: 8px;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .voice-selector button {
+            padding: 6px 12px;
+            background-color: #4a86e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .voice-selector button:hover {
+            background-color: #3b78e7;
         }
         .word-container {
             display: grid;
-            grid-template-columns: repeat(2, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
             max-width: 900px;
             width: 100%;
             justify-content: center;
         }
-        @media (max-width: 768px) {
-            .word-container {
-                grid-template-columns: 1fr;
-            }
-        }
         .word-card {
             background: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 400px;
-            margin-bottom: 20px;
+            box-sizing: border-box;
         }
         .word-grid {
             display: grid;
@@ -140,6 +399,12 @@
             align-items: center;
             padding: 10px;
         }
+        .play-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
         .play-button img {
             width: 36px;
             height: 36px;
@@ -147,18 +412,19 @@
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
+            grid-template-rows: auto auto;
             gap: 10px;
             text-align: center;
         }
         .grid-item {
-            padding: 10px;
+            padding: 8px;
         }
         .nav-buttons {
             display: flex;
             gap: 10px;
             justify-content: center;
             margin-top: 20px;
+            flex-wrap: wrap;
         }
         .nav-button {
             text-decoration: none;
@@ -166,17 +432,83 @@
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
+            border: none;
+            font-size: 16px;
+        }
+        .note {
+            background-color: #f8f9fa;
+            border-left: 4px solid #4a86e8;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border-radius: 0 4px 4px 0;
+            font-size: 14px;
+            max-width: 600px;
+            width: 90%;
+        }
+        .note h3 {
+            margin-top: 0;
+            color: #4a86e8;
+        }
+        
+        @media (max-width: 768px) {
+            .word-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid-container {
+                font-size: 14px;
+            }
+            
+            .voice-selector {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(4, auto);
+            }
+            
+            .play-button img {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .word-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .play-button-container {
+                padding: 5px 10px 10px;
+            }
         }
     </style>
 </head>
 <body onload="loadWords()">
     <div class="container">
         <h1 id="category-title"></h1>
+        
+        <div class="voice-selector">
+            <label for="voice-select">Select Voice for Indonesian Pronunciation:</label>
+            <select id="voice-select" onchange="updateSelectedVoice()">
+                <option value="">Auto-select best voice</option>
+                <!-- Will be populated with available voices -->
+            </select>
+            <button onclick="testSelectedVoice()">Test Voice ("Selamat pagi")</button>
+        </div>
+        
+        <div class="note">
+            <h3>iOS & Android Voice Tips</h3>
+            <p>For best results on iOS, try selecting a voice with "International" in the name, or an Asian language voice like Chinese or Thai. Your selection will be saved for future visits.</p>
+            <p>If no voice works well, consider installing the Google Translate app, which has excellent Indonesian pronunciation.</p>
+        </div>
+        
         <div id="word-container" class="word-container"></div>
-        <button class="nav-button" onclick="nextWords()">Next</button>
         <div class="nav-buttons">
-            <a href="https://lt-aitools.github.io/indonesian-flashcards/studysplash.html" class="nav-button">Back to Categories</a>
-            <a href="https://lt-aitools.github.io/indonesian-flashcards/index.html" class="nav-button">Back to Main</a>
+            <button class="nav-button" onclick="nextWords()">Next</button>
+            <a href="studysplash.html" class="nav-button">Back to Categories</a>
+            <a href="index.html" class="nav-button">Back to Main</a>
         </div>
     </div>
 </body>
