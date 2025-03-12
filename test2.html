@@ -88,6 +88,7 @@
             
             // Load available voices
             voices = window.speechSynthesis.getVoices();
+            console.log("Available voices:", voices.map(v => `${v.name} (${v.lang})`));
             
             // Try to load the previously saved voice
             const savedVoice = localStorage.getItem('selectedVoice');
@@ -125,12 +126,47 @@
             // If a voice was selected, save it for future visits
             if (selectedVoice) {
                 localStorage.setItem('selectedVoice', selectedVoice.name);
+                console.log("Selected voice:", selectedVoice.name);
+            } else {
+                console.log("No suitable voice found");
             }
             
-            console.log("Available voices:", voices.map(v => `${v.name} (${v.lang})`));
-            console.log("Selected voice:", selectedVoice ? selectedVoice.name : "None");
-            
             speechSynthesisInitialized = true;
+        }
+        
+        // Update selected voice when the user changes selection
+        function updateSelectedVoice() {
+            const voiceSelect = document.getElementById('voice-select');
+            const selectedName = voiceSelect.value;
+            
+            if (selectedName) {
+                selectedVoice = voices.find(voice => voice.name === selectedName);
+                console.log("Selected voice changed to:", selectedVoice ? selectedVoice.name : "None");
+                
+                // Save to localStorage for future visits
+                localStorage.setItem('selectedVoice', selectedName);
+            } else {
+                selectedVoice = null;
+                localStorage.removeItem('selectedVoice');
+            }
+            
+            // Test the selected voice
+            testSelectedVoice();
+        }
+        
+        // Test the selected voice with a simple Indonesian phrase
+        function testSelectedVoice() {
+            if (!selectedVoice) return;
+            
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            const testSpeech = new SpeechSynthesisUtterance("Selamat pagi");
+            testSpeech.voice = selectedVoice;
+            testSpeech.lang = 'id-ID';
+            testSpeech.rate = 0.9; // Slightly slower rate for better pronunciation
+            
+            window.speechSynthesis.speak(testSpeech);
         }
         
         // Load the selected voice from localStorage on page load
@@ -235,43 +271,7 @@
             margin-bottom: 20px;
             text-align: center;
         }
-        .voice-selector {
-            margin-bottom: 20px;
-            padding: 10px 15px;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            max-width: 90%;
-            width: 600px;
-        }
-        .voice-selector label {
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        .voice-selector select {
-            padding: 8px;
-            width: 100%;
-            max-width: 400px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-        .voice-selector button {
-            padding: 6px 12px;
-            background-color: #4a86e8;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .voice-selector button:hover {
-            background-color: #3b78e7;
-        }
+        /* Voice selector styles removed */
         .word-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -388,8 +388,6 @@
 <body onload="loadWords()">
     <div class="container">
         <h1 id="category-title"></h1>
-        
-        <!-- Voice elements removed as requested -->
         
         <div id="word-container" class="word-container"></div>
         <div class="nav-buttons">
