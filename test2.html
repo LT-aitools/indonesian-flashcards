@@ -144,35 +144,7 @@
             }
         }
         
-        // Feedback element management
-        let feedbackElement = null;
-        
-        function showFeedback(message) {
-            // Create feedback element if it doesn't exist
-            if (!feedbackElement) {
-                feedbackElement = document.createElement('div');
-                feedbackElement.className = 'speech-feedback';
-                feedbackElement.style.position = 'fixed';
-                feedbackElement.style.bottom = '20px';
-                feedbackElement.style.left = '50%';
-                feedbackElement.style.transform = 'translateX(-50%)';
-                feedbackElement.style.backgroundColor = 'rgba(0,0,0,0.7)';
-                feedbackElement.style.color = 'white';
-                feedbackElement.style.padding = '10px 20px';
-                feedbackElement.style.borderRadius = '5px';
-                feedbackElement.style.zIndex = '1000';
-                document.body.appendChild(feedbackElement);
-            }
-            
-            feedbackElement.textContent = message;
-            feedbackElement.style.display = 'block';
-        }
-        
-        function hideFeedback() {
-            if (feedbackElement) {
-                feedbackElement.style.display = 'none';
-            }
-        }
+        // Feedback element management removed
         
         // The main audio playing function
         function playAudio(word, sentence) {
@@ -183,9 +155,6 @@
             if (!speechSynthesisInitialized) {
                 initSpeechSynthesis();
             }
-            
-            // Show feedback
-            showFeedback(`Speaking: ${word}`);
             
             // First, speak the word
             const wordUtterance = new SpeechSynthesisUtterance(word);
@@ -200,8 +169,6 @@
             // After word is spoken, speak the sentence
             wordUtterance.onend = function() {
                 if (sentence) {
-                    showFeedback(`Speaking: ${sentence}`);
-                    
                     const sentenceUtterance = new SpeechSynthesisUtterance(sentence);
                     sentenceUtterance.lang = 'id-ID';
                     sentenceUtterance.rate = 0.85; // Even slower for sentences
@@ -210,24 +177,8 @@
                         sentenceUtterance.voice = selectedVoice;
                     }
                     
-                    sentenceUtterance.onend = function() {
-                        hideFeedback();
-                    };
-                    
-                    sentenceUtterance.onerror = function() {
-                        showFeedback("Error speaking sentence");
-                        setTimeout(hideFeedback, 2000);
-                    };
-                    
                     window.speechSynthesis.speak(sentenceUtterance);
-                } else {
-                    hideFeedback();
                 }
-            };
-            
-            wordUtterance.onerror = function() {
-                showFeedback("Error speaking word");
-                setTimeout(hideFeedback, 2000);
             };
             
             window.speechSynthesis.speak(wordUtterance);
