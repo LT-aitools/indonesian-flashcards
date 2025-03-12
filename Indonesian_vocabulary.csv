@@ -1,289 +1,294 @@
-Type,English,Indonesian,Example Sentence (combined),Example (Indo),Example (English),Weight
-Question,Who,Siapa,Siapa nama Anda? (Who is your name?),Siapa nama Anda?,(Who is your name?),3
-Question,What,Apa,Apa yang kamu lakukan? (What are you doing?),Apa yang kamu lakukan?,(What are you doing?),5
-Question,When,Kapan,Kapan kita pergi? (When are we going?),Kapan kita pergi?,(When are we going?),5
-Question,Where,Di mana,Di mana toilet? (Where is the toilet?),Di mana toilet?,(Where is the toilet?),5
-Question,Why,Kenapa,Kenapa kamu terlambat? (Why are you late?),Kenapa kamu terlambat?,(Why are you late?),3
-Question,How,Bagaimana,Bagaimana cara ke bandara? (How do I get to the airport?),Bagaimana cara ke bandara?,(How do I get to the airport?),3
-Question,How much?,Berapa harganya?,Berapa harga ikan ini? (How much dioes this fish cost?),Berapa harga ikan ini?,(How much dioes this fish cost?),5
-Pronoun,I,Saya/Aku,Saya suka kopi. (I like coffee.),Saya suka kopi.,(I like coffee.),5
-Pronoun,You (singular),Kamu/Anda,Kamu baik hati. (You are kind.),Kamu baik hati.,(You are kind.),5
-Pronoun,He,Dia (laki-laki),Dia bekerja di sini. (He works here.),Dia bekerja di sini.,(He works here.),5
-Pronoun,She,Dia (perempuan),Dia sedang membaca. (She is reading.),Dia sedang membaca.,(She is reading.),5
-Pronoun,We (inclusive),Kita,Kita akan pergi bersama. (We will go together - including listener.),Kita akan pergi bersama.,(We will go together - including listener.),4
-Pronoun,We (exclusive),Kami,Kami sudah makan. (We have eaten - excluding listener.),Kami sudah makan.,(We have eaten - excluding listener.),5
-Pronoun,They,Mereka,Mereka tinggal di Jakarta. (They live in Jakarta.),Mereka tinggal di Jakarta.,(They live in Jakarta.),5
-Pronoun,It,Itu,Itu sangat menarik. (It is very interesting.),Itu sangat menarik.,(It is very interesting.),5
-Pronoun,You (plural),Kalian,Kalian mau makan apa? (What do you all want to eat?),Kalian mau makan apa?,(What do you all want to eat?),5
-Verb,Eat,Makan,Saya makan nasi goreng. (I eat fried rice.),Saya makan nasi goreng.,(I eat fried rice.),5
-Verb,Drink,Minum,Dia minum teh. (He drinks tea.),Dia minum teh.,(He drinks tea.),5
-Verb,Go,Pergi,Kami pergi ke pasar. (We go to the market.),Kami pergi ke pasar.,(We go to the market.),5
-Verb,Come,Datang,Dia datang ke rumah saya. (He comes to my house.),Dia datang ke rumah saya.,(He comes to my house.),5
-Verb,See,Melihat,Saya melihat burung. (I see a bird.),Saya melihat burung.,(I see a bird.),4
-Verb,Watch,Menonton,Kami menonton film. (We watch a movie.),Kami menonton film.,(We watch a movie.),4
-Verb,Look,Melihat,Dia melihat langit. (He looks at the sky.),Dia melihat langit.,(He looks at the sky.),4
-Verb,Listen,Mendengarkan,Saya mendengarkan musik. (I listen to music.),Saya mendengarkan musik.,(I listen to music.),4
-Verb,Hear,Mendengar,Dia mendengar suara aneh. (He hears a strange sound.),Dia mendengar suara aneh.,(He hears a strange sound.),4
-Verb,Speak,Berbicara,Mereka berbicara bahasa Indonesia. (They speak Indonesian.),Mereka berbicara bahasa Indonesia.,(They speak Indonesian.),4
-Verb,Say,Mengatakan,Dia mengatakan sesuatu. (He says something.),Dia mengatakan sesuatu.,(He says something.),3
-Verb,Tell,Menceritakan,Saya menceritakan cerita lucu. (I tell a funny story.),Saya menceritakan cerita lucu.,(I tell a funny story.),1
-Verb,Ask,Bertanya,Dia bertanya tentang harga. (He asks about the price.),Dia bertanya tentang harga.,(He asks about the price.),3
-Verb,Give,Memberi,Saya memberi hadiah kepada teman. (I give a gift to a friend.),Saya memberi hadiah kepada teman.,(I give a gift to a friend.),4
-Verb,Take,Mengambil,Dia mengambil buku itu. (She takes that book.),Dia mengambil buku itu.,(She takes that book.),4
-Verb,Bring,Membawa,Saya membawa tas besar. (I bring a big bag.),Saya membawa tas besar.,(I bring a big bag.),3
-Verb,Buy,Membeli,Saya membeli roti. (I buy bread.),Saya membeli roti.,(I buy bread.),4
-Verb,Sell,Menjual,Dia menjual buah. (He sells fruit.),Dia menjual buah.,(He sells fruit.),5
-Verb,Like,Suka,Saya suka musik jazz. (I like jazz music.),Saya suka musik jazz.,(I like jazz music.),5
-Verb,Love,Cinta,Dia cinta keluarganya. (He loves his family.),Dia cinta keluarganya.,(He loves his family.),3
-Verb,Want,Ingin,Saya ingin kopi. (I want coffee.),Saya ingin kopi.,(I want coffee.),5
-Verb,Need,Butuh,Dia butuh bantuan. (She needs help.),Dia butuh bantuan.,(She needs help.),4
-Verb,Make,Membuat,Kami membuat kue. (We make a cake.),Kami membuat kue.,(We make a cake.),4
-Verb,Do,Melakukan,Saya melakukan pekerjaan saya. (I do my work.),Saya melakukan pekerjaan saya.,(I do my work.),5
-Verb,Use,Menggunakan,Kami menggunakan aplikasi ini. (We use this app.),Kami menggunakan aplikasi ini.,(We use this app.),5
-Verb,Work,Bekerja,Dia bekerja di kantor. (He works in an office.),Dia bekerja di kantor.,(He works in an office.),3
-Verb,Try,Mencoba,Saya mencoba resep baru. (I try a new recipe.),Saya mencoba resep baru.,(I try a new recipe.),3
-Verb,Know,Tahu,Saya tahu jawabannya. (I know the answer.),Saya tahu jawabannya.,(I know the answer.),3
-Verb,Understand,Mengerti,Dia mengerti bahasa Inggris. (He understands English.),Dia mengerti bahasa Inggris.,(He understands English.),4
-Verb,Learn,Belajar,Saya belajar bahasa Indonesia. (I learn Indonesian.),Saya belajar bahasa Indonesia.,(I learn Indonesian.),3
-Verb,Teach,Mengajar,Dia mengajar matematika. (She teaches math.),Dia mengajar matematika.,(She teaches math.),3
-Verb,Remember,Mengingat,Saya mengingat namanya. (I remember his name.),Saya mengingat namanya.,(I remember his name.),1
-Verb,Forget,Lupa,Saya lupa kata itu. (I forget that word.),Saya lupa kata itu.,(I forget that word.),1
-Verb,Wait,Menunggu,Saya menunggu teman saya. (I wait for my friend.),Saya menunggu teman saya.,(I wait for my friend.),4
-Verb,Call,Memanggil,Dia memanggil ibunya. (He calls his mother.),Dia memanggil ibunya.,(He calls his mother.),3
-Verb,Meet,Bertemu,Kami bertemu di restoran. (We meet at the restaurant.),Kami bertemu di restoran.,(We meet at the restaurant.),4
-Verb,Help,Membantu,Dia membantu saya. (He helps me.),Dia membantu saya.,(He helps me.),4
-Verb,Run,Berlari,Dia berlari setiap pagi. (He runs every morning.),Dia berlari setiap pagi.,(He runs every morning.),2
-Verb,Walk,Berjalan,Saya berjalan ke sekolah. (I walk to school.),Saya berjalan ke sekolah.,(I walk to school.),4
-Verb,Sleep,Tidur,Dia tidur di kamar. (She sleeps in the room.),Dia tidur di kamar.,(She sleeps in the room.),4
-Verb,Wake up,Bangun,Saya bangun jam 6 pagi. (I wake up at 6 AM.),Saya bangun jam 6 pagi.,(I wake up at 6 AM.),3
-Verb,Stand,Berdiri,Dia berdiri di depan rumah. (He stands in front of the house.),Dia berdiri di depan rumah.,(He stands in front of the house.),2
-Verb,Sit,Duduk,Saya duduk di kursi. (I sit on the chair.),Saya duduk di kursi.,(I sit on the chair.),3
-Verb,Open,Membuka,Dia membuka jendela. (He opens the window.),Dia membuka jendela.,(He opens the window.),4
-Verb,Close,Menutup,Saya menutup pintu. (I close the door.),Saya menutup pintu.,(I close the door.),4
-Verb,Read,Membaca,Dia membaca buku. (She reads a book.),Dia membaca buku.,(She reads a book.),2
-Verb,Write,Menulis,Saya menulis surat. (I write a letter.),Saya menulis surat.,(I write a letter.),2
-Verb,Play,Bermain,Mereka bermain sepak bola. (They play soccer.),Mereka bermain sepak bola.,(They play soccer.),2
-Verb,Pay,Membayar,Saya membayar tagihan. (I pay the bill.),Saya membayar tagihan.,(I pay the bill.),4
-Verb,Leave,Meninggalkan,Dia meninggalkan rumah. (He leaves the house.),Dia meninggalkan rumah.,(He leaves the house.),4
-Verb,Swim,Berenang,Saya suka berenang di laut. (I like swimming in the sea.),Saya suka berenang di laut.,(I like swimming in the sea.),3
-Verb,Look for,Mencari,Saya mencari restoran vegetarian. (I am looking for a vegetarian restaurant.),Saya mencari restoran vegetarian.,(I am looking for a vegetarian restaurant.),4
-Verb,Stop,Berhenti,Silakan berhenti di sini. (Please stop here.),Silakan berhenti di sini.,(Please stop here.),4
-Verb,Rest,Istirahat,Saya ingin istirahat sebentar. (I want to rest for a while.),Saya ingin istirahat sebentar.,(I want to rest for a while.),4
-Verb,Take photos,Mengambil foto,Saya suka mengambil foto pemandangan. (I like taking photos of landscapes.),Saya suka mengambil foto pemandangan.,(I like taking photos of landscapes.),3
-Verb,Arrive,Tiba,Kami tiba di hotel malam ini. (We arrive at the hotel tonight.),Kami tiba di hotel malam ini.,(We arrive at the hotel tonight.),4
-Verb,Turn,Belok,Silakan belok kiri di sini. (Please turn left here.),Silakan belok kiri di sini.,(Please turn left here.),3
-Verb,Feel,Merasa,Saya merasa sangat lelah. (I feel very tired.),Saya merasa sangat lelah.,(I feel very tired.),4
-Verb,Start,Mulai,Acara akan mulai pada jam 10. (The event will start at 10.),Acara akan mulai pada jam 10.,(The event will start at 10.),3
-Verb,Finish,Selesai,Pertandingan sudah selesai. (The match is already finished.),Pertandingan sudah selesai.,(The match is already finished.),3
-Adjective,Big,Besar,Rumah ini besar. (This house is big.),Rumah ini besar.,(This house is big.),5
-Adjective,Small,Kecil,Kucing itu kecil. (That cat is small.),Kucing itu kecil.,(That cat is small.),5
-Adjective,Fast,Cepat,Mobil ini cepat. (This car is fast.),Mobil ini cepat.,(This car is fast.),3
-Adjective,Slow,Lambat,Siput bergerak lambat. (Snails move slow.),Siput bergerak lambat.,(Snails move slow.),3
-Adjective,Hot,Panas,Teh ini panas. (This tea is hot.),Teh ini panas.,(This tea is hot.),4
-Adjective,Cold,Dingin,Es ini dingin. (This ice is cold.),Es ini dingin.,(This ice is cold.),4
-Adjective,Good,Baik,Makanan ini enak. (This food is good.),Makanan ini enak.,(This food is good.),5
-Adjective,Bad,Buruk,Rasa ini buruk. (This taste is bad.),Rasa ini buruk.,(This taste is bad.),5
-Adjective,Happy,Senang,Saya merasa senang. (I feel happy.),Saya merasa senang.,(I feel happy.),3
-Adjective,Sad,Sedih,Dia terlihat sedih. (She looks sad.),Dia terlihat sedih.,(She looks sad.),3
-Adjective,Easy,Mudah,Soal ini mudah. (This question is easy.),Soal ini mudah.,(This question is easy.),3
-Adjective,Difficult,Sulit,Tugas ini sulit. (This task is difficult.),Tugas ini sulit.,(This task is difficult.),3
-Adjective,Expensive,Mahal,Tas ini mahal. (This bag is expensive.),Tas ini mahal.,(This bag is expensive.),4
-Adjective,Cheap,Murah,Barang ini murah. (This item is cheap.),Barang ini murah.,(This item is cheap.),4
-Adjective,New,Baru,Mobil itu baru. (That car is new.),Mobil itu baru.,(That car is new.),3
-Adjective,Old,Lama,Buku ini lama. (This book is old.),Buku ini lama.,(This book is old.),3
-Adjective,Strong,Kuat,Dia sangat kuat. (He is very strong.),Dia sangat kuat.,(He is very strong.),2
-Adjective,Weak,Lemah,Orang tua itu lemah. (That old person is weak.),Orang tua itu lemah.,(That old person is weak.),2
-Adjective,Very,Sangat,Pemandangan ini sangat indah. (This view is very beautiful.),Pemandangan ini sangat indah.,(This view is very beautiful.),4
-Adjective,Beautiful,Indah,Pantai ini sangat indah. (This beach is very beautiful.),Pantai ini sangat indah.,(This beach is very beautiful.),4
-Adjective,Sick,Sakit,Saya merasa sakit hari ini. (I feel sick today.),Saya merasa sakit hari ini.,(I feel sick today.),4
-Adjective,Tired,Lelah,Saya sangat lelah setelah perjalanan. (I am very tired after the trip.),Saya sangat lelah setelah perjalanan.,(I am very tired after the trip.),4
-Adjective,Safe,Aman,Hotel ini sangat aman. (This hotel is very safe.),Hotel ini sangat aman.,(This hotel is very safe.),4
-Adjective,Dangerous,Berbahaya,Jalan ini berbahaya saat malam. (This road is dangerous at night.),Jalan ini berbahaya saat malam.,(This road is dangerous at night.),4
-Adjective,Many,Banyak,Ada banyak orang di pasar. (There are many people at the market.),Ada banyak orang di pasar.,(There are many people at the market.),5
-Adjective,Few,Sedikit,Hanya sedikit orang yang tahu rahasia ini. (Only a few people know this secret.),Hanya sedikit orang yang tahu rahasia ini.,(Only a few people know this secret.),3
-Adjective,More,Lebih,Saya ingin lebih banyak nasi. (I want more rice.),Saya ingin lebih banyak nasi.,(I want more rice.),4
-Adjective,Less,Kurang,Tolong kurangi gula dalam teh saya. (Please put less sugar in my tea.),Tolong kurangi gula dalam teh saya.,(Please put less sugar in my tea.),4
-Adjective,Full,Penuh,Tas saya penuh dengan pakaian. (My bag is full of clothes.),Tas saya penuh dengan pakaian.,(My bag is full of clothes.),3
-Adjective,Empty,Kosong,Gelas ini kosong. (This glass is empty.),Gelas ini kosong.,(This glass is empty.),2
-Adjective,Open (adj),Buka,Toko ini buka setiap hari. (This shop is open every day.),Toko ini buka setiap hari.,(This shop is open every day.),4
-Adjective,Closed,Tutup,Restoran tutup pada hari Senin. (The restaurant is closed on Mondays.),Restoran tutup pada hari Senin.,(The restaurant is closed on Mondays.),4
-Adjective,Busy,Sibuk,Bandara sangat sibuk hari ini. (The airport is very busy today.),Bandara sangat sibuk hari ini.,(The airport is very busy today.),3
-Adjective,Free (available),Kosong (tidak sibuk),Saya kosong besok pagi. (I am free tomorrow morning.),Saya kosong besok pagi.,(I am free tomorrow morning.),3
-Adjective,This,Ini, Ini ikan saya. (This is my fish.), Ini ikan saya.,(This is my fish.),5
-Adjective,That,Itu,Saya lebih suka yang itu. (I prefer that one),Saya lebih suka yang itu.,(I prefer that one),5
-Preposition,Near,Dekat,Hotel ini dekat dengan bandara. (This hotel is near the airport.),Hotel ini dekat dengan bandara.,(This hotel is near the airport.),4
-Preposition,Far,Jauh,Desa itu jauh dari kota. (That village is far from the city.),Desa itu jauh dari kota.,(That village is far from the city.),4
-Preposition,On,Di atas,Buku ada di atas meja. (The book is on the table.),Buku ada di atas meja.,(The book is on the table.),3
-Preposition,In,Di dalam,Air ada di dalam botol. (The water is in the bottle.),Air ada di dalam botol.,(The water is in the bottle.),3
-Preposition,Near,Di dekat,Restoran ini dekat stasiun. (This restaurant is near the station.),Restoran ini dekat stasiun.,(This restaurant is near the station.),4
-Preposition,Under,Di bawah,Kucing ada di bawah meja. (The cat is under the table.),Kucing ada di bawah meja.,(The cat is under the table.),2
-Preposition,Between,Di antara,Saya duduk di antara teman-teman. (I sit between friends.),Saya duduk di antara teman-teman.,(I sit between friends.),2
-Preposition,Behind,Di belakang,Dia berdiri di belakang rumah. (He stands behind the house.),Dia berdiri di belakang rumah.,(He stands behind the house.),3
-Preposition,In front of,Di depan,Mobil itu di depan toko. (The car is in front of the shop.),Mobil itu di depan toko.,(The car is in front of the shop.),4
-Preposition,Next to,Di sebelah,Saya duduk di sebelah teman saya. (I sit next to my friend.),Saya duduk di sebelah teman saya.,(I sit next to my friend.),4
-Preposition,Above,Di atas,Burung terbang di atas pohon. (The bird flies above the tree.),Burung terbang di atas pohon.,(The bird flies above the tree.),3
-Preposition,Below,Di bawah,Tikus berlari di bawah sofa. (The mouse runs below the sofa.),Tikus berlari di bawah sofa.,(The mouse runs below the sofa.),3
-Travel,Hello,Halo,"Halo, apa kabar? (Hello, how are you?)","Halo, apa kabar?","(Hello, how are you?)",5
-Travel,Goodbye,Selamat tinggal,"Selamat tinggal, sampai jumpa! (Goodbye, see you!)","Selamat tinggal, sampai jumpa!","(Goodbye, see you!)",5
-Travel,Thank you,Terima kasih,Terima kasih atas bantuannya. (Thank you for your help.),Terima kasih atas bantuannya.,(Thank you for your help.),5
-Travel,Please,Tolong,Tolong bantu saya. (Please help me.),Tolong bantu saya.,(Please help me.),5
-Travel,Excuse me,Permisi,"Permisi, bisa saya lewat? (Excuse me, can I pass?)","Permisi, bisa saya lewat?","(Excuse me, can I pass?)",5
-Travel,Sorry,Maaf,"Maaf, saya tidak mengerti. (Sorry, I don’t understand.)","Maaf, saya tidak mengerti.","(Sorry, I don’t understand.)",5
-Travel,Yes,Ya,"Ya, saya setuju. (Yes, I agree.)","Ya, saya setuju.","(Yes, I agree.)",5
-Travel,No,Tidak,"Tidak, saya tidak mau. (No, I don’t want to.)","Tidak, saya tidak mau.","(No, I don’t want to.)",5
-Travel,Toilet,Toilet,Di mana toilet? (Where is the toilet?),Di mana toilet?,(Where is the toilet?),5
-Travel,Hotel,Hotel,Saya menginap di hotel ini. (I am staying at this hotel.),Saya menginap di hotel ini.,(I am staying at this hotel.),5
-Travel,Restaurant,Restoran,Restoran ini sangat bagus. (This restaurant is very good.),Restoran ini sangat bagus.,(This restaurant is very good.),5
-Travel,Airport,Bandara,Bandara ini sangat besar. (This airport is very large.),Bandara ini sangat besar.,(This airport is very large.),3
-Travel,Train station,Stasiun kereta,Saya naik kereta dari stasiun ini. (I take a train from this station.),Saya naik kereta dari stasiun ini.,(I take a train from this station.),1
-Travel,Bus stop,Halte bus,Halte bus terdekat ada di ujung jalan. (The nearest bus stop is at the end of the road.),Halte bus terdekat ada di ujung jalan.,(The nearest bus stop is at the end of the road.),3
-Travel,Taxi,Taksi,Saya memesan taksi ke bandara. (I ordered a taxi to the airport.),Saya memesan taksi ke bandara.,(I ordered a taxi to the airport.),3
-Travel,Ticket,Tiket,Saya membeli tiket pesawat. (I buy a plane ticket.),Saya membeli tiket pesawat.,(I buy a plane ticket.),3
-Travel,Reservation,Reservasi,Saya ingin membuat reservasi. (I want to make a reservation.),Saya ingin membuat reservasi.,(I want to make a reservation.),3
-Travel,Emergency,Darurat,Ini adalah keadaan darurat! (This is an emergency!),Ini adalah keadaan darurat!,(This is an emergency!),3
-Travel,Trail,Jalur,Jalur ini menuju ke puncak gunung. (This trail leads to the mountain peak.),Jalur ini menuju ke puncak gunung.,(This trail leads to the mountain peak.),4
-Travel,Path,Jalan setapak,Jalan setapak ini sangat sempit. (This path is very narrow.),Jalan setapak ini sangat sempit.,(This path is very narrow.),2
-Travel,Map,Peta,Saya butuh peta untuk menemukan jalannya. (I need a map to find the way.),Saya butuh peta untuk menemukan jalannya.,(I need a map to find the way.),1
-Travel,Compass,Kompas,Saya membawa kompas untuk berjaga-jaga. (I bring a compass just in case.),Saya membawa kompas untuk berjaga-jaga.,(I bring a compass just in case.),1
-Travel,Tent,Tenda,Kami mendirikan tenda di dekat sungai. (We set up a tent near the river.),Kami mendirikan tenda di dekat sungai.,(We set up a tent near the river.),1
-Travel,Sleeping bag,Sleeping bag,Saya tidur di sleeping bag karena dingin. (I sleep in a sleeping bag because it is cold.),Saya tidur di sleeping bag karena dingin.,(I sleep in a sleeping bag because it is cold.),1
-Travel,Backpack,Ransel,Ransel saya berat karena penuh dengan perlengkapan. (My backpack is heavy because it is full of gear.),Ransel saya berat karena penuh dengan perlengkapan.,(My backpack is heavy because it is full of gear.),1
-Travel,Water bottle,Botol air,Saya membawa botol air tambahan. (I carry an extra water bottle.),Saya membawa botol air tambahan.,(I carry an extra water bottle.),1
-Travel,Food,Makanan,Makanan ini cukup untuk tiga hari. (This food is enough for three days.),Makanan ini cukup untuk tiga hari.,(This food is enough for three days.),5
-Travel,Danger,Bahaya,"Hati-hati, ada bahaya di jalan ini! (Be careful, there is danger on this path!)","Hati-hati, ada bahaya di jalan ini!","(Be careful, there is danger on this path!)",4
-Travel,Safe,Aman,Tempat ini aman untuk berkemah. (This place is safe for camping.),Tempat ini aman untuk berkemah.,(This place is safe for camping.),4
-Travel,Help!,Tolong!,Tolong! Saya butuh bantuan! (Help! I need help!),Tolong! Saya butuh bantuan!,(Help! I need help!),5
-Travel,Lost,Tersesat,Saya tersesat di hutan. (I am lost in the forest.),Saya tersesat di hutan.,(I am lost in the forest.),4
-Travel,Guide,Pemandu,Pemandu wisata itu sangat ramah. (The tour guide is very friendly.),Pemandu wisata itu sangat ramah.,(The tour guide is very friendly.),5
-Travel,Porter,Pemandu barang,Pemandu barang membantu membawa tas saya. (The porter helped carry my bag.),Pemandu barang membantu membawa tas saya.,(The porter helped carry my bag.),3
-Travel,Driver,Sopir,Sopir taksi mengantar saya ke hotel. (The taxi driver took me to the hotel.),Sopir taksi mengantar saya ke hotel.,(The taxi driver took me to the hotel.),4
-Travel,Plane,Pesawat,Pesawat akan berangkat pukul 10 pagi. (The plane will depart at 10 AM.),Pesawat akan berangkat pukul 10 pagi.,(The plane will depart at 10 AM.),3
-Travel,Village chief,Kepala desa,Kepala desa memimpin rapat. (The village chief leads the meeting.),Kepala desa memimpin rapat.,(The village chief leads the meeting.),3
-Directions,This way,Jalan ini,Ikuti jalan ini untuk sampai ke desa. (Follow this way to get to the village.),Ikuti jalan ini untuk sampai ke desa.,(Follow this way to get to the village.),4
-Directions,That way,Jalan itu,Jalan itu menuju ke puncak gunung. (That way leads to the mountain peak.),Jalan itu menuju ke puncak gunung.,(That way leads to the mountain peak.),4
-Directions,Up,Naik,Kita harus naik bukit ini. (We have to go up this hill.),Kita harus naik bukit ini.,(We have to go up this hill.),3
-Directions,Down,Turun,Kita turun ke sungai. (We are going down to the river.),Kita turun ke sungai.,(We are going down to the river.),3
-Directions,Left,Kiri,Belok kiri di jalan setapak. (Turn left at the path.),Belok kiri di jalan setapak.,(Turn left at the path.),5
-Directions,Right,Kanan,Belok kanan setelah jembatan. (Turn right after the bridge.),Belok kanan setelah jembatan.,(Turn right after the bridge.),5
-Numbers,One,Satu,satu jam (one hour),satu jam,(one hour),5
-Numbers,Two,Dua,dua jam (two hours),dua jam,(two hours),5
-Numbers,Three,Tiga,Tiga jam (Three hours),Tiga jam,(Three hours),5
-Numbers,Four,Empat,Empat jam (Four hours),Empat jam,(Four hours),5
-Numbers,Five,Lima,Lima jam (Five hours),Lima jam,(Five hours),5
-Numbers,Six,Enam,Enam jam (Six hours),Enam jam,(Six hours),5
-Numbers,Seven,Tujuh,Tujuh jam (Seven hours),Tujuh jam,(Seven hours),5
-Numbers,Eight,Delapan,Delapan jam (Eight hours),Delapan jam,(Eight hours),5
-Numbers,Nine,Sembilan,Sembilan jam (Nine hours),Sembilan jam,(Nine hours),5
-Numbers,Ten,Sepuluh,Sepuluh jam (Ten hours),Sepuluh jam,(Ten hours),5
-Numbers,Eleven,Sebelas,Sebelas jam (Eleven hours),Sebelas jam,(Eleven hours),3
-Numbers,Twelve,Dua belas,Dua belas hari (Twelve days),Dua belas hari,(Twelve days),5
-Numbers,Twenty,Dua puluh,Dua puluh hari (Twenty days),Dua puluh hari,(Twenty days),5
-Numbers,One hundred,Seratus,Seratus orang (One hundred people),Seratus orang,(One hundred people),5
-Numbers,Two hundred,Dua ratus,Dua ratus orang (Two hundred people),Dua ratus orang,(Two hundred people),5
-Numbers,One thousand,Seribu,Seribu orang (One thousand people),Seribu orang,(One thousand people),5
-Numbers,Two thousand,Dua ribu,Harga tiketnya dua ribu rupiah. (The ticket price is two thousand rupiah.),Harga tiketnya dua ribu rupiah.,(The ticket price is two thousand rupiah.),5
-Numbers,One hundred thousand,Seratus ribu,Harga hotel seratus ribu rupiah per malam. (The hotel costs one hundred thousand rupiah per night.),Harga hotel seratus ribu rupiah per malam.,(The hotel costs one hundred thousand rupiah per night.),5
-Numbers,Two hundred thousand,Dua ratus ribu,Dia membayar dua ratus ribu rupiah. (He paid two hundred thousand rupiah.),Dia membayar dua ratus ribu rupiah.,(He paid two hundred thousand rupiah.),5
-Numbers,One million,Satu juta,Penduduk kota ini sekitar satu juta orang. (The city's population is about one million people.),Penduduk kota ini sekitar satu juta orang.,(The city's population is about one million people.),5
-Numbers,Two million,Dua juta,Saya ingin menyumbang dua juta rupiah. (I want to donate two million rupiah.),Saya ingin menyumbang dua juta rupiah.,(I want to donate two million rupiah.),5
-Noun,House,Rumah,Saya tinggal di rumah besar. (I live in a big house.),Saya tinggal di rumah besar.,(I live in a big house.),4
-Noun,Car,Mobil,Mobil itu sangat cepat. (That car is very fast.),Mobil itu sangat cepat.,(That car is very fast.),4
-Noun,Road,Jalan,Saya berjalan di jalan kecil. (I walk on a small road.),Saya berjalan di jalan kecil.,(I walk on a small road.),5
-Noun,Street,Jalan raya,Jalan raya ini sibuk. (This street is busy.),Jalan raya ini sibuk.,(This street is busy.),1
-Noun,City,Kota,Jakarta adalah kota besar. (Jakarta is a big city.),Jakarta adalah kota besar.,(Jakarta is a big city.),2
-Noun,Village,Desa,Desa itu sangat indah. (That village is very beautiful.),Desa itu sangat indah.,(That village is very beautiful.),4
-Noun,Market,Pasar,Pasar ini menjual buah segar. (This market sells fresh fruit.),Pasar ini menjual buah segar.,(This market sells fresh fruit.),4
-Noun,Shop,Toko,Saya membeli baju di toko. (I buy clothes at the shop.),Saya membeli baju di toko.,(I buy clothes at the shop.),3
-Noun,School,Sekolah,Sekolah saya besar. (My school is big.),Sekolah saya besar.,(My school is big.),4
-Noun,Office,Kantor,Dia bekerja di kantor pusat. (He works at the head office.),Dia bekerja di kantor pusat.,(He works at the head office.),3
-Noun,Hospital,Rumah sakit,Saya pergi ke rumah sakit. (I go to the hospital.),Saya pergi ke rumah sakit.,(I go to the hospital.),3
-Noun,Doctor,Dokter,Dokter itu sangat baik. (The doctor is very kind.),Dokter itu sangat baik.,(The doctor is very kind.),3
-Noun,Police,Polisi,Polisi itu membantu saya. (The police officer helped me.),Polisi itu membantu saya.,(The police officer helped me.),3
-Noun,Airport,Bandara,Bandara ini sangat ramai. (This airport is very crowded.),Bandara ini sangat ramai.,(This airport is very crowded.),3
-Noun,Bus,Bus,Saya naik bus ke kota. (I take a bus to the city.),Saya naik bus ke kota.,(I take a bus to the city.),3
-Noun,Train,Kereta,Kereta ini cepat. (This train is fast.),Kereta ini cepat.,(This train is fast.),2
-Noun,Bridge,Jembatan,Jembatan ini sangat panjang. (This bridge is very long.),Jembatan ini sangat panjang.,(This bridge is very long.),1
-Noun,Mountain,Gunung,Gunung itu tinggi. (That mountain is tall.),Gunung itu tinggi.,(That mountain is tall.),3
-Noun,River,Sungai,Sungai ini jernih. (This river is clear.),Sungai ini jernih.,(This river is clear.),3
-Noun,Sea,Laut,Laut di Bali indah. (The sea in Bali is beautiful.),Laut di Bali indah.,(The sea in Bali is beautiful.),3
-Noun,Island,Pulau,Pulau ini kecil. (This island is small.),Pulau ini kecil.,(This island is small.),3
-Noun,Forest,Hutan,Hutan ini lebat. (This forest is dense.),Hutan ini lebat.,(This forest is dense.),3
-Noun,Tree,Pohon,Pohon ini sangat besar. (This tree is very big.),Pohon ini sangat besar.,(This tree is very big.),2
-Noun,Flower,Bunga,Saya suka bunga merah. (I like red flowers.),Saya suka bunga merah.,(I like red flowers.),1
-Noun,Grass,Rumput,Rumput di taman hijau. (The grass in the park is green.),Rumput di taman hijau.,(The grass in the park is green.),1
-Noun,Sun,Matahari,Matahari bersinar terang. (The sun is shining brightly.),Matahari bersinar terang.,(The sun is shining brightly.),2
-Noun,Moon,Bulan,Bulan terlihat jelas malam ini. (The moon is clear tonight.),Bulan terlihat jelas malam ini.,(The moon is clear tonight.),1
-Noun,Star,Bintang,Bintang itu sangat indah. (That star is very beautiful.),Bintang itu sangat indah.,(That star is very beautiful.),1
-Noun,Sky,Langit,Langit biru hari ini. (The sky is blue today.),Langit biru hari ini.,(The sky is blue today.),1
-Noun,Cloud,Awan,Awan hitam membawa hujan. (The dark clouds bring rain.),Awan hitam membawa hujan.,(The dark clouds bring rain.),2
-Noun,Rain,Hujan,Hujan turun deras. (The rain falls heavily.),Hujan turun deras.,(The rain falls heavily.),3
-Noun,Wind,Angin,Angin bertiup kencang. (The wind is blowing strong.),Angin bertiup kencang.,(The wind is blowing strong.),3
-Noun,Fire,Api,Api itu sangat panas. (The fire is very hot.),Api itu sangat panas.,(The fire is very hot.),4
-Noun,Water,Air,Air ini dingin. (This water is cold.),Air ini dingin.,(This water is cold.),4
-Noun,Land,Tanah,Tanah ini subur. (This land is fertile.),Tanah ini subur.,(This land is fertile.),1
-Noun,Clothes,Pakaian,Pakaian ini baru. (These clothes are new.),Pakaian ini baru.,(These clothes are new.),3
-Noun,Shoes,Sepatu,Sepatu saya hitam. (My shoes are black.),Sepatu saya hitam.,(My shoes are black.),3
-Noun,Bag,Tas,Saya membawa tas merah. (I carry a red bag.),Saya membawa tas merah.,(I carry a red bag.),3
-Noun,Gift (noun),Hadiah,Saya membeli hadiah untuk teman saya. (I bought a gift for my friend.),Saya membeli hadiah untuk teman saya.,(I bought a gift for my friend.),3
-Noun,Money,Uang,Saya menabung uang. (I save money.),Saya menabung uang.,(I save money.),3
-Noun,Phone,Telepon,Telepon saya rusak. (My phone is broken.),Telepon saya rusak.,(My phone is broken.),3
-Noun,Computer,Komputer,Komputer ini cepat. (This computer is fast.),Komputer ini cepat.,(This computer is fast.),2
-Noun,Book,Buku,Saya membaca buku. (I read a book.),Saya membaca buku.,(I read a book.),1
-Noun,Pen,Pulpen,Saya menulis dengan pulpen. (I write with a pen.),Saya menulis dengan pulpen.,(I write with a pen.),1
-Noun,Church,Gereja,Kami pergi ke gereja setiap Minggu. (We go to church every Sunday.),Kami pergi ke gereja setiap Minggu.,(We go to church every Sunday.),3
-Noun,Bird,Burung,Burung itu bernyanyi di pagi hari. (The bird sings in the morning.),Burung itu bernyanyi di pagi hari.,(The bird sings in the morning.),2
-Noun,Family,Keluarga,Keluarga saya tinggal di Jakarta. (My family lives in Jakarta.),Keluarga saya tinggal di Jakarta.,(My family lives in Jakarta.),3
-Noun,Husband,Suami,Suami saya suka memasak. (My husband likes to cook.),Suami saya suka memasak.,(My husband likes to cook.),3
-Noun,Wife,Istri,Istri saya bekerja di rumah sakit. (My wife works at a hospital.),Istri saya bekerja di rumah sakit.,(My wife works at a hospital.),3
-Noun,Child,Anak,Anak saya belajar di sekolah dasar. (My child studies in elementary school.),Anak saya belajar di sekolah dasar.,(My child studies in elementary school.),3
-Noun,Man,Pria,Pria itu sangat ramah. (That man is very friendly.),Pria itu sangat ramah.,(That man is very friendly.),4
-Noun,Woman,Wanita,Wanita itu bekerja di toko. (That woman works at the shop.),Wanita itu bekerja di toko.,(That woman works at the shop.),4
-Noun,Food,Makanan,Makanan ini enak. (This food is delicious.),Makanan ini enak.,(This food is delicious.),5
-Noun,Drink,Minuman,Minuman ini segar. (This drink is refreshing.),Minuman ini segar.,(This drink is refreshing.),5
-Food,Rice,Nasi,Saya makan nasi setiap hari. (I eat rice every day.),Saya makan nasi setiap hari.,(I eat rice every day.),5
-Food,Meat,Daging,Daging sapi ini mahal. (This beef is expensive.),Daging sapi ini mahal.,(This beef is expensive.),5
-Food,Fish,Ikan,Ikan ini segar. (This fish is fresh.),Ikan ini segar.,(This fish is fresh.),5
-Food,Vegetable,Sayur,Saya suka sayur hijau. (I like green vegetables.),Saya suka sayur hijau.,(I like green vegetables.),5
-Food,Fruit,Buah,Buah mangga manis. (The mango fruit is sweet.),Buah mangga manis.,(The mango fruit is sweet.),5
-Food,Noodles,Mie,Mie goreng ini enak. (These fried noodles are delicious.),Mie goreng ini enak.,(These fried noodles are delicious.),5
-Food,Bread,Roti,Saya suka roti tawar. (I like plain bread.),Saya suka roti tawar.,(I like plain bread.),3
-Food,Chicken,Ayam,Ayam goreng sangat populer di sini. (Fried chicken is very popular here.),Ayam goreng sangat populer di sini.,(Fried chicken is very popular here.),4
-Food,Beef,Daging sapi,Saya makan daging sapi di restoran. (I eat beef at the restaurant.),Saya makan daging sapi di restoran.,(I eat beef at the restaurant.),4
-Food,Pork,Daging babi,Daging babi ini lezat. (This pork is delicious.),Daging babi ini lezat.,(This pork is delicious.),4
-Food,Fish,Ikan,Saya suka ikan bakar. (I like grilled fish.),Saya suka ikan bakar.,(I like grilled fish.),4
-Food,Shrimp,Udang,Udang ini sangat segar. (This shrimp is very fresh.),Udang ini sangat segar.,(This shrimp is very fresh.),4
-Food,Egg,Telur,Saya makan telur rebus. (I eat a boiled egg.),Saya makan telur rebus.,(I eat a boiled egg.),4
-Food,Milk,Susu,Saya minum susu setiap pagi. (I drink milk every morning.),Saya minum susu setiap pagi.,(I drink milk every morning.),4
-Food,Cheese,Keju,Saya suka keju di pizza saya. (I like cheese on my pizza.),Saya suka keju di pizza saya.,(I like cheese on my pizza.),3
-Food,Butter,Mentega,Mentega ini lembut. (This butter is soft.),Mentega ini lembut.,(This butter is soft.),3
-Food,Vegetables,Sayuran,Saya makan sayuran hijau. (I eat green vegetables.),Saya makan sayuran hijau.,(I eat green vegetables.),4
-Food,Spicy,Pedas,Makanan ini terlalu pedas. (This food is too spicy.),Makanan ini terlalu pedas.,(This food is too spicy.),3
-Food,Sweet,Manis,Saya suka makanan yang manis. (I like sweet food.),Saya suka makanan yang manis.,(I like sweet food.),3
-Food,Salty,Asin,Sup ini terlalu asin. (This soup is too salty.),Sup ini terlalu asin.,(This soup is too salty.),3
-Food,Sour,Asam,Rasanya agak asam. (The taste is a bit sour.),Rasanya agak asam.,(The taste is a bit sour.),3
-Food,Vegetarian,Vegetarian,"Saya vegetarian, tidak makan daging. (I am vegetarian, I don't eat meat.)","Saya vegetarian, tidak makan daging.","(I am vegetarian, I don't eat meat.)",4
-Food,Allergy,Alergi,Saya punya alergi terhadap kacang. (I have an allergy to peanuts.),Saya punya alergi terhadap kacang.,(I have an allergy to peanuts.),4
-Time,Now,Sekarang,Saya sedang makan sekarang. (I am eating now.),Saya sedang makan sekarang.,(I am eating now.),4
-Time,Soon,Segera,Kami akan berangkat segera. (We will leave soon.),Kami akan berangkat segera.,(We will leave soon.),4
-Time,Next,Berikutnya,Saya akan pergi ke kota berikutnya. (I will go to the next city.),Saya akan pergi ke kota berikutnya.,(I will go to the next city.),4
-Time,Last,Terakhir,Itu adalah perjalanan terakhir saya. (That was my last trip.),Itu adalah perjalanan terakhir saya.,(That was my last trip.),4
-Time,Later,Nanti,Saya akan bertemu kamu nanti. (I will meet you later.),Saya akan bertemu kamu nanti.,(I will meet you later.),4
-Time,Today,Hari ini,Hari ini sangat panas. (Today is very hot.),Hari ini sangat panas.,(Today is very hot.),5
-Time,Tomorrow,Besok,Besok kita akan pergi ke pantai. (Tomorrow we will go to the beach.),Besok kita akan pergi ke pantai.,(Tomorrow we will go to the beach.),5
-Time,Yesterday,Kemarin,Saya bertemu dia kemarin. (I met him yesterday.),Saya bertemu dia kemarin.,(I met him yesterday.),5
-Time,Day,Hari,Saya tinggal di sini selama tiga hari. (I stayed here for three days.),Saya tinggal di sini selama tiga hari.,(I stayed here for three days.),4
-Time,Week,Minggu,Kami pergi berlibur selama satu minggu. (We went on vacation for one week.),Kami pergi berlibur selama satu minggu.,(We went on vacation for one week.),4
-Time,Month,Bulan,Saya akan tinggal di Bali selama satu bulan. (I will stay in Bali for one month.),Saya akan tinggal di Bali selama satu bulan.,(I will stay in Bali for one month.),4
-Time,Night,Malam,Malam ini langit penuh bintang. (Tonight the sky is full of stars.),Malam ini langit penuh bintang.,(Tonight the sky is full of stars.),4
-Time,Minutes,Menit,Saya menunggu lima menit. (I waited five minutes.),Saya menunggu lima menit.,(I waited five minutes.),4
-Time,Hours,Jam,Pertemuan berlangsung selama dua jam. (The meeting lasted for two hours.),Pertemuan berlangsung selama dua jam.,(The meeting lasted for two hours.),4
-Time,AM / PM,Pagi / Malam,Kita bertemu jam 10 pagi / malam. (We meet at 10 AM / PM.),Kita bertemu jam 10 pagi / malam.,(We meet at 10 AM / PM.),4
-Time,Afternoon,Sore,Saya suka berjalan-jalan di sore hari. (I like to take walks in the afternoon.),Saya suka berjalan-jalan di sore hari.,(I like to take walks in the afternoon.),4
-Time,Morning,Pagi,Saya bangun pagi setiap hari. (I wake up early every morning.),Saya bangun pagi setiap hari.,(I wake up early every morning.),4
-Time,Monday,Senin,Saya bekerja pada hari Senin. (I work on Monday.),Saya bekerja pada hari Senin.,(I work on Monday.),4
-Time,Tuesday,Selasa,Besok hari Selasa. (Tomorrow is Tuesday.),Besok hari Selasa.,(Tomorrow is Tuesday.),4
-Time,Wednesday,Rabu,Saya punya janji pada hari Rabu. (I have an appointment on Wednesday.),Saya punya janji pada hari Rabu.,(I have an appointment on Wednesday.),4
-Time,Thursday,Kamis,Kami pergi ke pasar setiap Kamis. (We go to the market every Thursday.),Kami pergi ke pasar setiap Kamis.,(We go to the market every Thursday.),4
-Time,Friday,Jumat,Hari Jumat adalah hari favorit saya. (Friday is my favorite day.),Hari Jumat adalah hari favorit saya.,(Friday is my favorite day.),4
-Time,Saturday,Sabtu,Saya libur pada hari Sabtu. (I have a day off on Saturday.),Saya libur pada hari Sabtu.,(I have a day off on Saturday.),4
-Time,Sunday,Minggu,Kami ke gereja setiap hari Minggu. (We go to church every Sunday.),Kami ke gereja setiap hari Minggu.,(We go to church every Sunday.),4
+Type,English,Indonesian,Example sentence (combined),Example (Indo),Example (English),Weight
+Question,Who,Siapa,Siapa nama teman Anda? (Who is your friend's name?),Siapa nama teman Anda?,Who is your friend's name?,3
+Question,What,Apa,Apa yang kamu makan pagi ini? (What are you eating this morning?),Apa yang kamu makan pagi ini?,What are you eating this morning?,5
+Question,When,Kapan,Kapan kita pergi ke pantai? (When will we go to the beach?),Kapan kita pergi ke pantai?,When will we go to the beach?,5
+Question,Where,Di mana,Di mana restoran terdekat? (Where is the nearest restaurant?),Di mana restoran terdekat?,Where is the nearest restaurant?,5
+Question,Why,Kenapa,Kenapa makanan ini pedas? (Why is this food spicy?),Kenapa makanan ini pedas?,Why is this food spicy?,3
+Question,How,Bagaimana,Bagaimana cara ke pasar? (How do I get to the market?),Bagaimana cara ke pasar?,How do I get to the market?,3
+Question,How much?,Berapa harganya?,Berapa harga buah ini? (How much does this fruit cost?),Berapa harga buah ini?,How much does this fruit cost?,5
+Pronoun,I,Saya/Aku,Saya suka makan nasi goreng. (I like to eat fried rice.),Saya suka makan nasi goreng.,I like to eat fried rice.,5
+Pronoun,You (singular),Kamu/Anda,Kamu tinggal di hotel mana? (Which hotel are you staying at?),Kamu tinggal di hotel mana?,Which hotel are you staying at?,5
+Pronoun,He,Dia (laki-laki),Dia membeli tiket pesawat kemarin. (He bought a plane ticket yesterday.),Dia membeli tiket pesawat kemarin.,He bought a plane ticket yesterday.,5
+Pronoun,She,Dia (perempuan),Dia minum kopi setiap pagi. (She drinks coffee every morning.),Dia minum kopi setiap pagi.,She drinks coffee every morning.,5
+Pronoun,We (inclusive),Kita,Kita akan bertemu di restoran nanti. (We will meet at the restaurant later.),Kita akan bertemu di restoran nanti.,We will meet at the restaurant later.,4
+Pronoun,We (exclusive),Kami,Kami pergi ke pantai minggu lalu. (We went to the beach last week.),Kami pergi ke pantai minggu lalu.,We went to the beach last week.,5
+Pronoun,They,Mereka,Mereka sedang makan siang di warung. (They are having lunch at the food stall.),Mereka sedang makan siang di warung.,They are having lunch at the food stall.,5
+Pronoun,It,Itu,Itu adalah tas saya. (That is my bag.),Itu adalah tas saya.,That is my bag.,5
+Pronoun,You (plural),Kalian,Kalian mau pergi ke mana besok? (Where do you all want to go tomorrow?),Kalian mau pergi ke mana besok?,Where do you all want to go tomorrow?,5
+Verb,Eat,Makan,Saya makan nasi tiga kali sehari. (I eat rice three times a day.),Saya makan nasi tiga kali sehari.,I eat rice three times a day.,5
+Verb,Drink,Minum,Dia minum air setelah berolahraga. (He drinks water after exercising.),Dia minum air setelah berolahraga.,He drinks water after exercising.,5
+Verb,Go,Pergi,Kami pergi ke pasar pagi ini. (We go to the market this morning.),Kami pergi ke pasar pagi ini.,We go to the market this morning.,5
+Verb,Come,Datang,Mereka datang dari Bali kemarin. (They came from Bali yesterday.),Mereka datang dari Bali kemarin.,They came from Bali yesterday.,5
+Verb,See,Melihat,Saya melihat gunung dari jendela hotel. (I see the mountain from the hotel window.),Saya melihat gunung dari jendela hotel.,I see the mountain from the hotel window.,4
+Verb,Watch,Menonton,Kita menonton film Indonesia malam ini. (We're watching an Indonesian movie tonight.),Kita menonton film Indonesia malam ini.,We're watching an Indonesian movie tonight.,4
+Verb,Look,Melihat,Dia melihat pemandangan indah. (He looks at the beautiful scenery.),Dia melihat pemandangan indah.,He looks at the beautiful scenery.,4
+Verb,Listen,Mendengarkan,Saya mendengarkan musik di kamar. (I listen to music in the room.),Saya mendengarkan musik di kamar.,I listen to music in the room.,4
+Verb,Hear,Mendengar,Apa kamu mendengar suara itu? (Do you hear that sound?),Apa kamu mendengar suara itu?,Do you hear that sound?,4
+Verb,Speak,Berbicara,Dia berbicara bahasa Indonesia dengan lancar. (He speaks Indonesian fluently.),Dia berbicara bahasa Indonesia dengan lancar.,He speaks Indonesian fluently.,4
+Verb,Say,Mengatakan,Dia mengatakan nama hotel itu. (He says the name of the hotel.),Dia mengatakan nama hotel itu.,He says the name of the hotel.,3
+Verb,Tell,Menceritakan,Pemandu menceritakan sejarah candi. (The guide tells the history of the temple.),Pemandu menceritakan sejarah candi.,The guide tells the history of the temple.,1
+Verb,Ask,Bertanya,Turis bertanya tentang arah ke hotel. (The tourist asks about directions to the hotel.),Turis bertanya tentang arah ke hotel.,The tourist asks about directions to the hotel.,3
+Verb,Give,Memberi,Saya memberikan hadiah kepada teman. (I give a gift to a friend.),Saya memberikan hadiah kepada teman.,I give a gift to a friend.,4
+Verb,Take,Mengambil,Saya mengambil koper dari kamar. (I take the suitcase from the room.),Saya mengambil koper dari kamar.,I take the suitcase from the room.,4
+Verb,Bring,Membawa,Pelayan membawa makanan ke meja. (The waiter brings food to the table.),Pelayan membawa makanan ke meja.,The waiter brings food to the table.,3
+Verb,Buy,Membeli,Kami membeli oleh-oleh di pasar. (We buy souvenirs at the market.),Kami membeli oleh-oleh di pasar.,We buy souvenirs at the market.,4
+Verb,Sell,Menjual,Toko itu menjual kerajinan tangan. (That shop sells handicrafts.),Toko itu menjual kerajinan tangan.,That shop sells handicrafts.,5
+Verb,Like,Suka,Dia suka pantai di Bali. (He likes beaches in Bali.),Dia suka pantai di Bali.,He likes beaches in Bali.,5
+Verb,Love,Cinta,Saya cinta makanan Indonesia. (I love Indonesian food.),Saya cinta makanan Indonesia.,I love Indonesian food.,3
+Verb,Want,Ingin,Saya ingin makan nasi goreng. (I want to eat fried rice.),Saya ingin makan nasi goreng.,I want to eat fried rice.,5
+Verb,Need,Butuh,Kami membutuhkan taksi ke bandara. (We need a taxi to the airport.),Kami membutuhkan taksi ke bandara.,We need a taxi to the airport.,4
+Verb,Make,Membuat,Ibu membuat nasi goreng untuk sarapan. (Mother makes fried rice for breakfast.),Ibu membuat nasi goreng untuk sarapan.,Mother makes fried rice for breakfast.,4
+Verb,Do,Melakukan,Apa yang kamu melakukan di Bali? (What are you doing in Bali?),Apa yang kamu melakukan di Bali?,What are you doing in Bali?,5
+Verb,Use,Menggunakan,Kami menggunakan bus untuk pergi ke pantai. (We use the bus to go to the beach.),Kami menggunakan bus untuk pergi ke pantai.,We use the bus to go to the beach.,5
+Verb,Work,Bekerja,Dia bekerja di hotel ini. (He works at this hotel.),Dia bekerja di hotel ini.,He works at this hotel.,3
+Verb,Try,Mencoba,Saya mau mencoba makanan Indonesia. (I want to try Indonesian food.),Saya mau mencoba makanan Indonesia.,I want to try Indonesian food.,3
+Verb,Know,Tahu,Apa kamu tahu arah ke pasar? (Do you know the way to the market?),Apa kamu tahu arah ke pasar?,Do you know the way to the market?,3
+Verb,Understand,Mengerti,Saya tidak mengerti bahasa Indonesia. (I don't understand Indonesian.),Saya tidak mengerti bahasa Indonesia.,I don't understand Indonesian.,4
+Verb,Learn,Belajar,Saya belajar bahasa Indonesia untuk liburan. (I learn Indonesian for vacation.),Saya belajar bahasa Indonesia untuk liburan.,I learn Indonesian for vacation.,3
+Verb,Teach,Mengajar,Wanita itu mengajar bahasa Indonesia. (The woman teaches Indonesian language.),Wanita itu mengajar bahasa Indonesia.,The woman teaches Indonesian language.,3
+Verb,Remember,Mengingat,Dia ingat nama saya. (He remembers my name.),Dia ingat nama saya.,He remembers my name.,1
+Verb,Forget,Lupa,Saya lupa nomor kamar hotel. (I forget my hotel room number.),Saya lupa nomor kamar hotel.,I forget my hotel room number.,1
+Verb,Wait,Menunggu,Kami menunggu taksi di depan hotel. (We wait for a taxi in front of the hotel.),Kami menunggu taksi di depan hotel.,We wait for a taxi in front of the hotel.,4
+Verb,Call,Memanggil,Dia memanggil pelayan di restoran. (He calls the waiter in the restaurant.),Dia memanggil pelayan di restoran.,He calls the waiter in the restaurant.,3
+Verb,Meet,Bertemu,Kami akan bertemu di lobi hotel. (We will meet in the hotel lobby.),Kami akan bertemu di lobi hotel.,We will meet in the hotel lobby.,4
+Verb,Help,Membantu,Dia membantu turis yang tersesat. (He helps tourists who are lost.),Dia membantu turis yang tersesat.,He helps tourists who are lost.,4
+Verb,Run,Berlari,Dia berlari di taman setiap pagi. (He runs in the park every morning.),Dia berlari di taman setiap pagi.,He runs in the park every morning.,2
+Verb,Walk,Berjalan,Kami berjalan di pantai saat matahari terbenam. (We walk on the beach at sunset.),Kami berjalan di pantai saat matahari terbenam.,We walk on the beach at sunset.,4
+Verb,Sleep,Tidur,Kami tidur di hotel yang nyaman. (We sleep in a comfortable hotel.),Kami tidur di hotel yang nyaman.,We sleep in a comfortable hotel.,4
+Verb,Wake up,Bangun,Saya bangun pukul enam pagi. (I wake up at six in the morning.),Saya bangun pukul enam pagi.,I wake up at six in the morning.,3
+Verb,Stand,Berdiri,Dia berdiri di depan toko. (He stands in front of the shop.),Dia berdiri di depan toko.,He stands in front of the shop.,2
+Verb,Sit,Duduk,Mereka duduk di restoran dekat jendela. (They sit in the restaurant near the window.),Mereka duduk di restoran dekat jendela.,They sit in the restaurant near the window.,3
+Verb,Open,Membuka,Toko itu buka sampai malam. (That shop is open until night.),Toko itu buka sampai malam.,That shop is open until night.,4
+Verb,Close,Menutup,Tolong menutup pintu kamar. (Please close the room door.),Tolong menutup pintu kamar.,Please close the room door.,4
+Verb,Read,Membaca,Saya membaca buku tentang Indonesia. (I read a book about Indonesia.),Saya membaca buku tentang Indonesia.,I read a book about Indonesia.,2
+Verb,Write,Menulis,Dia menulis surat untuk keluarganya. (She writes a letter to her family.),Dia menulis surat untuk keluarganya.,She writes a letter to her family.,2
+Verb,Play,Bermain,Anak-anak bermain di pantai. (Children play on the beach.),Anak-anak bermain di pantai.,Children play on the beach.,2
+Verb,Pay,Membayar,Saya membayar makanan di kasir. (I pay for the food at the cashier.),Saya membayar makanan di kasir.,I pay for the food at the cashier.,4
+Verb,Leave,Meninggalkan,Kami meninggalkan hotel pukul tujuh pagi. (We leave the hotel at seven in the morning.),Kami meninggalkan hotel pukul tujuh pagi.,We leave the hotel at seven in the morning.,4
+Verb,Swim,Berenang,Saya berenang di kolam renang hotel. (I swim in the hotel pool.),Saya berenang di kolam renang hotel.,I swim in the hotel pool.,3
+Verb,Look for,Mencari,Saya mencari toilet di bandara. (I am looking for the toilet at the airport.),Saya mencari toilet di bandara.,I am looking for the toilet at the airport.,4
+Verb,Stop,Berhenti,Bus berhenti di halte depan. (The bus stops at the front stop.),Bus berhenti di halte depan.,The bus stops at the front stop.,4
+Verb,Rest,Istirahat,Kami perlu istirahat setelah mendaki gunung. (We need to rest after climbing the mountain.),Kami perlu istirahat setelah mendaki gunung.,We need to rest after climbing the mountain.,4
+Verb,Take photos,Mengambil foto,Boleh saya mengambil foto di candi? (May I take photos at the temple?),Boleh saya mengambil foto di candi?,May I take photos at the temple?,3
+Verb,Arrive,Tiba,Kami tiba di Bali sore ini. (We arrive in Bali this afternoon.),Kami tiba di Bali sore ini.,We arrive in Bali this afternoon.,4
+Verb,Turn,Belok,Belok kiri di perempatan. (Turn left at the intersection.),Belok kiri di perempatan.,Turn left at the intersection.,3
+Verb,Feel,Merasa,Saya merasa lelah setelah berjalan jauh. (I feel tired after walking far.),Saya merasa lelah setelah berjalan jauh.,I feel tired after walking far.,4
+Verb,Start,Mulai,Tur mulai pukul sembilan pagi. (The tour starts at nine in the morning.),Tur mulai pukul sembilan pagi.,The tour starts at nine in the morning.,3
+Verb,Finish,Selesai,Kami sudah selesai makan. (We have finished eating.),Kami sudah selesai makan.,We have finished eating.,3
+Verb,Agree,Setuju,Saya setuju dengan kamu. (I agree with you.),Saya setuju dengan kamu. ,I agree with you.,
+Verb,Disagree,Tidak setuju,Saya tidak setuju dengan ide itu. (I disagree with that idea.),Saya tidak setuju dengan ide itu.,I disagree with that idea.,
+Verb,Shower/ Bathe,Mandi,Saya mandi sebelum sarapan. (I shower before breakfast.),Saya mandi sebelum sarapan.,I shower before breakfast.,
+Adjective,Big,Besar,Hotel ini sangat besar. (This hotel is very big.),Hotel ini sangat besar.,This hotel is very big.,5
+Adjective,Small,Kecil,Kamar ini terlalu kecil. (This room is too small.),Kamar ini terlalu kecil.,This room is too small.,5
+Adjective,Fast,Cepat,Kereta itu sangat cepat. (That train is very fast.),Kereta itu sangat cepat.,That train is very fast.,3
+Adjective,Slow,Lambat,Pelayanan di restoran ini lambat. (The service at this restaurant is slow.),Pelayanan di restoran ini lambat.,The service at this restaurant is slow.,3
+Adjective,Hot,Panas,Cuaca hari ini sangat panas. (The weather today is very hot.),Cuaca hari ini sangat panas.,The weather today is very hot.,4
+Adjective,Cold,Dingin,Air di gunung sangat dingin. (The water in the mountains is very cold.),Air di gunung sangat dingin.,The water in the mountains is very cold.,4
+Adjective,Good,Baik,Makanan di restoran ini baik. (The food at this restaurant is good.),Makanan di restoran ini baik.,The food at this restaurant is good.,5
+Adjective,Bad,Buruk,Cuaca hari ini buruk untuk berenang. (The weather today is bad for swimming.),Cuaca hari ini buruk untuk berenang.,The weather today is bad for swimming.,5
+Adjective,Happy,Senang,Saya senang bertemu kamu. (I am happy to meet you.),Saya senang bertemu kamu.,I am happy to meet you.,3
+Adjective,Sad,Sedih,Dia sedih ketika liburan berakhir. (He is sad when the vacation ends.),Dia sedih ketika liburan berakhir.,He is sad when the vacation ends.,3
+Adjective,Easy,Mudah,Bahasa Indonesia mudah dipelajari. (Indonesian language is easy to learn.),Bahasa Indonesia mudah dipelajari.,Indonesian language is easy to learn.,3
+Adjective,Difficult,Sulit,Mendaki gunung itu sulit. (Climbing that mountain is difficult.),Mendaki gunung itu sulit.,Climbing that mountain is difficult.,3
+Adjective,Expensive,Mahal,Restoran itu sangat mahal untuk wisatawan. (That restaurant is very expensive for tourists.),Restoran itu sangat mahal untuk wisatawan.,That restaurant is very expensive for tourists.,4
+Adjective,Cheap,Murah,Hotel ini murah dan nyaman. (This hotel is cheap and comfortable.),Hotel ini murah dan nyaman.,This hotel is cheap and comfortable.,4
+Adjective,New,Baru,Ini hotel baru di kota. (This is a new hotel in the city.),Ini hotel baru di kota.,This is a new hotel in the city.,3
+Adjective,Old,Lama,Kota tua itu sangat menarik. (That old town is very interesting.),Kota tua itu sangat menarik.,That old town is very interesting.,3
+Adjective,Strong,Kuat,Kopi ini sangat kuat. (This coffee is very strong.),Kopi ini sangat kuat.,This coffee is very strong.,2
+Adjective,Weak,Lemah,Sinyal telepon lemah di gunung. (The phone signal is weak in the mountains.),Sinyal telepon lemah di gunung.,The phone signal is weak in the mountains.,2
+Adjective,Very,Sangat,Makanan ini sangat enak. (This food is very delicious.),Makanan ini sangat enak.,This food is very delicious.,4
+Adjective,Beautiful,Indah,Pemandangan di sini sangat indah. (The scenery here is very beautiful.),Pemandangan di sini sangat indah.,The scenery here is very beautiful.,4
+Adjective,Sick,Sakit,Saya sakit dan butuh obat. (I am sick and need medicine.),Saya sakit dan butuh obat.,I am sick and need medicine.,4
+Adjective,Tired,Lelah,Kami lelah setelah berjalan seharian. (We are tired after walking all day.),Kami lelah setelah berjalan seharian.,We are tired after walking all day.,4
+Adjective,Safe,Aman,Daerah ini aman untuk wisatawan. (This area is safe for tourists.),Daerah ini aman untuk wisatawan.,This area is safe for tourists.,4
+Adjective,Dangerous,Berbahaya,Berenang di sini berbahaya. (Swimming here is dangerous.),Berenang di sini berbahaya.,Swimming here is dangerous.,4
+Adjective,Many,Banyak,Banyak turis di Bali. (Many tourists in Bali.),Banyak turis di Bali.,Many tourists in Bali.,5
+Adjective,Few,Sedikit,Hanya sedikit orang di pantai pagi ini. (Only a few people at the beach this morning.),Hanya sedikit orang di pantai pagi ini.,Only a few people at the beach this morning.,3
+Adjective,More,Lebih,Saya perlu lebih banyak air. (I need more water.),Saya perlu lebih banyak air.,I need more water.,4
+Adjective,Less,Kurang,Nasi goreng ini kurang garam. (This fried rice has less salt.),Nasi goreng ini kurang garam.,This fried rice has less salt.,4
+Adjective,Full,Penuh,Bus ini penuh dengan penumpang. (This bus is full of passengers.),Bus ini penuh dengan penumpang.,This bus is full of passengers.,3
+Adjective,Empty,Kosong,Restoran itu kosong di pagi hari. (That restaurant is empty in the morning.),Restoran itu kosong di pagi hari.,That restaurant is empty in the morning.,2
+Adjective,Open (adj),Buka,Toko ini buka setiap hari. (This shop is open every day.),Toko ini buka setiap hari.,This shop is open every day.,4
+Adjective,Closed,Tutup,Museum tutup pada hari Senin. (The museum is closed on Monday.),Museum tutup pada hari Senin.,The museum is closed on Monday.,4
+Adjective,Busy,Sibuk,Jalan ini sangat sibuk siang hari. (This street is very busy during the day.),Jalan ini sangat sibuk siang hari.,This street is very busy during the day.,3
+Adjective,Free (available),Kosong (tidak sibuk),Apakah kursi ini kosong? (Is this chair free?),Apakah kursi ini kosong?,Is this chair free?,3
+Adjective,This,Ini,Restoran ini sangat bagus. (This restaurant is very good.),Restoran ini sangat bagus.,This restaurant is very good.,5
+Adjective,That,Itu,Hotel itu sangat mahal. (That hotel is very expensive.),Hotel itu sangat mahal.,That hotel is very expensive.,5
+Preposition,Near,Dekat,Hotel kami dekat pantai. (Our hotel is near the beach.),Hotel kami dekat pantai.,Our hotel is near the beach.,4
+Preposition,Far,Jauh,Bandara jauh dari pusat kota. (The airport is far from the city center.),Bandara jauh dari pusat kota.,The airport is far from the city center.,4
+Preposition,On,Di atas,Buku ada di atas meja. (The book is on the table.),Buku ada di atas meja.,The book is on the table.,3
+Preposition,In,Di dalam,Barang-barang ada di dalam tas. (The items are in the bag.),Barang-barang ada di dalam tas.,The items are in the bag.,3
+Preposition,Near,Di dekat,Hotel kami dekat pantai. (Our hotel is near the beach.),Hotel kami dekat pantai.,Our hotel is near the beach.,4
+Preposition,Under,Di bawah,Sepatu ada di bawah tempat tidur. (The shoes are under the bed.),Sepatu ada di bawah tempat tidur.,The shoes are under the bed.,2
+Preposition,Between,Di antara,Hotel kami di antara pantai dan pasar. (Our hotel is between the beach and the market.),Hotel kami di antara pantai dan pasar.,Our hotel is between the beach and the market.,2
+Preposition,Behind,Di belakang,Toilet ada di belakang restoran. (The toilet is behind the restaurant.),Toilet ada di belakang restoran.,The toilet is behind the restaurant.,3
+Preposition,In front of,Di depan,Taksi menunggu di depan hotel. (The taxi is waiting in front of the hotel.),Taksi menunggu di depan hotel.,The taxi is waiting in front of the hotel.,4
+Preposition,Next to,Di sebelah,Restoran ada di sebelah hotel. (The restaurant is next to the hotel.),Restoran ada di sebelah hotel.,The restaurant is next to the hotel.,4
+Preposition,Above,Di atas,Lampu ada di atas meja. (The lamp is above the table.),Lampu ada di atas meja.,The lamp is above the table.,3
+Preposition,Below,Di bawah,Sepatu ada di bawah tempat tidur. (The shoes are below the bed.),Sepatu ada di bawah tempat tidur.,The shoes are below the bed.,3
+Travel,Hello,Halo,Halo! Apa kabar? (Hello! How are you?),Halo! Apa kabar?,Hello! How are you?,5
+Travel,Goodbye,Selamat tinggal,Selamat tinggal! Sampai jumpa lagi. (Goodbye! See you again.),Selamat tinggal! Sampai jumpa lagi.,Goodbye! See you again.,5
+Travel,Thank you,Terima kasih,Terima kasih untuk bantuan Anda. (Thank you for your help.),Terima kasih untuk bantuan Anda.,Thank you for your help.,5
+Travel,Please,Tolong,Tolong bantu saya membawa koper ini. (Please help me carry this suitcase.),Tolong bantu saya membawa koper ini.,Please help me carry this suitcase.,5
+Travel,Excuse me,Permisi,"Permisi, bisa saya lewat? (Excuse me, can I pass?)","Permisi, bisa saya lewat?","Excuse me, can I pass?",5
+Travel,Sorry,Maaf,"Maaf, saya tidak mengerti. (Sorry, I don’t understand.)","Maaf, saya tidak mengerti.","Sorry, I don’t understand.",5
+Travel,Yes,Ya,"Ya, saya setuju. (Yes, I agree.)","Ya, saya setuju.","Yes, I agree.",5
+Travel,No,Tidak,"Tidak, saya tidak mau. (No, I don’t want to.)","Tidak, saya tidak mau.","No, I don’t want to.",5
+Travel,Toilet,Toilet,Toilet ada di lantai satu. (The toilet is on the first floor.),Toilet ada di lantai satu.,The toilet is on the first floor.,5
+Travel,Hotel,Hotel,Hotel kami dekat pantai. (Our hotel is near the beach.),Hotel kami dekat pantai.,Our hotel is near the beach.,5
+Travel,Restaurant,Restoran,Di mana restoran yang enak? (Where is a good restaurant?),Di mana restoran yang enak?,Where is a good restaurant?,5
+Travel,Airport,Bandara,Berapa jauh ke bandara? (How far is it to the airport?),Berapa jauh ke bandara?,How far is it to the airport?,3
+Travel,Train station,Stasiun kereta,Stasiun kereta dekat dengan hotel kami. (The train station is close to our hotel.),Stasiun kereta dekat dengan hotel kami.,The train station is close to our hotel.,1
+Travel,Bus stop,Halte bus,Halte bus ada di depan bank. (The bus stop is in front of the bank.),Halte bus ada di depan bank.,The bus stop is in front of the bank.,3
+Travel,Taxi,Taksi,Kami perlu taksi ke bandara. (We need a taxi to the airport.),Kami perlu taksi ke bandara.,We need a taxi to the airport.,3
+Travel,Ticket,Tiket,Di mana saya bisa beli tiket bus? (Where can I buy bus tickets?),Di mana saya bisa beli tiket bus?,Where can I buy bus tickets?,3
+Travel,Reservation,Reservasi,Saya punya reservasi kamar hotel. (I have a hotel room reservation.),Saya punya reservasi kamar hotel.,I have a hotel room reservation.,3
+Travel,Emergency,Darurat,Di mana rumah sakit untuk darurat? (Where is the hospital for emergencies?),Di mana rumah sakit untuk darurat?,Where is the hospital for emergencies?,3
+Travel,Trail,Jalur,Jalur pendakian ini berbahaya. (This hiking trail is dangerous.),Jalur pendakian ini berbahaya.,This hiking trail is dangerous.,4
+Travel,Path,Jalan setapak,Jalan setapak ini menuju ke air terjun. (This path leads to the waterfall.),Jalan setapak ini menuju ke air terjun.,This path leads to the waterfall.,2
+Travel,Map,Peta,Peta kota sangat membantu untuk wisatawan. (The city map is very helpful for tourists.),Peta kota sangat membantu untuk wisatawan.,The city map is very helpful for tourists.,1
+Travel,Compass,Kompas,Saya membawa kompas untuk hiking. (I bring a compass for hiking.),Saya membawa kompas untuk hiking.,I bring a compass for hiking.,1
+Travel,Tent,Tenda,Kami mendirikan tenda di dekat pantai. (We set up the tent near the beach.),Kami mendirikan tenda di dekat pantai.,We set up the tent near the beach.,1
+Travel,Sleeping bag,Sleeping bag,Jangan lupa membawa sleeping bag untuk camping. (Don't forget to bring a sleeping bag for camping.),Jangan lupa membawa sleeping bag untuk camping.,Don't forget to bring a sleeping bag for camping.,1
+Travel,Backpack,Ransel,Ransel saya berat sekali. (My backpack is very heavy.),Ransel saya berat sekali.,My backpack is very heavy.,1
+Travel,Water bottle,Botol air,Saya selalu membawa botol air saat bepergian. (I always carry a water bottle when traveling.),Saya selalu membawa botol air saat bepergian.,I always carry a water bottle when traveling.,1
+Travel,Food,Makanan,Makanan Indonesia sangat enak. (Indonesian food is very delicious.),Makanan Indonesia sangat enak.,Indonesian food is very delicious.,5
+Travel,Danger,Bahaya,Hati-hati! Ada bahaya longsor. (Be careful! There is a danger of landslides.),Hati-hati! Ada bahaya longsor.,Be careful! There is a danger of landslides.,4
+Travel,Safe,Aman,Daerah ini aman untuk wisatawan. (This area is safe for tourists.),Daerah ini aman untuk wisatawan.,This area is safe for tourists.,4
+Travel,Help!,Tolong!,Tolong! Saya tersesat di hutan. (Help! I am lost in the forest.),Tolong! Saya tersesat di hutan.,Help! I am lost in the forest.,5
+Travel,Lost,Tersesat,Kami tersesat di kota. (We are lost in the city.),Kami tersesat di kota.,We are lost in the city.,4
+Travel,Guide,Pemandu,Pemandu wisata menunjukkan jalan ke candi. (The tour guide shows the way to the temple.),Pemandu wisata menunjukkan jalan ke candi.,The tour guide shows the way to the temple.,5
+Travel,Porter,Pemandu barang,Pemandu barang membawa koper kami. (The porter carries our suitcases.),Pemandu barang membawa koper kami.,The porter carries our suitcases.,3
+Travel,Driver,Sopir,Sopir taksi menunggu di depan hotel. (The taxi driver waits in front of the hotel.),Sopir taksi menunggu di depan hotel.,The taxi driver waits in front of the hotel.,4
+Travel,Plane,Pesawat,Pesawat mendarat tepat waktu. (The plane lands on time.),Pesawat mendarat tepat waktu.,The plane lands on time.,3
+Travel,Village chief,Kepala desa,Kami bertemu dengan kepala desa. (We meet with the village chief.),Kami bertemu dengan kepala desa.,We meet with the village chief.,3
+Directions,This way,Jalan ini,Jalan ini menuju ke pantai. (This way leads to the beach.),Jalan ini menuju ke pantai.,This way leads to the beach.,4
+Directions,That way,Jalan itu,Jalan itu ke arah pasar. (That way is toward the market.),Jalan itu ke arah pasar.,That way is toward the market.,4
+Directions,Up,Naik,Naik tangga ke lantai dua. (Go up the stairs to the second floor.),Naik tangga ke lantai dua.,Go up the stairs to the second floor.,3
+Directions,Down,Turun,Turun bukit untuk sampai ke pantai. (Go down the hill to reach the beach.),Turun bukit untuk sampai ke pantai.,Go down the hill to reach the beach.,3
+Directions,Left,Kiri,Belok kiri di pertigaan. (Turn left at the intersection.),Belok kiri di pertigaan.,Turn left at the intersection.,5
+Directions,Right,Kanan,Toilet ada di sebelah kanan. (The toilet is on the right.),Toilet ada di sebelah kanan.,The toilet is on the right.,5
+Numbers,One,Satu,Saya pesan satu kopi. (I order one coffee.),Saya pesan satu kopi.,I order one coffee.,5
+Numbers,Two,Dua,Kami butuh dua kamar hotel. (We need two hotel rooms.),Kami butuh dua kamar hotel.,We need two hotel rooms.,5
+Numbers,Three,Tiga,Ada tiga orang di keluarga kami. (There are three people in our family.),Ada tiga orang di keluarga kami.,There are three people in our family.,5
+Numbers,Four,Empat,Saya tinggal di sini empat hari. (I stay here for four days.),Saya tinggal di sini empat hari.,I stay here for four days.,5
+Numbers,Five,Lima,Kami memesan meja untuk lima orang. (We reserve a table for five people.),Kami memesan meja untuk lima orang.,We reserve a table for five people.,5
+Numbers,Six,Enam,Enam orang dalam kelompok tur kami. (Six people in our tour group.),Enam orang dalam kelompok tur kami.,Six people in our tour group.,5
+Numbers,Seven,Tujuh,Restoran buka tujuh hari seminggu. (The restaurant opens seven days a week.),Restoran buka tujuh hari seminggu.,The restaurant opens seven days a week.,5
+Numbers,Eight,Delapan,Bus berangkat pukul delapan pagi. (The bus departs at eight in the morning.),Bus berangkat pukul delapan pagi.,The bus departs at eight in the morning.,5
+Numbers,Nine,Sembilan,Toko tutup pukul sembilan malam. (The shop closes at nine at night.),Toko tutup pukul sembilan malam.,The shop closes at nine at night.,5
+Numbers,Ten,Sepuluh,Sepuluh wisatawan dalam grup kami. (Ten tourists in our group.),Sepuluh wisatawan dalam grup kami.,Ten tourists in our group.,5
+Numbers,Eleven,Sebelas,Kami tiba pukul sebelas malam. (We arrive at eleven at night.),Kami tiba pukul sebelas malam.,We arrive at eleven at night.,3
+Numbers,Twelve,Dua belas,Bus berangkat jam dua belas siang. (The bus departs at twelve noon.),Bus berangkat jam dua belas siang.,The bus departs at twelve noon.,5
+Numbers,Twenty,Dua puluh,Perjalanan ke bandara dua puluh menit. (The journey to the airport is twenty minutes.),Perjalanan ke bandara dua puluh menit.,The journey to the airport is twenty minutes.,5
+Numbers,One hundred,Seratus,Seratus orang mengunjungi museum setiap hari. (One hundred people visit the museum every day.),Seratus orang mengunjungi museum setiap hari.,One hundred people visit the museum every day.,5
+Numbers,Two hundred,Dua ratus,Dua ratus turis datang setiap hari. (Two hundred tourists come every day.),Dua ratus turis datang setiap hari.,Two hundred tourists come every day.,5
+Numbers,One thousand,Seribu,Tiket pesawat harganya seribu dolar. (The plane ticket costs one thousand dollars.),Tiket pesawat harganya seribu dolar.,The plane ticket costs one thousand dollars.,5
+Numbers,Two thousand,Dua ribu,Saya membayar dua ribu rupiah untuk air. (I pay two thousand rupiah for water.),Saya membayar dua ribu rupiah untuk air.,I pay two thousand rupiah for water.,5
+Numbers,One hundred thousand,Seratus ribu,Tiket pesawat harganya seratus ribu rupiah. (The plane ticket costs one hundred thousand rupiah.),Tiket pesawat harganya seratus ribu rupiah.,The plane ticket costs one hundred thousand rupiah.,5
+Numbers,Two hundred thousand,Dua ratus ribu,Hotel ini dua ratus ribu rupiah per malam. (This hotel is two hundred thousand rupiah per night.),Hotel ini dua ratus ribu rupiah per malam.,This hotel is two hundred thousand rupiah per night.,5
+Numbers,One million,Satu juta,Mobil itu harganya satu juta rupiah per hari. (That car costs one million rupiah per day.),Mobil itu harganya satu juta rupiah per hari.,That car costs one million rupiah per day.,5
+Numbers,Two million,Dua juta,Kamera itu harganya dua juta rupiah. (That camera costs two million rupiah.),Kamera itu harganya dua juta rupiah.,That camera costs two million rupiah.,5
+Noun,House,Rumah,Rumah kami di dekat pantai. (Our house is near the beach.),Rumah kami di dekat pantai.,Our house is near the beach.,4
+Noun,Car,Mobil,Kami menyewa mobil untuk perjalanan. (We rent a car for the trip.),Kami menyewa mobil untuk perjalanan.,We rent a car for the trip.,4
+Noun,Road,Jalan,Jalan ini menuju ke gunung. (This road leads to the mountain.),Jalan ini menuju ke gunung.,This road leads to the mountain.,5
+Noun,Street,Jalan raya,Restoran ada di jalan raya utama. (The restaurant is on the main street.),Restoran ada di jalan raya utama.,The restaurant is on the main street.,1
+Noun,City,Kota,Kota ini memiliki banyak tempat wisata. (This city has many tourist attractions.),Kota ini memiliki banyak tempat wisata.,This city has many tourist attractions.,2
+Noun,Village,Desa,Desa tradisional sangat menarik. (Traditional villages are very interesting.),Desa tradisional sangat menarik.,Traditional villages are very interesting.,4
+Noun,Market,Pasar,Pasar tradisional buka pagi hari. (The traditional market opens in the morning.),Pasar tradisional buka pagi hari.,The traditional market opens in the morning.,4
+Noun,Shop,Toko,Toko ini menjual suvenir murah. (This shop sells cheap souvenirs.),Toko ini menjual suvenir murah.,This shop sells cheap souvenirs.,3
+Noun,School,Sekolah,Sekolah tutup selama liburan. (Schools are closed during holidays.),Sekolah tutup selama liburan.,Schools are closed during holidays.,4
+Noun,Office,Kantor,Kantor wisata buka jam sembilan. (The tourist office opens at nine o'clock.),Kantor wisata buka jam sembilan.,The tourist office opens at nine o'clock.,3
+Noun,Hospital,Rumah sakit,Rumah sakit terdekat lima kilometer dari sini. (The nearest hospital is five kilometers from here.),Rumah sakit terdekat lima kilometer dari sini.,The nearest hospital is five kilometers from here.,3
+Noun,Doctor,Dokter,Saya butuh dokter segera. (I need a doctor immediately.),Saya butuh dokter segera.,I need a doctor immediately.,3
+Noun,Police,Polisi,Polisi membantu turis yang tersesat. (Police help tourists who are lost.),Polisi membantu turis yang tersesat.,Police help tourists who are lost.,3
+Noun,Airport,Bandara,Berapa jauh ke bandara? (How far is it to the airport?),Berapa jauh ke bandara?,How far is it to the airport?,3
+Noun,Bus,Bus,Bus ke Yogyakarta berangkat setiap jam. (The bus to Yogyakarta departs every hour.),Bus ke Yogyakarta berangkat setiap jam.,The bus to Yogyakarta departs every hour.,3
+Noun,Train,Kereta,Kereta lebih cepat dari bus. (The train is faster than the bus.),Kereta lebih cepat dari bus.,The train is faster than the bus.,2
+Noun,Bridge,Jembatan,Jembatan kayu menghubungkan kedua pulau. (The wooden bridge connects the two islands.),Jembatan kayu menghubungkan kedua pulau.,The wooden bridge connects the two islands.,1
+Noun,Mountain,Gunung,Gunung itu sangat tinggi dan indah. (That mountain is very tall and beautiful.),Gunung itu sangat tinggi dan indah.,That mountain is very tall and beautiful.,3
+Noun,River,Sungai,Sungai ini mengalir ke laut. (This river flows to the sea.),Sungai ini mengalir ke laut.,This river flows to the sea.,3
+Noun,Sea,Laut,Laut di sini sangat jernih. (The sea here is very clear.),Laut di sini sangat jernih.,The sea here is very clear.,3
+Noun,Island,Pulau,Pulau kecil itu sangat indah. (That small island is very beautiful.),Pulau kecil itu sangat indah.,That small island is very beautiful.,3
+Noun,Forest,Hutan,Hutan hujan memiliki banyak satwa liar. (The rainforest has many wildlife.),Hutan hujan memiliki banyak satwa liar.,The rainforest has many wildlife.,3
+Noun,Tree,Pohon,Banyak pohon di taman ini. (Many trees in this park.),Banyak pohon di taman ini.,Many trees in this park.,2
+Noun,Flower,Bunga,Bunga-bunga ini sangat indah. (These flowers are very beautiful.),Bunga-bunga ini sangat indah.,These flowers are very beautiful.,1
+Noun,Grass,Rumput,Rumput di taman ini sangat hijau. (The grass in this park is very green.),Rumput di taman ini sangat hijau.,The grass in this park is very green.,1
+Noun,Sun,Matahari,Matahari terbit dari timur. (The sun rises from the east.),Matahari terbit dari timur.,The sun rises from the east.,2
+Noun,Moon,Bulan,Bulan sangat terang malam ini. (The moon is very bright tonight.),Bulan sangat terang malam ini.,The moon is very bright tonight.,1
+Noun,Star,Bintang,Banyak bintang di langit malam. (Many stars in the night sky.),Banyak bintang di langit malam.,Many stars in the night sky.,1
+Noun,Sky,Langit,Langit biru dan cerah hari ini. (The sky is blue and clear today.),Langit biru dan cerah hari ini.,The sky is blue and clear today.,1
+Noun,Cloud,Awan,Ada banyak awan di langit. (There are many clouds in the sky.),Ada banyak awan di langit.,There are many clouds in the sky.,2
+Noun,Rain,Hujan,Hujan turun sejak pagi. (Rain has been falling since morning.),Hujan turun sejak pagi.,Rain has been falling since morning.,3
+Noun,Wind,Angin,Angin kencang di pantai. (Strong wind at the beach.),Angin kencang di pantai.,Strong wind at the beach.,3
+Noun,Fire,Api,Hati-hati dengan api saat camping. (Be careful with fire when camping.),Hati-hati dengan api saat camping.,Be careful with fire when camping.,4
+Noun,Water,Air,Saya minum air setiap hari. (I drink water every day.),Saya minum air setiap hari.,I drink water every day.,4
+Noun,Land,Tanah,Tanah di sini sangat subur. (The land here is very fertile.),Tanah di sini sangat subur.,The land here is very fertile.,1
+Noun,Clothes,Pakaian,Pakaian musim panas sangat ringan. (Summer clothes are very light.),Pakaian musim panas sangat ringan.,Summer clothes are very light.,3
+Noun,Shoes,Sepatu,Sepatu ini nyaman untuk berjalan jauh. (These shoes are comfortable for walking long distances.),Sepatu ini nyaman untuk berjalan jauh.,These shoes are comfortable for walking long distances.,3
+Noun,Bag,Tas,Tas saya cukup berat. (My bag is quite heavy.),Tas saya cukup berat.,My bag is quite heavy.,3
+Noun,Gift (noun),Hadiah,Saya membeli hadiah untuk keluarga. (I buy gifts for my family.),Saya membeli hadiah untuk keluarga.,I buy gifts for my family.,3
+Noun,Money,Uang,Saya perlu menukar uang. (I need to exchange money.),Saya perlu menukar uang.,I need to exchange money.,3
+Noun,Phone,Telepon,Boleh saya pinjam telepon Anda? (May I borrow your phone?),Boleh saya pinjam telepon Anda?,May I borrow your phone?,3
+Noun,Computer,Komputer,Komputer tersedia di lobi hotel. (Computers are available in the hotel lobby.),Komputer tersedia di lobi hotel.,Computers are available in the hotel lobby.,2
+Noun,Book,Buku,Buku panduan wisata sangat berguna. (The travel guidebook is very useful.),Buku panduan wisata sangat berguna.,The travel guidebook is very useful.,1
+Noun,Pen,Pulpen,Bisakah saya pinjam pulpen Anda? (Can I borrow your pen?),Bisakah saya pinjam pulpen Anda?,Can I borrow your pen?,1
+Noun,Church,Gereja,Gereja itu sangat tua dan indah. (That church is very old and beautiful.),Gereja itu sangat tua dan indah.,That church is very old and beautiful.,3
+Noun,Bird,Burung,Banyak burung di taman. (Many birds in the park.),Banyak burung di taman.,Many birds in the park.,2
+Noun,Family,Keluarga,Saya liburan dengan keluarga. (I'm on vacation with my family.),Saya liburan dengan keluarga.,I'm on vacation with my family.,3
+Noun,Husband,Suami,Suami saya suka makanan Indonesia. (My husband likes Indonesian food.),Suami saya suka makanan Indonesia.,My husband likes Indonesian food.,3
+Noun,Wife,Istri,Istri saya sedang belanja di pasar. (My wife is shopping at the market.),Istri saya sedang belanja di pasar.,My wife is shopping at the market.,3
+Noun,Child,Anak,Anak-anak suka bermain di pantai. (Children like to play on the beach.),Anak-anak suka bermain di pantai.,Children like to play on the beach.,3
+Noun,Man,Pria,Pria itu adalah pemandu wisata kami. (That man is our tour guide.),Pria itu adalah pemandu wisata kami.,That man is our tour guide.,4
+Noun,Woman,Wanita,Wanita itu menjual buah-buahan. (That woman sells fruits.),Wanita itu menjual buah-buahan.,That woman sells fruits.,4
+Noun,Food,Makanan,Makanan Indonesia sangat enak. (Indonesian food is very delicious.),Makanan Indonesia sangat enak.,Indonesian food is very delicious.,5
+Noun,Drink,Minuman,Dia minum air setelah berolahraga. (He drinks water after exercising.),Dia minum air setelah berolahraga.,He drinks water after exercising.,5
+Food,Rice,Nasi,Nasi adalah makanan pokok di Indonesia. (Rice is a staple food in Indonesia.),Nasi adalah makanan pokok di Indonesia.,Rice is a staple food in Indonesia.,5
+Food,Meat,Daging,Saya tidak makan daging. (I don't eat meat.),Saya tidak makan daging.,I don't eat meat.,5
+Food,Fish,Ikan,Ikan bakar adalah makanan favorit saya. (Grilled fish is my favorite food.),Ikan bakar adalah makanan favorit saya.,Grilled fish is my favorite food.,5
+Food,Vegetable,Sayur,Sayur sangat sehat untuk tubuh. (Vegetables are very healthy for the body.),Sayur sangat sehat untuk tubuh.,Vegetables are very healthy for the body.,5
+Food,Fruit,Buah,Buah-buahan di Indonesia sangat segar. (Fruits in Indonesia are very fresh.),Buah-buahan di Indonesia sangat segar.,Fruits in Indonesia are very fresh.,5
+Food,Noodles,Mie,Mie ayam sangat populer di Indonesia. (Chicken noodles are very popular in Indonesia.),Mie ayam sangat populer di Indonesia.,Chicken noodles are very popular in Indonesia.,5
+Food,Bread,Roti,Saya makan roti untuk sarapan. (I eat bread for breakfast.),Saya makan roti untuk sarapan.,I eat bread for breakfast.,3
+Food,Chicken,Ayam,Ayam goreng sangat enak. (Fried chicken is very delicious.),Ayam goreng sangat enak.,Fried chicken is very delicious.,4
+Food,Beef,Daging sapi,Saya suka daging sapi rendang. (I like beef rendang.),Saya suka daging sapi rendang.,I like beef rendang.,4
+Food,Pork,Daging babi,Beberapa orang tidak makan daging babi. (Some people don't eat pork.),Beberapa orang tidak makan daging babi.,Some people don't eat pork.,4
+Food,Fish,Ikan,Ikan bakar adalah makanan favorit saya. (Grilled fish is my favorite food.),Ikan bakar adalah makanan favorit saya.,Grilled fish is my favorite food.,4
+Food,Shrimp,Udang,Udang goreng sangat enak. (Fried shrimp is very delicious.),Udang goreng sangat enak.,Fried shrimp is very delicious.,4
+Food,Egg,Telur,Saya makan telur untuk sarapan. (I eat eggs for breakfast.),Saya makan telur untuk sarapan.,I eat eggs for breakfast.,4
+Food,Milk,Susu,Anak-anak suka minum susu. (Children like to drink milk.),Anak-anak suka minum susu.,Children like to drink milk.,4
+Food,Cheese,Keju,Keju tidak umum di masakan Indonesia. (Cheese is not common in Indonesian cuisine.),Keju tidak umum di masakan Indonesia.,Cheese is not common in Indonesian cuisine.,3
+Food,Butter,Mentega,Roti ini menggunakan mentega. (This bread uses butter.),Roti ini menggunakan mentega.,This bread uses butter.,3
+Food,Vegetables,Sayuran,Sayuran sangat penting untuk kesehatan. (Vegetables are very important for health.),Sayuran sangat penting untuk kesehatan.,Vegetables are very important for health.,4
+Food,Spicy,Pedas,Makanan Indonesia sering pedas. (Indonesian food is often spicy.),Makanan Indonesia sering pedas.,Indonesian food is often spicy.,3
+Food,Sweet,Manis,Saya suka minuman manis. (I like sweet drinks.),Saya suka minuman manis.,I like sweet drinks.,3
+Food,Salty,Asin,Makanan ini terlalu asin. (This food is too salty.),Makanan ini terlalu asin.,This food is too salty.,3
+Food,Sour,Asam,Buah jeruk rasanya asam. (Oranges taste sour.),Buah jeruk rasanya asam.,Oranges taste sour.,3
+Food,Vegetarian,Vegetarian,Saya vegetarian. Tidak makan daging. (I am vegetarian. I don't eat meat.),Saya vegetarian. Tidak makan daging.,I am vegetarian. I don't eat meat.,4
+Food,Allergy,Alergi,Saya alergi terhadap kacang. (I am allergic to peanuts.),Saya alergi terhadap kacang.,I am allergic to peanuts.,4
+Time,Now,Sekarang,Sekarang adalah waktu makan siang. (Now is lunch time.),Sekarang adalah waktu makan siang.,Now is lunch time.,4
+Time,Soon,Segera,Bus akan berangkat segera. (The bus will depart soon.),Bus akan berangkat segera.,The bus will depart soon.,4
+Time,Next,Berikutnya,Stasiun berikutnya adalah Bandung. (The next station is Bandung.),Stasiun berikutnya adalah Bandung.,The next station is Bandung.,4
+Time,Last,Terakhir,Ini adalah hari terakhir liburan kami. (This is the last day of our vacation.),Ini adalah hari terakhir liburan kami.,This is the last day of our vacation.,4
+Time,Later,Nanti,Kita bertemu nanti di restoran. (We'll meet later at the restaurant.),Kita bertemu nanti di restoran.,We'll meet later at the restaurant.,4
+Time,Today,Hari ini,Hari ini cuaca sangat panas. (Today the weather is very hot.),Hari ini cuaca sangat panas.,Today the weather is very hot.,5
+Time,Tomorrow,Besok,Besok kami akan pergi ke pantai. (Tomorrow we will go to the beach.),Besok kami akan pergi ke pantai.,Tomorrow we will go to the beach.,5
+Time,Yesterday,Kemarin,Kemarin kami mengunjungi candi. (Yesterday we visited the temple.),Kemarin kami mengunjungi candi.,Yesterday we visited the temple.,5
+Time,Day,Hari,Hari ini adalah hari yang indah. (Today is a beautiful day.),Hari ini adalah hari yang indah.,Today is a beautiful day.,4
+Time,Week,Minggu,Kami tinggal di Bali selama satu minggu. (We stay in Bali for one week.),Kami tinggal di Bali selama satu minggu.,We stay in Bali for one week.,4
+Time,Month,Bulan,Saya akan di Indonesia selama tiga bulan. (I will be in Indonesia for three months.),Saya akan di Indonesia selama tiga bulan.,I will be in Indonesia for three months.,4
+Time,Night,Malam,Malam di Bali sangat indah. (Night in Bali is very beautiful.),Malam di Bali sangat indah.,Night in Bali is very beautiful.,4
+Time,Minutes,Menit,Bus datang dalam lima menit. (The bus comes in five minutes.),Bus datang dalam lima menit.,The bus comes in five minutes.,4
+Time,Hours,Jam,Perjalanan ke bandara membutuhkan dua jam. (The journey to the airport takes two hours.),Perjalanan ke bandara membutuhkan dua jam.,The journey to the airport takes two hours.,4
+Time,AM / PM,Pagi / Malam,Pesawat berangkat pukul 9 pagi. (The plane departs at 9 AM.),Pesawat berangkat pukul 9 pagi.,The plane departs at 9 AM.,4
+Time,Afternoon,Sore,Kami minum teh di sore hari. (We drink tea in the afternoon.),Kami minum teh di sore hari.,We drink tea in the afternoon.,4
+Time,Morning,Pagi,Sarapan disajikan di pagi hari. (Breakfast is served in the morning.),Sarapan disajikan di pagi hari.,Breakfast is served in the morning.,4
+Time,Monday,Senin,Museum tutup pada hari Senin. (The museum is closed on Monday.),Museum tutup pada hari Senin.,The museum is closed on Monday.,4
+Time,Tuesday,Selasa,Kami tiba di Jakarta hari Selasa. (We arrive in Jakarta on Tuesday.),Kami tiba di Jakarta hari Selasa.,We arrive in Jakarta on Tuesday.,4
+Time,Wednesday,Rabu,Pasar tradisional buka pada hari Rabu. (The traditional market opens on Wednesday.),Pasar tradisional buka pada hari Rabu.,The traditional market opens on Wednesday.,4
+Time,Thursday,Kamis,Pertemuan akan diadakan hari Kamis. (The meeting will be held on Thursday.),Pertemuan akan diadakan hari Kamis.,The meeting will be held on Thursday.,4
+Time,Friday,Jumat,Banyak orang pergi ke masjid pada hari Jumat. (Many people go to the mosque on Friday.),Banyak orang pergi ke masjid pada hari Jumat.,Many people go to the mosque on Friday.,4
+Time,Saturday,Sabtu,Toko-toko ramai pada hari Sabtu. (The shops are busy on Saturday.),Toko-toko ramai pada hari Sabtu.,The shops are busy on Saturday.,4
+Time,Sunday,Minggu,Beberapa toko tutup pada hari Minggu. (Some shops are closed on Sunday.),Beberapa toko tutup pada hari Minggu.,Some shops are closed on Sunday.,4
+Time,Before,Sebelum,"Sebelum makan, cuci tangan. (Before eating, wash hands.)","Sebelum makan, cuci tangan. ","Before eating, wash hands.",
+Time,After,Sesudah,"Sesudah sekolah, saya bermain. (After school, I play.)","Sesudah sekolah, saya bermain.","(After school, I play.",
