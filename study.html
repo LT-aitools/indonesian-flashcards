@@ -9,6 +9,11 @@
         let words = [];
         let currentIndex = 0;
         const wordsPerPage = 6;
+        
+        // Voice selection
+        let selectedVoice = null;
+        let voices = [];
+        let speechSynthesisInitialized = false;
 
         async function loadWords() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -77,25 +82,159 @@
             }
         }
 
+        // Initialize voice options
+        function initSpeechSynthesis() {
+            if (speechSynthesisInitialized) return;
+            
+            // Load available voices
+            voices = window.speechSynthesis.getVoices();
+            console.log("Available voices:", voices.map(v => `${v.name} (${v.lang})`));
+            
+            // Try to load the previously saved voice
+            const savedVoice = localStorage.getItem('selectedVoice');
+            if (savedVoice) {
+                selectedVoice = voices.find(v => v.name === savedVoice);
+                if (selectedVoice) {
+                    console.log("Loaded saved voice:", selectedVoice.name);
+                }
+            }
+            
+            // If no saved voice, auto-select an Indonesian voice
+            if (!selectedVoice) {
+                // Try to find an Indonesian voice
+                selectedVoice = voices.find(voice => 
+                    voice.lang.includes('id') || 
+                    voice.name.toLowerCase().includes('indonesia')
+                );
+                
+                // If no Indonesian voice was found, look for other Asian voices that might work well
+                if (!selectedVoice) {
+                    const asianVoices = voices.filter(voice => 
+                        voice.lang.includes('ms') || // Malay
+                        voice.lang.includes('fil') || // Filipino
+                        voice.lang.includes('th') || // Thai
+                        voice.lang.includes('vi') || // Vietnamese
+                        voice.lang.includes('zh') // Chinese (often available on iOS)
+                    );
+                    
+                    if (asianVoices.length > 0) {
+                        selectedVoice = asianVoices[0];
+                    }
+                }
+            }
+            
+            // If a voice was selected, save it for future visits
+            if (selectedVoice) {
+                localStorage.setItem('selectedVoice', selectedVoice.name);
+                console.log("Selected voice:", selectedVoice.name);
+            } else {
+                console.log("No suitable voice found");
+            }
+            
+            speechSynthesisInitialized = true;
+        }
+        
+        // Update selected voice when the user changes selection
+        function updateSelectedVoice() {
+            const voiceSelect = document.getElementById('voice-select');
+            const selectedName = voiceSelect.value;
+            
+            if (selectedName) {
+                selectedVoice = voices.find(voice => voice.name === selectedName);
+                console.log("Selected voice changed to:", selectedVoice ? selectedVoice.name : "None");
+                
+                // Save to localStorage for future visits
+                localStorage.setItem('selectedVoice', selectedName);
+            } else {
+                selectedVoice = null;
+                localStorage.removeItem('selectedVoice');
+            }
+            
+            // Test the selected voice
+            testSelectedVoice();
+        }
+        
+        // Test the selected voice with a simple Indonesian phrase
+        function testSelectedVoice() {
+            if (!selectedVoice) return;
+            
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            const testSpeech = new SpeechSynthesisUtterance("Selamat pagi");
+            testSpeech.voice = selectedVoice;
+            testSpeech.lang = 'id-ID';
+            testSpeech.rate = 0.9; // Slightly slower rate for better pronunciation
+            
+            window.speechSynthesis.speak(testSpeech);
+        }
+        
+        // Load the selected voice from localStorage on page load
+        function loadSavedVoice() {
+            const savedVoice = localStorage.getItem('selectedVoice');
+            if (savedVoice && voices.length > 0) {
+                const voice = voices.find(v => v.name === savedVoice);
+                if (voice) {
+                    selectedVoice = voice;
+                }
+            }
+        }
+        
+        // Feedback element management removed
+        
+        // The main audio playing function
         function playAudio(word, sentence) {
-            // Use the Web Speech API to read the text
-            const speech = new SpeechSynthesisUtterance();
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
             
-            // Set the language to Indonesian
-            speech.lang = 'id-ID';
+            // Make sure TTS is initialized
+            if (!speechSynthesisInitialized) {
+                initSpeechSynthesis();
+            }
             
-            // First read the word
-            speech.text = word;
-            window.speechSynthesis.speak(speech);
+            // First, speak the word
+            const wordUtterance = new SpeechSynthesisUtterance(word);
+            wordUtterance.lang = 'id-ID';
+            wordUtterance.rate = 0.9; // Slightly slower for better pronunciation
             
-            // Then read the sentence after the word is finished
-            speech.onend = function() {
+            // Use selected voice if available
+            if (selectedVoice) {
+                wordUtterance.voice = selectedVoice;
+            }
+            
+            // After word is spoken, speak the sentence
+            wordUtterance.onend = function() {
                 if (sentence) {
-                    const sentenceSpeech = new SpeechSynthesisUtterance(sentence);
-                    sentenceSpeech.lang = 'id-ID';
-                    window.speechSynthesis.speak(sentenceSpeech);
+                    const sentenceUtterance = new SpeechSynthesisUtterance(sentence);
+                    sentenceUtterance.lang = 'id-ID';
+                    sentenceUtterance.rate = 0.85; // Even slower for sentences
+                    
+                    if (selectedVoice) {
+                        sentenceUtterance.voice = selectedVoice;
+                    }
+                    
+                    window.speechSynthesis.speak(sentenceUtterance);
                 }
             };
+            
+            window.speechSynthesis.speak(wordUtterance);
+        }
+        
+        // Voice initialization timing logic
+        window.addEventListener('DOMContentLoaded', function() {
+            // Try to initialize immediately
+            setTimeout(function() {
+                initSpeechSynthesis();
+            }, 100);
+        });
+        
+        // Different browsers handle voice loading differently
+        if (window.speechSynthesis) {
+            if (window.speechSynthesis.onvoiceschanged !== undefined) {
+                window.speechSynthesis.onvoiceschanged = function() {
+                    initSpeechSynthesis();
+                };
+            }
         }
     </script>
     <style>
@@ -132,6 +271,44 @@
             margin-bottom: 20px;
             text-align: center;
         }
+        .voice-selector {
+            display: none; /* Hide the voice selector UI but keep the functionality */
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex-direction: column;
+            align-items: center;
+            max-width: 90%;
+            width: 600px;
+        }
+        .voice-selector label {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .voice-selector select {
+            padding: 8px;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .voice-selector button {
+            padding: 6px 12px;
+            background-color: #4a86e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .voice-selector button:hover {
+            background-color: #3b78e7;
+        }
+        /* iOS tips note styles removed */
         .word-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -195,6 +372,20 @@
             border: none;
             font-size: 16px;
         }
+        .note {
+            background-color: #f8f9fa;
+            border-left: 4px solid #4a86e8;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border-radius: 0 4px 4px 0;
+            font-size: 14px;
+            max-width: 600px;
+            width: 90%;
+        }
+        .note h3 {
+            margin-top: 0;
+            color: #4a86e8;
+        }
         
         @media (max-width: 768px) {
             .word-container {
@@ -203,6 +394,10 @@
             
             .grid-container {
                 font-size: 14px;
+            }
+            
+            .voice-selector {
+                width: 100%;
             }
         }
         
@@ -230,6 +425,17 @@
 <body onload="loadWords()">
     <div class="container">
         <h1 id="category-title"></h1>
+        
+        <!-- Voice selector -->
+        <div class="voice-selector">
+            <label for="voice-select">Select Voice for Indonesian Pronunciation:</label>
+            <select id="voice-select" onchange="updateSelectedVoice()">
+                <option value="">Auto-select best voice</option>
+                <!-- Will be populated with available voices -->
+            </select>
+            <button onclick="testSelectedVoice()">Test Voice ("Selamat pagi")</button>
+        </div>
+        
         <div id="word-container" class="word-container"></div>
         <div class="nav-buttons">
             <button class="nav-button" onclick="nextWords()">Next</button>
