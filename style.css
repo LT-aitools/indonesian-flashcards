@@ -44,30 +44,20 @@ body, html {
 /* Main layout container */
 .container {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     height: 100vh;
     padding-top: 50px; /* Prevents overlap with title */
 }
 
-/* Left side - Study Mode */
-.left {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-}
-
-/* Right side - Level Buttons (2x2 grid) */
-.right {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-}
-
+/* Button grid layout */
 .button-grid {
     display: grid;
-    grid-template-columns: repeat(2, 250px);
-    grid-gap: 20px;
+    grid-template-columns: repeat(3, 250px);
+    gap: 20px;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* Button styling */
@@ -85,7 +75,16 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 15px; /* Reduced top padding to move text up */
+    padding-top: 15px;
+}
+
+/* Special styling for study button */
+.study-button {
+    background-color: #1a5f1a; /* Dark green background */
+}
+
+.study-button .button-label {
+    color: white;
 }
 
 .button:hover {
@@ -98,7 +97,7 @@ body, html {
     padding: 2px;
     font-size: 18px;
     line-height: 1.2;
-    margin-bottom: 15px; /* Added more space between text and image */
+    margin-bottom: 15px;
 }
 
 /* Image inside button */
@@ -110,10 +109,15 @@ body, html {
 }
 
 /* Responsive Design Adjustments */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1200px) {
+    .button-grid {
+        grid-template-columns: repeat(2, 250px);
+    }
+}
 
+@media screen and (max-width: 768px) {
     body, html {
-        overflow-y: auto; /* Allow vertical scrolling */
+        overflow-y: auto;
         overflow-x: hidden;
     }
 
@@ -124,36 +128,28 @@ body, html {
     }
 
     .container {
-        flex-direction: column;
-        justify-content: flex-start;
         padding-top: 60px;
         padding-bottom: 60px;
         height: auto;
     }
 
-    .left, .right {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
     .button-grid {
         grid-template-columns: 1fr 1fr;
-        justify-items: center;
         gap: 15px;
     }
 
     .button {
         width: 45vw;
-        height: 45vw; 
+        height: 45vw;
         max-width: 200px;
         max-height: 200px;
-        padding-top: 10px; /* Reduced for smaller buttons */
+        padding-top: 10px;
     }
 
     .button-label {
         font-size: 14px;
         padding: 2px;
-        margin-bottom: 8px; /* Reduced for smaller buttons */
+        margin-bottom: 8px;
     }
 
     .button img {
@@ -168,7 +164,7 @@ body, html {
     }
 
     .button-grid {
-        grid-template-columns: 1fr; /* Single column on smaller screens */
+        grid-template-columns: 1fr;
     }
 
     .button {
