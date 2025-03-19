@@ -45,24 +45,46 @@
             container.innerHTML = "";
             
             const wordsToShow = words.slice(currentIndex, currentIndex + wordsPerPage);
-            wordsToShow.forEach(word => {
-                container.innerHTML += `
-                    <div class="word-card">
-                        <div class="word-grid">
-                            <div class="play-button-container">
-                                <button class="play-button" onclick="playAudio('${word[2]?.trim()}', '${word[4]?.trim()}')">
-                                    <img src="images/play-btn.png" alt="Play">
-                                </button>
+            
+            // Create a 2x3 grid layout
+            const gridLayout = [
+                [0, 3], // Top row: left, right
+                [1, 4], // Middle row: left, right
+                [2, 5]  // Bottom row: left, right
+            ];
+            
+            // Create empty slots for all 6 positions
+            const slots = new Array(6).fill(null);
+            
+            // Fill the slots in the desired order
+            wordsToShow.forEach((word, index) => {
+                slots[index] = word;
+            });
+            
+            // Create the grid layout
+            gridLayout.forEach(row => {
+                row.forEach(slotIndex => {
+                    const word = slots[slotIndex];
+                    if (word) {
+                        container.innerHTML += `
+                            <div class="word-card">
+                                <div class="word-grid">
+                                    <div class="play-button-container">
+                                        <button class="play-button" onclick="playAudio('${word[2]?.trim()}', '${word[4]?.trim()}')">
+                                            <img src="images/play-btn.png" alt="Play">
+                                        </button>
+                                    </div>
+                                    <div class="grid-container">
+                                        <div class="grid-item word-en" style="font-size: 18px;">${word[1]?.trim() || ''}</div>
+                                        <div class="grid-item example-en" style="font-size: 14px;">${word[5]?.trim() || ''}</div>
+                                        <div class="grid-item word-id" style="font-size: 18px;"><strong>${word[2]?.trim() || ''}</strong></div>
+                                        <div class="grid-item example-id" style="font-size: 14px;">${word[4]?.trim() || ''}</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="grid-container">
-                                <div class="grid-item word-en" style="font-size: 18px;">${word[1]?.trim() || ''}</div>
-                                <div class="grid-item example-en" style="font-size: 14px;">${word[5]?.trim() || ''}</div>
-                                <div class="grid-item word-id" style="font-size: 18px;"><strong>${word[2]?.trim() || ''}</strong></div>
-                                <div class="grid-item example-id" style="font-size: 14px;">${word[4]?.trim() || ''}</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                        `;
+                    }
+                });
             });
         }
 
@@ -304,6 +326,7 @@
         .word-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
             gap: 20px;
             max-width: 900px;
             width: 100%;
@@ -316,11 +339,13 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             width: 100%;
             box-sizing: border-box;
+            height: 100%;
         }
         .word-grid {
             display: grid;
             grid-template-columns: auto 1fr;
             align-items: center;
+            height: 100%;
         }
         .play-button-container {
             display: flex;
@@ -344,9 +369,13 @@
             grid-template-rows: auto auto;
             gap: 10px;
             text-align: center;
+            height: 100%;
         }
         .grid-item {
             padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .nav-buttons {
             display: flex;
@@ -382,6 +411,7 @@
         @media (max-width: 768px) {
             .word-container {
                 grid-template-columns: 1fr;
+                grid-template-rows: repeat(6, 1fr);
             }
             
             .grid-container {
