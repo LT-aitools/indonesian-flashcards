@@ -648,7 +648,10 @@
                 if (level === 1) {
                     document.getElementById('hint1').innerText = `First letter: ${word.indonesian.charAt(0)}`;
                 } else if (level === 2) {
-                    document.getElementById('hint2').innerText = `Hint: ${word.indonesian.charAt(0)}${'-'.repeat(word.indonesian.length - 1)}`;
+                    const firstTwo = word.indonesian.substring(0, 2).toUpperCase();
+                    const lastLetter = word.indonesian.charAt(word.indonesian.length - 1).toUpperCase();
+                    const middleHyphens = '-'.repeat(word.indonesian.length - 3);
+                    document.getElementById('hint2').innerText = `Hint: ${firstTwo}${middleHyphens}${lastLetter}`;
                 }
             } catch (error) {
                 console.error("Error showing hint:", error);
