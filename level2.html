@@ -80,11 +80,11 @@
     <div id="content">
         <h1 style="color: darkgrey; margin-bottom: 20px;">Indonesian Flashcard Game - Level 2</h1>
         
-        <div style="margin-bottom: 20px;">
-            <label for="categoryFilter" style="margin-right: 10px;">Category:</label>
-            <select id="categoryFilter" style="padding: 5px; font-size: 16px;">
-                <option value="all">Show All</option>
-            </select>
+        <div style="margin-bottom: 20px; background: rgba(240, 255, 240, 0.6); padding: 15px; border-radius: 10px; max-width: 800px; width: 90%;">
+            <div style="margin-bottom: 10px; font-weight: bold;">Select Categories:</div>
+            <div id="categoryCheckboxes" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;">
+                <!-- Categories will be populated here -->
+            </div>
         </div>
         
         <h2 id="question">Loading...</h2>
@@ -119,7 +119,7 @@
         let filteredVocabulary = [];
         let currentWordIndex = 0;
         let categories = [];
-        let currentCategory = "all";
+        let selectedCategories = new Set();
         
         // Word stats
         let wordStats = {};
@@ -185,31 +185,48 @@
                 // Convert Set to Array and sort alphabetically
                 categories = Array.from(categorySet).sort();
                 
-                // Populate dropdown with categories
-                const dropdown = document.getElementById('categoryFilter');
+                // Populate checkboxes with categories
+                const checkboxContainer = document.getElementById('categoryCheckboxes');
                 categories.forEach(category => {
-                    const option = document.createElement('option');
-                    option.value = category;
-                    option.textContent = category;
-                    dropdown.appendChild(option);
+                    const label = document.createElement('label');
+                    label.style.display = 'inline-flex';
+                    label.style.alignItems = 'center';
+                    label.style.margin = '2px';
+                    label.style.padding = '3px 8px';
+                    label.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                    label.style.borderRadius = '4px';
+                    label.style.cursor = 'pointer';
+                    label.style.fontSize = '14px';
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.value = category;
+                    checkbox.style.marginRight = '4px';
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            selectedCategories.add(category);
+                        } else {
+                            selectedCategories.delete(category);
+                        }
+                        filterByCategory();
+                        currentWordIndex = 0;
+                        startGame();
+                    });
+                    
+                    label.appendChild(checkbox);
+                    label.appendChild(document.createTextNode(category));
+                    checkboxContainer.appendChild(label);
                 });
                 
-                // Add event listener to dropdown
-                dropdown.addEventListener('change', function() {
-                    currentCategory = this.value;
-                    // Save selected category to localStorage
-                    localStorage.setItem('selectedCategory', currentCategory);
-                    filterByCategory();
-                    // Reset and restart with filtered vocabulary
-                    currentWordIndex = 0;
-                    startGame();
-                });
-                
-                // Check if we have a saved category preference
-                const savedCategory = localStorage.getItem('selectedCategory');
-                if (savedCategory && categories.includes(savedCategory)) {
-                    dropdown.value = savedCategory;
-                    currentCategory = savedCategory;
+                // Load saved category preferences
+                const savedCategories = localStorage.getItem('selectedCategories');
+                if (savedCategories) {
+                    const categories = JSON.parse(savedCategories);
+                    categories.forEach(category => {
+                        selectedCategories.add(category);
+                        const checkbox = document.querySelector(`input[value="${category}"]`);
+                        if (checkbox) checkbox.checked = true;
+                    });
                 }
                 
                 // Load saved word stats
@@ -247,21 +264,24 @@
             }
         }
         
-        // Filter vocabulary by selected category
+        // Filter vocabulary by selected categories
         function filterByCategory() {
             try {
-                if (currentCategory === "all") {
-                    filteredVocabulary = [...vocabulary]; // Use all vocabulary
+                if (selectedCategories.size === 0) {
+                    filteredVocabulary = [...vocabulary]; // Use all vocabulary if no categories selected
                 } else {
-                    filteredVocabulary = vocabulary.filter(word => word.type === currentCategory);
+                    filteredVocabulary = vocabulary.filter(word => selectedCategories.has(word.type));
                 }
                 
-                // Randomize the initial order of the filtered vocabulary
+                // Shuffle the filtered vocabulary array
                 shuffleArray(filteredVocabulary);
                 
-                // Update debug message if no words in category
+                // Save selected categories to localStorage
+                localStorage.setItem('selectedCategories', JSON.stringify(Array.from(selectedCategories)));
+                
+                // Update debug message if no words in selected categories
                 if (filteredVocabulary.length === 0) {
-                    document.getElementById('question').innerText = "No words found in this category";
+                    document.getElementById('question').innerText = "No words found in selected categories";
                     // Hide all buttons
                     document.getElementById('hint1').style.display = 'none';
                     document.getElementById('hint2').style.display = 'none';
