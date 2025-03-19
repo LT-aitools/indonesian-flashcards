@@ -137,6 +137,7 @@
         <h3 id="exampleSentence"></h3>
         <button id="hint1">Hint 1</button>
         <button id="hint2">Hint 2</button>
+        <button id="hint3" style="display: none;">Personal Note 📝</button>
         <button id="reveal">Reveal 👀</button>
         <br>
         <button id="correct" style="display: none;">Correct ✅</button>
@@ -333,16 +334,18 @@
                     // Add the importance weight from column G (index 6)
                     const importanceWeight = row[6] ? parseInt(row[6]) : 3; // Default to 3 if missing
                     const category = row[0] ? row[0].trim() : "Uncategorized";
+                    const personalNote = row[7] ? row[7].trim() : ""; // Get personal note from column H (index 7)
                     
                     // Add to category set
                     categorySet.add(category);
                     
                     vocabulary.push({
                         type: category, // Store the category/type
-                        english: row[1],
-                        indonesian: row[2],
+                        english: row[1].trim(), // Column B (index 1) - English word
+                        indonesian: row[2].trim(), // Column C (index 2) - Indonesian word
                         exampleSentence: row[3], // Column D (index 3) - Example Sentence
-                        importance: importanceWeight // Add importance weight
+                        importance: importanceWeight, // Add importance weight
+                        personalNote: personalNote // Add personal note
                     });
                 });
                 
@@ -429,6 +432,7 @@
                     // Hide all buttons
                     document.getElementById('hint1').style.display = 'none';
                     document.getElementById('hint2').style.display = 'none';
+                    document.getElementById('hint3').style.display = 'none';
                     document.getElementById('reveal').style.display = 'none';
                 }
             } catch (error) {
@@ -527,6 +531,7 @@
                     // Hide all buttons
                     document.getElementById('hint1').style.display = 'none';
                     document.getElementById('hint2').style.display = 'none';
+                    document.getElementById('hint3').style.display = 'none';
                     document.getElementById('reveal').style.display = 'none';
                     return;
                 }
@@ -622,8 +627,10 @@
                 document.getElementById('exampleSentence').innerText = "";
                 document.getElementById('hint1').style.display = 'inline';
                 document.getElementById('hint2').style.display = 'inline';
+                document.getElementById('hint3').style.display = word.personalNote ? 'inline' : 'none';
                 document.getElementById('hint1').innerText = "Hint 1";
                 document.getElementById('hint2').innerText = "Hint 2";
+                document.getElementById('hint3').innerText = "Personal Note 📝";
                 document.getElementById('reveal').style.display = 'inline';
                 document.getElementById('example').style.display = 'none';
                 document.getElementById('correct').style.display = 'none';
@@ -635,6 +642,7 @@
                 
                 document.getElementById('hint1').onclick = () => showHint(1);
                 document.getElementById('hint2').onclick = () => showHint(2);
+                document.getElementById('hint3').onclick = () => showHint(3);
                 document.getElementById('reveal').onclick = revealAnswer;
                 document.getElementById('example').onclick = showExample;
                 document.getElementById('correct').onclick = markCorrect;
@@ -661,6 +669,10 @@
                     const lastLetter = word.indonesian.charAt(word.indonesian.length - 1).toUpperCase();
                     const middleHyphens = '-'.repeat(word.indonesian.length - 3);
                     document.getElementById('hint2').innerText = `Hint: ${firstTwo}${middleHyphens}${lastLetter}`;
+                } else if (level === 3) {
+                    if (word.personalNote) {
+                        document.getElementById('hint3').innerText = word.personalNote;
+                    }
                 }
             } catch (error) {
                 console.error("Error showing hint:", error);
@@ -679,6 +691,7 @@
                 document.getElementById('answer').innerText = word.indonesian;
                 document.getElementById('hint1').style.display = 'none';
                 document.getElementById('hint2').style.display = 'none';
+                document.getElementById('hint3').style.display = 'none';
                 document.getElementById('reveal').style.display = 'none';
                 document.getElementById('example').style.display = 'inline';
                 document.getElementById('correct').style.display = 'inline';

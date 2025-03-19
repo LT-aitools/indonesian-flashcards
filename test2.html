@@ -137,7 +137,7 @@
         <h3 id="exampleSentence"></h3>
         <button id="hint1">Hint 1</button>
         <button id="hint2">Hint 2</button>
-        <button id="hint3" style="display: none;">Hint 3</button>
+        <button id="hint3" style="display: none;">Personal Note 📝</button>
         <button id="reveal">Reveal 👀</button>
         <br>
         <button id="correct" style="display: none;">Correct ✅</button>
@@ -341,11 +341,9 @@
                     
                     vocabulary.push({
                         type: category, // Store the category/type
-                        english: row[1],
-                        indonesian: row[2],
+                        english: row[1].trim(), // Column B (index 1) - English word
+                        indonesian: row[2].trim(), // Column C (index 2) - Indonesian word
                         exampleSentence: row[3], // Column D (index 3) - Example Sentence
-                        exampleIndo: row[4], // Column E (index 4) - Example in Indonesian
-                        exampleEnglish: row[5], // Column F (index 5) - Example in English
                         importance: importanceWeight, // Add importance weight
                         personalNote: personalNote // Add personal note
                     });
@@ -629,10 +627,10 @@
                 document.getElementById('exampleSentence').innerText = "";
                 document.getElementById('hint1').style.display = 'inline';
                 document.getElementById('hint2').style.display = 'inline';
-                document.getElementById('hint3').style.display = 'inline';
+                document.getElementById('hint3').style.display = word.personalNote ? 'inline' : 'none';
                 document.getElementById('hint1').innerText = "Hint 1";
                 document.getElementById('hint2').innerText = "Hint 2";
-                document.getElementById('hint3').innerText = "Hint 3";
+                document.getElementById('hint3').innerText = "Personal Note 📝";
                 document.getElementById('reveal').style.display = 'inline';
                 document.getElementById('example').style.display = 'none';
                 document.getElementById('correct').style.display = 'none';
@@ -665,19 +663,15 @@
                 if (!word) return;
                 
                 if (level === 1) {
-                    document.getElementById('hint1').innerText = `${word.type}`;
+                    document.getElementById('hint1').innerText = `First letter: ${word.indonesian.charAt(0)}`;
                 } else if (level === 2) {
-                    if (word.exampleIndo) {
-                        speakWord(word.exampleIndo, 'id-ID');
-                        document.getElementById('hint2').innerText = `Example: ${word.exampleIndo}`;
-                    } else {
-                        document.getElementById('hint2').innerText = "No example available";
-                    }
+                    const firstTwo = word.indonesian.substring(0, 2).toUpperCase();
+                    const lastLetter = word.indonesian.charAt(word.indonesian.length - 1).toUpperCase();
+                    const middleHyphens = '-'.repeat(word.indonesian.length - 3);
+                    document.getElementById('hint2').innerText = `Hint: ${firstTwo}${middleHyphens}${lastLetter}`;
                 } else if (level === 3) {
                     if (word.personalNote) {
-                        document.getElementById('hint3').innerText = `Note: ${word.personalNote}`;
-                    } else {
-                        document.getElementById('hint3').style.display = 'none';
+                        document.getElementById('hint3').innerText = word.personalNote;
                     }
                 }
             } catch (error) {
@@ -693,12 +687,13 @@
                 const wordKey = `${word.english}:${word.indonesian}`;
                 const stats = wordStats[wordKey];
                 
-                speakWord(word.english, 'en-US');
-                document.getElementById('answer').innerText = word.english;
+                speakWord(word.indonesian, 'id-ID');
+                document.getElementById('answer').innerText = word.indonesian;
                 document.getElementById('hint1').style.display = 'none';
                 document.getElementById('hint2').style.display = 'none';
                 document.getElementById('hint3').style.display = 'none';
                 document.getElementById('reveal').style.display = 'none';
+                document.getElementById('example').style.display = 'inline';
                 document.getElementById('correct').style.display = 'inline';
                 document.getElementById('sorta').style.display = 'inline';
                 document.getElementById('incorrect').style.display = 'inline';
