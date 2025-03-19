@@ -68,10 +68,55 @@
             font-size: 14px;
             color: #666;
         }
+        
+        /* Voice selector - hidden by default */
+        .voice-selector {
+            display: none; /* Hidden by default */
+            margin: 10px auto;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex-direction: column;
+            align-items: center;
+            max-width: 90%;
+            width: 400px;
+        }
+        .voice-selector label {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .voice-selector select {
+            padding: 8px;
+            width: 100%;
+            max-width: 350px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .voice-selector button {
+            padding: 6px 12px;
+            background-color: #4a86e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
     <div class="background"></div>
+    <!-- Hidden voice selector for advanced users -->
+    <div class="voice-selector">
+        <label for="voice-select">Select Voice for Indonesian Pronunciation:</label>
+        <select id="voice-select" onchange="updateSelectedVoice()">
+            <option value="">Auto-select best voice</option>
+            <!-- Will be populated with available voices -->
+        </select>
+        <button onclick="testSelectedVoice()">Test Voice ("Selamat pagi")</button>
+    </div>
     <div id="content">
         <h1 style="color: darkgrey; margin-bottom: 20px;">Indonesian Flashcard Game - Level 4</h1>
         
@@ -123,6 +168,11 @@
         
         // Global counter
         let globalWordCounter = 0;
+        
+        // Voice selection variables
+        let voices = [];
+        let selectedVoice = null;
+        let speechSynthesisInitialized = false;
         
         // Initial setup
         window.onload = function() {
@@ -653,18 +703,176 @@
             }
         }
         
-        // Text-to-speech function
+        // Initialize voice options
+        function initSpeechSynthesis() {
+            if (speechSynthesisInitialized) return;
+            
+            // Load available voices
+            voices = window.speechSynthesis.getVoices();
+            console.log("Available voices:", voices.map(v => `${v.name} (${v.lang})`));
+            
+            // Initialize voice selector
+            const voiceSelect = document.getElementById('voice-select');
+            
+            // Clear voice select
+            while (voiceSelect.options.length > 1) {
+                voiceSelect.remove(1);
+            }
+            
+            // Add all voices to the selector
+            voices.forEach(voice => {
+                const option = document.createElement('option');
+                option.value = voice.name;
+                option.textContent = `${voice.name} (${voice.lang})`;
+                voiceSelect.appendChild(option);
+            });
+            
+            // Try to load the previously saved voice
+            const savedVoice = localStorage.getItem('selectedVoice');
+            if (savedVoice) {
+                selectedVoice = voices.find(v => v.name === savedVoice);
+                if (selectedVoice) {
+                    console.log("Loaded saved voice:", selectedVoice.name);
+                    voiceSelect.value = savedVoice;
+                }
+            }
+            
+            // If no saved voice, auto-select an Indonesian voice
+            if (!selectedVoice) {
+                // Try to find an Indonesian voice
+                selectedVoice = voices.find(voice => 
+                    voice.lang.includes('id') || 
+                    voice.name.toLowerCase().includes('indonesia')
+                );
+                
+                // If no Indonesian voice was found, look for other Asian voices that might work well
+                if (!selectedVoice) {
+                    const asianVoices = voices.filter(voice => 
+                        voice.lang.includes('ms') || // Malay
+                        voice.lang.includes('fil') || // Filipino
+                        voice.lang.includes('th') || // Thai
+                        voice.lang.includes('vi') || // Vietnamese
+                        voice.lang.includes('zh') // Chinese (often available on iOS)
+                    );
+                    
+                    if (asianVoices.length > 0) {
+                        selectedVoice = asianVoices[0];
+                        voiceSelect.value = selectedVoice.name;
+                    }
+                } else {
+                    voiceSelect.value = selectedVoice.name;
+                }
+            }
+            
+            // If a voice was selected, save it for future visits
+            if (selectedVoice) {
+                localStorage.setItem('selectedVoice', selectedVoice.name);
+                console.log("Selected voice:", selectedVoice.name);
+            } else {
+                console.log("No suitable voice found");
+            }
+            
+            speechSynthesisInitialized = true;
+        }
+        
+        // Update selected voice when the user changes selection
+        function updateSelectedVoice() {
+            const voiceSelect = document.getElementById('voice-select');
+            const selectedName = voiceSelect.value;
+            
+            if (selectedName) {
+                selectedVoice = voices.find(voice => voice.name === selectedName);
+                console.log("Selected voice changed to:", selectedVoice ? selectedVoice.name : "None");
+                
+                // Save to localStorage for future visits
+                localStorage.setItem('selectedVoice', selectedName);
+            } else {
+                selectedVoice = null;
+                localStorage.removeItem('selectedVoice');
+            }
+            
+            // Test the selected voice
+            testSelectedVoice();
+        }
+        
+        // Test the selected voice with a simple Indonesian phrase
+        function testSelectedVoice() {
+            if (!selectedVoice) return;
+            
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            const testSpeech = new SpeechSynthesisUtterance("Selamat pagi");
+            testSpeech.voice = selectedVoice;
+            testSpeech.lang = 'id-ID';
+            testSpeech.rate = 0.9; // Slightly slower rate for better pronunciation
+            
+            window.speechSynthesis.speak(testSpeech);
+        }
+        
+        // Voice initialization timing logic
+        if (window.speechSynthesis) {
+            if (window.speechSynthesis.onvoiceschanged !== undefined) {
+                window.speechSynthesis.onvoiceschanged = function() {
+                    initSpeechSynthesis();
+                };
+            }
+        }
+
+        // Enhanced Text-to-speech function that uses the selected voice
         function speakWord(word, lang) {
             try {
-                if (word) {
-                    const utterance = new SpeechSynthesisUtterance(word);
-                    utterance.lang = lang;
-                    speechSynthesis.speak(utterance);
+                if (!word) return;
+                
+                // Make sure speech synthesis is initialized
+                if (!speechSynthesisInitialized) {
+                    initSpeechSynthesis();
                 }
+                
+                // Cancel any ongoing speech
+                window.speechSynthesis.cancel();
+                
+                // Create a new utterance
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = lang;
+                
+                // Use appropriate voice based on language
+                if (lang === 'id-ID' && selectedVoice) {
+                    // Use the selected Indonesian voice
+                    utterance.voice = selectedVoice;
+                    utterance.rate = 0.9; // Slightly slower for better Indonesian pronunciation
+                } else {
+                    // For English, use default voice
+                    if (lang === 'en-US') {
+                        // Try to find an English voice
+                        const englishVoice = voices.find(voice => 
+                            voice.lang.includes('en-US') || 
+                            voice.lang.includes('en-GB')
+                        );
+                        if (englishVoice) {
+                            utterance.voice = englishVoice;
+                        }
+                    }
+                }
+                
+                // Speak the word
+                window.speechSynthesis.speak(utterance);
             } catch (error) {
                 console.error("Error with text-to-speech:", error);
             }
         }
+        
+        // Add a keyboard shortcut to toggle the voice selector (press 'v' key)
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'v') {
+                const voiceSelector = document.querySelector('.voice-selector');
+                if (voiceSelector.style.display === 'flex') {
+                    voiceSelector.style.display = 'none';
+                } else {
+                    voiceSelector.style.display = 'flex';
+                }
+            }
+        });
 
         // Shuffle helper function
         function shuffleArray(array) {
