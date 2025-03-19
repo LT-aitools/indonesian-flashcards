@@ -93,6 +93,12 @@
         <div id="stats"></div>
     </div>
     
+    <div style="margin-top: 30px;">
+        <button id="resetDeck" style="background-color: #e0e0e0; color: black; padding: 10px 20px; border: 1px solid #c0c0c0; border-radius: 5px; cursor: pointer;">
+            Reset Deck 🔄
+        </button>
+    </div>
+    
     <a href="https://lt-aitools.github.io/indonesian-flashcards/"
         style="display: inline-block; margin-top: 20px; text-decoration: none; 
                 background-color: lightblue; padding: 10px 20px; border-radius: 5px;">
@@ -121,6 +127,10 @@
         // Initial setup
         window.onload = function() {
             loadCSV();
+            initSpeechSynthesis();
+            
+            // Add reset button event listener
+            document.getElementById('resetDeck').addEventListener('click', resetDeck);
         };
 
         // Load CSV Data
@@ -661,6 +671,39 @@
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Add reset deck functionality
+        function resetDeck() {
+            if (confirm('Are you sure you want to reset all progress? This will clear all statistics and start fresh.')) {
+                // Reset all word stats while preserving importance weights
+                Object.keys(wordStats).forEach(wordKey => {
+                    const stats = wordStats[wordKey];
+                    // Keep only the importance weight and reset everything else
+                    const importance = stats.importance || 3;
+                    wordStats[wordKey] = {
+                        correctCount: 0,
+                        sortaCount: 0,
+                        incorrectCount: 0,
+                        lastSeenCount: 0,
+                        nextReviewCount: 0,
+                        importance: importance,
+                        level: 1
+                    };
+                });
+                
+                // Reset global counter
+                globalWordCounter = 0;
+                
+                // Save the reset stats
+                saveWordStats();
+                
+                // Restart the game
+                startGame();
+                
+                // Show confirmation message
+                alert('Deck has been reset! Starting fresh...');
             }
         }
     </script>
