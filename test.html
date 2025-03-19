@@ -2,39 +2,437 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indonesian Flashcard Game</title>
+    <title>Study Mode</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        let words = [];
+        let currentIndex = 0;
+        const wordsPerPage = 6;
+        
+        // Voice selection
+        let selectedVoice = null;
+        let voices = [];
+        let speechSynthesisInitialized = false;
+
+        async function loadWords() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const category = urlParams.get('category');
+            document.getElementById("category-title").textContent = category;
+            
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/LT-aitools/indonesian-flashcards/refs/heads/main/Indonesian_vocabulary.csv');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const text = await response.text();
+                const rows = text.split('\n').map(row => row.split(','));
+                
+                words = rows.filter(row => row[0]?.trim() === category);
+                if (words.length === 0) {
+                    document.getElementById("word-container").innerHTML = "<p>No words found for this category.</p>";
+                    return;
+                }
+                displayWords();
+            } catch (error) {
+                console.error("Error loading CSV:", error);
+                document.getElementById("word-container").innerHTML = "<p>Failed to load words. Please ensure the CSV file is accessible.</p>";
+            }
+        }
+
+        function displayWords() {
+            const container = document.getElementById("word-container");
+            container.innerHTML = "";
+            
+            const wordsToShow = words.slice(currentIndex, currentIndex + wordsPerPage);
+            wordsToShow.forEach(word => {
+                container.innerHTML += `
+                    <div class="word-card">
+                        <div class="word-grid">
+                            <div class="play-button-container">
+                                <button class="play-button" onclick="playAudio('${word[2]?.trim()}', '${word[4]?.trim()}')">
+                                    <img src="images/play-btn.png" alt="Play">
+                                </button>
+                            </div>
+                            <div class="grid-container">
+                                <div class="grid-item word-en" style="font-size: 18px;">${word[1]?.trim() || ''}</div>
+                                <div class="grid-item example-en" style="font-size: 14px;">${word[5]?.trim() || ''}</div>
+                                <div class="grid-item word-id" style="font-size: 18px;"><strong>${word[2]?.trim() || ''}</strong></div>
+                                <div class="grid-item example-id" style="font-size: 14px;">${word[4]?.trim() || ''}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function nextWords() {
+            if (currentIndex + wordsPerPage < words.length) {
+                currentIndex += wordsPerPage;
+                displayWords();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Initialize voice options
+        function initSpeechSynthesis() {
+            if (speechSynthesisInitialized) return;
+            
+            // Load available voices
+            voices = window.speechSynthesis.getVoices();
+            console.log("Available voices:", voices.map(v => `${v.name} (${v.lang})`));
+            
+            // Try to load the previously saved voice
+            const savedVoice = localStorage.getItem('selectedVoice');
+            if (savedVoice) {
+                selectedVoice = voices.find(v => v.name === savedVoice);
+                if (selectedVoice) {
+                    console.log("Loaded saved voice:", selectedVoice.name);
+                }
+            }
+            
+            // If no saved voice, auto-select an Indonesian voice
+            if (!selectedVoice) {
+                // Try to find an Indonesian voice
+                selectedVoice = voices.find(voice => 
+                    voice.lang.includes('id') || 
+                    voice.name.toLowerCase().includes('indonesia')
+                );
+                
+                // If no Indonesian voice was found, look for other Asian voices that might work well
+                if (!selectedVoice) {
+                    const asianVoices = voices.filter(voice => 
+                        voice.lang.includes('ms') || // Malay
+                        voice.lang.includes('fil') || // Filipino
+                        voice.lang.includes('th') || // Thai
+                        voice.lang.includes('vi') || // Vietnamese
+                        voice.lang.includes('zh') // Chinese (often available on iOS)
+                    );
+                    
+                    if (asianVoices.length > 0) {
+                        selectedVoice = asianVoices[0];
+                    }
+                }
+            }
+            
+            // If a voice was selected, save it for future visits
+            if (selectedVoice) {
+                localStorage.setItem('selectedVoice', selectedVoice.name);
+                console.log("Selected voice:", selectedVoice.name);
+            } else {
+                console.log("No suitable voice found");
+            }
+            
+            speechSynthesisInitialized = true;
+        }
+        
+        // Update selected voice when the user changes selection
+        function updateSelectedVoice() {
+            const voiceSelect = document.getElementById('voice-select');
+            const selectedName = voiceSelect.value;
+            
+            if (selectedName) {
+                selectedVoice = voices.find(voice => voice.name === selectedName);
+                console.log("Selected voice changed to:", selectedVoice ? selectedVoice.name : "None");
+                
+                // Save to localStorage for future visits
+                localStorage.setItem('selectedVoice', selectedName);
+            } else {
+                selectedVoice = null;
+                localStorage.removeItem('selectedVoice');
+            }
+            
+            // Test the selected voice
+            testSelectedVoice();
+        }
+        
+        // Test the selected voice with a simple Indonesian phrase
+        function testSelectedVoice() {
+            if (!selectedVoice) return;
+            
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            const testSpeech = new SpeechSynthesisUtterance("Selamat pagi");
+            testSpeech.voice = selectedVoice;
+            testSpeech.lang = 'id-ID';
+            testSpeech.rate = 0.9; // Slightly slower rate for better pronunciation
+            
+            window.speechSynthesis.speak(testSpeech);
+        }
+        
+        // Load the selected voice from localStorage on page load
+        function loadSavedVoice() {
+            const savedVoice = localStorage.getItem('selectedVoice');
+            if (savedVoice && voices.length > 0) {
+                const voice = voices.find(v => v.name === savedVoice);
+                if (voice) {
+                    selectedVoice = voice;
+                }
+            }
+        }
+        
+        // Feedback element management removed
+        
+        // The main audio playing function
+        function playAudio(word, sentence) {
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            // Make sure TTS is initialized
+            if (!speechSynthesisInitialized) {
+                initSpeechSynthesis();
+            }
+            
+            // First, speak the word
+            const wordUtterance = new SpeechSynthesisUtterance(word);
+            wordUtterance.lang = 'id-ID';
+            wordUtterance.rate = 0.9; // Slightly slower for better pronunciation
+            
+            // Use selected voice if available
+            if (selectedVoice) {
+                wordUtterance.voice = selectedVoice;
+            }
+            
+            // After word is spoken, speak the sentence
+            wordUtterance.onend = function() {
+                if (sentence) {
+                    const sentenceUtterance = new SpeechSynthesisUtterance(sentence);
+                    sentenceUtterance.lang = 'id-ID';
+                    sentenceUtterance.rate = 0.85; // Even slower for sentences
+                    
+                    if (selectedVoice) {
+                        sentenceUtterance.voice = selectedVoice;
+                    }
+                    
+                    window.speechSynthesis.speak(sentenceUtterance);
+                }
+            };
+            
+            window.speechSynthesis.speak(wordUtterance);
+        }
+        
+        // Voice initialization timing logic
+        window.addEventListener('DOMContentLoaded', function() {
+            // Try to initialize immediately
+            setTimeout(function() {
+                initSpeechSynthesis();
+            }, 100);
+        });
+        
+        // Different browsers handle voice loading differently
+        if (window.speechSynthesis) {
+            if (window.speechSynthesis.onvoiceschanged !== undefined) {
+                window.speechSynthesis.onvoiceschanged = function() {
+                    initSpeechSynthesis();
+                };
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: url('images/background.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+            overflow-y: auto;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            opacity: 0.5;
+            z-index: -1;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .voice-selector {
+            display: none; /* Hide the voice selector UI but keep the functionality */
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex-direction: column;
+            align-items: center;
+            max-width: 90%;
+            width: 600px;
+        }
+        .voice-selector label {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .voice-selector select {
+            padding: 8px;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .voice-selector button {
+            padding: 6px 12px;
+            background-color: #4a86e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .voice-selector button:hover {
+            background-color: #3b78e7;
+        }
+        /* iOS tips note styles removed */
+        .word-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 900px;
+            width: 100%;
+            justify-content: center;
+        }
+        .word-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .word-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: center;
+        }
+        .play-button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        .play-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+        .play-button img {
+            width: 36px;
+            height: 36px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 10px;
+            text-align: center;
+        }
+        .grid-item {
+            padding: 8px;
+        }
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-button {
+            text-decoration: none;
+            background-color: lightblue;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+        }
+        .note {
+            background-color: #f8f9fa;
+            border-left: 4px solid #4a86e8;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border-radius: 0 4px 4px 0;
+            font-size: 14px;
+            max-width: 600px;
+            width: 90%;
+        }
+        .note h3 {
+            margin-top: 0;
+            color: #4a86e8;
+        }
+        
+        @media (max-width: 768px) {
+            .word-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid-container {
+                font-size: 14px;
+            }
+            
+            .voice-selector {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(4, auto);
+            }
+            
+            .play-button img {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .word-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .play-button-container {
+                padding: 5px 10px 10px;
+            }
+        }
+    </style>
 </head>
-<body>
-    <div class="background"></div>
-
-    <!-- Page Title -->
-    <h1 class="page-title">Indonesian Flashcard Game</h1>
-
+<body onload="loadWords()">
     <div class="container">
-        <div class="button-grid">
-            <a href="studysplash.html" class="button study-button">
-                <div class="button-label"><strong>Study Mode</strong><br>Words by theme</div>
-                <img src="images/study.jpeg" alt="Study Mode">
-            </a>
-            <a href="level1.html" class="button">
-                <div class="button-label"><strong>Level 1</strong><br>English to Indonesian</div>
-                <img src="images/level1.jpeg" alt="Level 1">
-            </a>
-            <a href="level2.html" class="button">
-                <div class="button-label"><strong>Level 2</strong><br>Indonesian to English</div>
-                <img src="images/level2.jpeg" alt="Level 2">
-            </a>
-            <a href="level3.html" class="button">
-                <div class="button-label"><strong>Level 3</strong><br>Indonesian sentences</div>
-                <img src="images/level3.jpeg" alt="Level 3">
-            </a>
-            <a href="level4.html" class="button">
-                <div class="button-label"><strong>Level 4</strong><br>English sentences</div>
-                <img src="images/level4.jpeg" alt="Level 4">
-            </a>
+        <h1 id="category-title"></h1>
+        
+        <!-- Voice selector -->
+        <div class="voice-selector">
+            <label for="voice-select">Select Voice for Indonesian Pronunciation:</label>
+            <select id="voice-select" onchange="updateSelectedVoice()">
+                <option value="">Auto-select best voice</option>
+                <!-- Will be populated with available voices -->
+            </select>
+            <button onclick="testSelectedVoice()">Test Voice ("Selamat pagi")</button>
+        </div>
+        
+        <div id="word-container" class="word-container"></div>
+        <div class="nav-buttons">
+            <button class="nav-button" onclick="nextWords()">Next</button>
+            <a href="studysplash.html" class="nav-button">Back to Categories</a>
+            <a href="index.html" class="nav-button">Back to Main</a>
         </div>
     </div>
 </body>
