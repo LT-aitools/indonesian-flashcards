@@ -26,13 +26,14 @@ body, html {
 
 /* Page title styling */
 .page-title {
-    position: absolute;
-    top: 20px;
+    position: relative;
     width: 100%;
     text-align: center;
     font-size: 40px;
     font-weight: bold;
     color: black;
+    padding: 20px 0;
+    margin-bottom: 20px;
     /* White stroke outline for readability */
     text-shadow:
         -1px -1px 0 #fff,
@@ -44,10 +45,12 @@ body, html {
 /* Main layout container */
 .container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
-    height: 100vh;
-    padding-top: 50px; /* Prevents overlap with title */
+    min-height: 100vh;
+    padding: 20px;
+    margin-top: 20px;
 }
 
 /* Button grid layout */
@@ -58,6 +61,8 @@ body, html {
     justify-content: center;
     max-width: 1200px;
     margin: 0 auto;
+    grid-auto-flow: row;
+    grid-auto-rows: 250px;
 }
 
 /* Button styling */
@@ -111,7 +116,7 @@ body, html {
 /* Responsive Design Adjustments */
 @media screen and (max-width: 1200px) {
     .button-grid {
-        grid-template-columns: repeat(2, 250px);
+        grid-template-columns: repeat(3, 250px);
     }
 }
 
@@ -123,18 +128,17 @@ body, html {
 
     .page-title {
         font-size: 28px;
-        top: 15px;
-        padding: 0 10px;
+        padding: 15px 10px;
+        margin-bottom: 15px;
     }
 
     .container {
-        padding-top: 60px;
-        padding-bottom: 60px;
-        height: auto;
+        padding: 15px;
+        margin-top: 15px;
     }
 
     .button-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 250px);
         gap: 15px;
     }
 
@@ -161,6 +165,13 @@ body, html {
 @media screen and (max-width: 480px) {
     .page-title {
         font-size: 24px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .container {
+        padding: 10px;
+        margin-top: 10px;
     }
 
     .button-grid {
