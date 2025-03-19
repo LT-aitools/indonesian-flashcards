@@ -7,8 +7,8 @@
 }
 
 body, html {
-    height: 100%;
-    overflow: hidden;
+    min-height: 100%;
+    overflow-y: auto;
 }
 
 /* Background image with opacity */
@@ -20,7 +20,7 @@ body, html {
     left: 0;
     height: 100%;
     width: 100%;
-    opacity: 0.5;
+    opacity: 0.2;
     z-index: -1;
 }
 
