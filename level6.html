@@ -149,6 +149,7 @@
         // Initial setup
         window.onload = function() {
             loadCSV();
+            initSpeechSynthesis();
             
             // Add reset button event listener
             document.getElementById('resetDeck').addEventListener('click', resetDeck);
@@ -177,27 +178,53 @@
         // Parse CSV and store words
         function parseCSV(data) {
             try {
-                const rows = data.split('\n').map(row => row.split(','));
+                // Split into rows, handling both Windows and Unix line endings
+                const rows = data.split(/\r?\n/).filter(row => row.trim());
                 rows.shift(); // Remove headers
                 
                 // Extract unique categories
                 const categorySet = new Set();
                 
                 rows.forEach(row => {
+                    // Parse CSV row properly, handling quoted fields
+                    const cells = [];
+                    let currentCell = '';
+                    let insideQuotes = false;
+                    
+                    for (let i = 0; i < row.length; i++) {
+                        const char = row[i];
+                        
+                        if (char === '"') {
+                            if (insideQuotes && row[i + 1] === '"') {
+                                // Handle escaped quotes
+                                currentCell += '"';
+                                i++; // Skip the next quote
+                            } else {
+                                insideQuotes = !insideQuotes;
+                            }
+                        } else if (char === ',' && !insideQuotes) {
+                            cells.push(currentCell.trim());
+                            currentCell = '';
+                        } else {
+                            currentCell += char;
+                        }
+                    }
+                    cells.push(currentCell.trim());
+                    
                     // Add the importance weight from column G (index 6)
-                    const importanceWeight = row[6] ? parseInt(row[6]) : 3; // Default to 3 if missing
-                    const category = row[0] ? row[0].trim() : "Uncategorized";
+                    const importanceWeight = cells[6] ? parseInt(cells[6]) : 3; // Default to 3 if missing
+                    const category = cells[0] ? cells[0].trim() : "Uncategorized";
                     
                     // Add to category set
                     categorySet.add(category);
                     
                     vocabulary.push({
                         type: category, // Store the category/type
-                        english: row[1],
-                        indonesian: row[2],
-                        exampleSentence: row[3], // Column D (index 3) - Example Sentence
-                        exampleIndo: row[4], // Column E (index 4) - Example in Indonesian
-                        exampleEnglish: row[5], // Column F (index 5) - Example in English
+                        english: cells[1].trim(), // Column B (index 1) - English word
+                        indonesian: cells[2].trim(), // Column C (index 2) - Indonesian word
+                        exampleSentence: cells[3], // Column D (index 3) - Example Sentence
+                        exampleIndo: cells[4], // Column E (index 4) - Example in Indonesian
+                        exampleEnglish: cells[5], // Column F (index 5) - Example in English
                         importance: importanceWeight // Add importance weight
                     });
                 });
@@ -740,6 +767,39 @@
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Add reset deck functionality
+        function resetDeck() {
+            if (confirm('Are you sure you want to reset all progress? This will clear all statistics and start fresh.')) {
+                // Reset all word stats while preserving importance weights
+                Object.keys(wordStats).forEach(wordKey => {
+                    const stats = wordStats[wordKey];
+                    // Keep only the importance weight and reset everything else
+                    const importance = stats.importance || 3;
+                    wordStats[wordKey] = {
+                        correctCount: 0,
+                        sortaCount: 0,
+                        incorrectCount: 0,
+                        lastSeenCount: 0,
+                        nextReviewCount: 0,
+                        importance: importance,
+                        level: 6
+                    };
+                });
+                
+                // Reset global counter
+                globalWordCounter = 0;
+                
+                // Save the reset stats
+                saveWordStats();
+                
+                // Restart the game
+                startGame();
+                
+                // Show confirmation message
+                alert('Deck has been reset! Starting fresh...');
             }
         }
     </script>

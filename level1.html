@@ -324,26 +324,52 @@
         // Parse CSV and store words
         function parseCSV(data) {
             try {
-                const rows = data.split('\n').map(row => row.split(','));
+                // Split into rows, handling both Windows and Unix line endings
+                const rows = data.split(/\r?\n/).filter(row => row.trim());
                 rows.shift(); // Remove headers
                 
                 // Extract unique categories
                 const categorySet = new Set();
                 
                 rows.forEach(row => {
+                    // Parse CSV row properly, handling quoted fields
+                    const cells = [];
+                    let currentCell = '';
+                    let insideQuotes = false;
+                    
+                    for (let i = 0; i < row.length; i++) {
+                        const char = row[i];
+                        
+                        if (char === '"') {
+                            if (insideQuotes && row[i + 1] === '"') {
+                                // Handle escaped quotes
+                                currentCell += '"';
+                                i++; // Skip the next quote
+                            } else {
+                                insideQuotes = !insideQuotes;
+                            }
+                        } else if (char === ',' && !insideQuotes) {
+                            cells.push(currentCell.trim());
+                            currentCell = '';
+                        } else {
+                            currentCell += char;
+                        }
+                    }
+                    cells.push(currentCell.trim());
+                    
                     // Add the importance weight from column G (index 6)
-                    const importanceWeight = row[6] ? parseInt(row[6]) : 3; // Default to 3 if missing
-                    const category = row[0] ? row[0].trim() : "Uncategorized";
-                    const personalNote = row[7] ? row[7].trim() : ""; // Get personal note from column H (index 7)
+                    const importanceWeight = cells[6] ? parseInt(cells[6]) : 3; // Default to 3 if missing
+                    const category = cells[0] ? cells[0].trim() : "Uncategorized";
+                    const personalNote = cells[7] ? cells[7].trim() : ""; // Get personal note from column H (index 7)
                     
                     // Add to category set
                     categorySet.add(category);
                     
                     vocabulary.push({
                         type: category, // Store the category/type
-                        english: row[1].trim(), // Column B (index 1) - English word
-                        indonesian: row[2].trim(), // Column C (index 2) - Indonesian word
-                        exampleSentence: row[3], // Column D (index 3) - Example Sentence
+                        english: cells[1].trim(), // Column B (index 1) - English word
+                        indonesian: cells[2].trim(), // Column C (index 2) - Indonesian word
+                        exampleSentence: cells[3], // Column D (index 3) - Example Sentence
                         importance: importanceWeight, // Add importance weight
                         personalNote: personalNote // Add personal note
                     });
