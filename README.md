@@ -6,7 +6,21 @@ The original vocabulary list in the CSV was developed in conjunction with ChatGP
 
 ## Features
 
-### Study Modes
+### Study Mode
+
+The app includes a dedicated Study mode for focused practice:
+- Browse words by category (e.g., Verbs, Nouns, Adjectives)
+- View complete word details including:
+  - English and Indonesian translations
+  - Example sentences in both languages
+  - Personal notes (if available)
+- Perfect for:
+  - Reviewing vocabulary before starting game levels
+  - Learning new words in context
+  - Understanding word usage through examples
+  - Quick reference during practice
+
+### Flashcard Mode
 
 The app offers six different levels of difficulty and interaction:
 
@@ -61,20 +75,6 @@ The app offers six different levels of difficulty and interaction:
 - **Reset Function**: Option to reset progress and start fresh
 - **Responsive Design**: Works on both desktop and mobile devices
 
-### Study Mode
-
-The app includes a dedicated Study mode for focused practice:
-- Browse words by category (e.g., Verbs, Nouns, Adjectives)
-- View complete word details including:
-  - English and Indonesian translations
-  - Example sentences in both languages
-  - Personal notes (if available)
-- Perfect for:
-  - Reviewing vocabulary before starting game levels
-  - Learning new words in context
-  - Understanding word usage through examples
-  - Quick reference during practice
-
 ## Technical Details
 
 ### Prerequisites
@@ -127,8 +127,4 @@ To modify the application:
 
 ## Contributing
 
-Feel free to submit issues and enhancement requests!
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+Feel free to submit issues and enhancement requests to hello@letstalkaitools.com
