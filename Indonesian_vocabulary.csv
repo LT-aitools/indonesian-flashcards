@@ -6,29 +6,29 @@ Question,Where,Di mana,Di mana restoran terdekat? (Where is the nearest restaura
 Question,Why,Kenapa,Kenapa makanan ini pedas? (Why is this food spicy?),Kenapa makanan ini pedas?,Why is this food spicy?,3,Ken father keeps asking why
 Question,How,Bagaimana,Bagaimana cara ke pasar? (How do I get to the market?),Bagaimana cara ke pasar?,How do I get to the market?,3,Bagamoya + where = how
 Question,How much?,Bayar berapa?,Buah ini berapa? (How much does this fruit cost?),Buah ini berapa?,How much does this fruit cost?,5,Father bear says I buy?
-Question,Is/Are there... ,Ada...?,Ada orang di rumah? (Is there anyone at home?),Ada orang di rumah?,Is there anyone at home?,5,
-Question,Which way is...?,Ini ke arah mana?,Ini ke arah mana? (Which way is it?),Ini ke arah mana?,Which way is...?,3,
-Question,How far...?,Berapa jauh?,Berapa jauh? (How far?),Berapa jauh?,How far...?,3,
-Question,How long...?,Berapa lama?,Berapa lama? (How long?),Berapa lama?,How long...?,3,
-Question,What do you want to order?,Mau pesan apa?,Mau pesan apa? (What do you want to order?),Mau pesan apa?,What do you want to order?,3,
-Question,Is there a path there?,Ada jalan ke sana?,Ada jalan ke sana? (Is there a path there?),Ada jalan ke sana?,Is there a path there?,3,
-Question,Can you help me?,Bisa bantu saya? ,Bisa bantu saya? (Can you help me?),Bisa bantu saya? ,Can you help me?,3,
-Question,How are you? ,Apa kabar?,Apa kabar? (How are you?),Apa kapar?,How are you? (literally: What's news?),5,
-Question,Have you eaten? (greeting) / Yes or Not yet,Sudah makan? (Sudah / Belum),Sudah makan? (Have you eaten?) ,Sudah makan? (Sudah / Belum),Have you eaten? (greeting) / Response: Sudah (Already) or Belum (Not yet.),4,
-Question,Where are you headed?,Mau ke mana?,Mau ke mana? (Where are you headed?),Mau ke mana?,"Where are you headed? (Friendly check-in, not invasive)",3,
-Question,What are you up to?,Lagi ngapain? ,Lagi ngapain? (What are you up to?),Lagi ngapain? ,What are you up to?,3,
-Question,Everything okay?,Baik-baik saja?,Baik-baik saja? (Everything okay? - checking in on someone),Baik-baik saja?,Everything okay? - checking in on someone,3,
-Question,You well?,Sehat?,Sehat? (Healthy / You well?),Sehat?,Healthy / you well? (common after travel or illness),3,
-Question,What time is it?,Jam berapa?,Jam berapa? (What time is it?),Jam berapa?,What time is it?,4,
+Question,Is/Are there... ,Ada...?,Ada orang di rumah? (Is there anyone at home?),Ada orang di rumah?,Is there anyone at home?,5,(is there) (person) (inside) (home)?
+Question,Which way is...?,Ini ke arah mana?,Ini ke arah mana? (Which way is it?),Ini ke arah mana?,Which way is...?,3,this towards where
+Question,How far...?,Berapa jauh?,Berapa jauh? (How far?),Berapa jauh?,How far...?,3,(how much) (distance = ja rule)
+Question,How long...?,Berapa lama?,Berapa lama? (How long?),Berapa lama?,How long...?,3,llamas last long (LLL)
+Question,What do you want to order?,Mau pesan apa?,Mau pesan apa? (What do you want to order?),Mau pesan apa?,What do you want to order?,3,(want) (order = they weigh) (what)?
+Question,Is there a path there?,Ada jalan ke sana?,Ada jalan ke sana? (Is there a path there?),Ada jalan ke sana?,Is there a path there?,3,is there + road + towards + there (sane area)
+Question,Can you help me?,Bisa bantu saya? ,Bisa bantu saya? (Can you help me?),Bisa bantu saya? ,Can you help me?,3,(can) (help) (me)
+Question,How are you? ,Apa kabar?,Apa kabar? (How are you?),Apa kapar?,How are you? (literally: What's news?),5,"(what) (news = caper, adventure)?"
+Question,Have you eaten? (greeting) / Yes or Not yet,Sudah makan? (Sudah / Belum),Sudah makan? (Have you eaten?) ,Sudah makan? (Sudah / Belum),Have you eaten? (greeting) / Response: Sudah (Already) or Belum (Not yet.),4,before(-se) eat?
+Question,Where are you headed?,Mau ke mana?,Mau ke mana? (Where are you headed?),Mau ke mana?,"Where are you headed? (Friendly check-in, not invasive)",3,want towards where?
+Question,What are you up to?,Lagi ngapain? ,Lagi ngapain? (What are you up to?),Lagi ngapain? ,What are you up to?,3,(currently) in pain or eating bread? whatcha doing?
+Question,Everything okay?,Baik-baik saja?,Baik-baik saja? (Everything okay? - checking in on someone),Baik-baik saja?,Everything okay? - checking in on someone,3,(all good) (only/simply)?
+Question,You well?,Sehat?,Sehat? (Healthy / You well?),Sehat?,Healthy / you well? (common after travel or illness),3,"to see = lee's hat, healthy = se's hat"
+Question,What time is it?,Jam berapa?,Jam berapa? (What time is it?),Jam berapa?,What time is it?,4,(hour) (how much)?
 Pronoun,I,Saya/Aku,Saya suka makan nasi goreng. (I like to eat fried rice.),Saya suka makan nasi goreng.,I like to eat fried rice.,5,I sigh
 Pronoun,You (singular),Kamu/Anda,Kamu tinggal di hotel mana? (Which hotel are you staying at?),Kamu tinggal di hotel mana?,Which hotel are you staying at?,5,"Come you, walk"
 Pronoun,He,Dia (laki-laki),Dia membeli tiket pesawat kemarin. (He bought a plane ticket yesterday.),Dia membeli tiket pesawat kemarin.,He bought a plane ticket yesterday.,5,"Day in or day out, he is she // but lucky-lucky!"
 Pronoun,She,Dia (perempuan),Dia minum kopi setiap pagi. (She drinks coffee every morning.),Dia minum kopi setiap pagi.,She drinks coffee every morning.,5,"Day in or day out, he is she...// "
 Pronoun,We (inclusive),Kita,Kita akan bertemu di restoran nanti. (We will meet at the restaurant later.),Kita akan bertemu di restoran nanti.,We will meet at the restaurant later.,4,The key to being inclusive
 Pronoun,We (exclusive),Kami,Kami pergi ke pantai minggu lalu. (We went to the beach last week.),Kami pergi ke pantai minggu lalu.,We went to the beach last week.,5,Come me & us (not you) 
-Pronoun,They,Mereka,Mereka sedang makan siang di warung. (They are having lunch at the food stall.),Mereka sedang makan siang di warung.,They are having lunch at the food stall.,5,They use maracas
+Pronoun,They,Mereka,Mereka sedang makan siang di warung. (They are having lunch at the food stall.),Mereka sedang makan siang di warung.,They are having lunch at the food stall.,5,They/theM use maracas; we do not
 Pronoun,It,Itu,Itu adalah tas saya. (That is my bag.),Itu adalah tas saya.,That is my bag.,5,It-ooh
-Pronoun,You (plural),Kalian,Kalian mau pergi ke mana besok? (Where do you all want to go tomorrow?),Kalian mau pergi ke mana besok?,Where do you all want to go tomorrow?,5,
+Pronoun,You (plural),Kalian,Kalian mau pergi ke mana besok? (Where do you all want to go tomorrow?),Kalian mau pergi ke mana besok?,Where do you all want to go tomorrow?,5,(all of you) are from kali 
 Pronoun,His / Her / Their ,-nya,Saya suka rumahnya. (I like his/her/their house.),Saya suka rumahnya.,I like his/her/their house.,4,
 Verb,Eat,Makan,Saya makan nasi tiga kali sehari. (I eat rice three times a day.),Saya makan nasi tiga kali sehari.,I eat rice three times a day.,5,
 Verb,Drink,Minum,Dia minum air setelah berolahraga. (He drinks water after exercising.),Dia minum air setelah berolahraga.,He drinks water after exercising.,5,drinking water is the bare minimum
@@ -95,8 +95,8 @@ Verb,Disagree,Tidak setuju,Saya tidak setuju dengan ide itu. (I disagree with th
 Verb,Shower/ Bathe,Mandi,Saya mandi sebelum sarapan. (I shower before breakfast.),Saya mandi sebelum sarapan.,I shower before breakfast.,4,kyrg dumplings bathe in water
 Verb,Must (Have to),Harus ,Saya harus peri sekarang. (I have to go now.),Saya harus pergi sekarang.,I have to go now.,4,harumph i must have it 
 Verb,"Need to (softer than ""must"")",Perlu ,Saya perlu bicara dengan dia. (I need to talk to him/her.),Saya perlu bicara dengan dia.,I need to talk to him/her.,4,ooh i need to have those pearls 
-Adjective,Big,Besar,Hotel ini sangat besar. (This hotel is very big.),Hotel ini sangat besar.,This hotel is very big.,5,
-Adjective,Small,Kecil,Kamar ini terlalu kecil. (This room is too small.),Kamar ini terlalu kecil.,This room is too small.,5,
+Adjective,Big,Besar,Hotel ini sangat besar. (This hotel is very big.),Hotel ini sangat besar.,This hotel is very big.,5,Big kisses
+Adjective,Small,Kecil,Kamar ini terlalu kecil. (This room is too small.),Kamar ini terlalu kecil.,This room is too small.,5,Small ketchup
 Adjective,Fast,Cepat,Kereta itu sangat cepat. (That train is very fast.),Kereta itu sangat cepat.,That train is very fast.,3,
 Adjective,Slow,Lambat,Pelayanan di restoran ini lambat. (The service at this restaurant is slow.),Pelayanan di restoran ini lambat.,The service at this restaurant is slow.,3,
 Adjective,Hot,Panas,Cuaca hari ini sangat panas. (The weather today is very hot.),Cuaca hari ini sangat panas.,The weather today is very hot.,4,
@@ -133,15 +133,15 @@ Adjective,That,Itu,Hotel itu sangat mahal. (That hotel is very expensive.),Hotel
 Adjective,Hungry,Lapar,Saya lapar. (I am hungry.),Saya lapar. ,I am hungry.,5,
 Adjective,Thirsty,Haus,Saya haus. (I am thirsty.),Saya haus.,I am thirsty.,2,
 Adjective,"More X (""-er"")",Leibh,lebih bagus / leibh murah (better/cheaper),lebih bagus / leibh murah,Better / Cheaper,4,
-Preposition,And,Dan,Saya suka kopi dan teh. (I like coffee and tea.),Saya suka kopi dan teh.	,I like coffee and tea,5,
-Preposition,But,Tapi,"Saya dari Amerika, tapi saya tinggal di Afrika Selatan. (I am from the US but I live in South Africa.)","Saya dari Amerika, tapi saya tinggal di Afrika Selatan. ",I am from the US but I live in South Africa.,5,
-Preposition,With,Sama,Saya pergi dengan teman saya. (I am going with my friend.),Saya pergi dengan teman saya.,I am going with my friend.,5,
-Preposition,From,Dari,Kamu dari mana? (Where are you from?),Kamu dari mana?,Where are you from?,4,
-Preposition,To,Ke,Saya pergi dari Wamena ke desa. (I’m going from Wamena to the village.),Saya pergi dari Wamena ke desa. ,I’m going from Wamena to the village,4,
+Adjective,Near,Dekat,Hotel kami dekat pantai. (Our hotel is near the beach.),Hotel kami dekat pantai.,Our hotel is near the beach.,4,
+Adjective,Far,Jauh,Bandara jauh dari pusat kota. (The airport is far from the city center.),Bandara jauh dari pusat kota.,The airport is far from the city center.,4,
+Preposition,And,Dan,Saya suka kopi dan teh. (I like coffee and tea.),Saya suka kopi dan teh.	,I like coffee and tea,5,and Dan is coming too!
+Preposition,But,Tapi,"Saya dari Amerika, tapi saya tinggal di Afrika Selatan. (I am from the US but I live in South Africa.)","Saya dari Amerika, tapi saya tinggal di Afrika Selatan. ",I am from the US but I live in South Africa.,5,but off topic...
+Preposition,With,Sama / Dengan (inf/formal),Saya pergi dengan teman saya. (I am going with my friend.),Saya pergi dengan teman saya.,I am going with my friend.,5,"let's go with each other, to be same-same"
+Preposition,From,Dari,Kamu dari mana? (Where are you from?),Kamu dari mana?,Where are you from?,4,dare i say who it's from? (it's secret...)
+Preposition,To,Ke,Saya pergi dari Wamena ke desa. (I’m going from Wamena to the village.),Saya pergi dari Wamena ke desa. ,I’m going from Wamena to the village,4,key to something
 Preposition,For (someone/reason),Buat / Untuk (informal/formal),Ini buat kamu. (This is for you.),Ini buat kamu.,This is for you.,4,
 Preposition,For (time duration),Selama,Saya tinggal di sini selama 3 hari. (I’m staying here for 3 days.),Saya tinggal di sini selama 3 hari.,I’m staying here for 3 days.,3,
-Preposition,Near,Dekat,Hotel kami dekat pantai. (Our hotel is near the beach.),Hotel kami dekat pantai.,Our hotel is near the beach.,4,
-Preposition,Far,Jauh,Bandara jauh dari pusat kota. (The airport is far from the city center.),Bandara jauh dari pusat kota.,The airport is far from the city center.,4,
 Preposition,On,Di atas,Buku ada di atas meja. (The book is on the table.),Buku ada di atas meja.,The book is on the table.,3,
 Preposition,In,Di dalam,Barang-barang ada di dalam tas. (The items are in the bag.),Barang-barang ada di dalam tas.,The items are in the bag.,3,
 Preposition,Near,Di dekat,Hotel kami dekat pantai. (Our hotel is near the beach.),Hotel kami dekat pantai.,Our hotel is near the beach.,4,
@@ -153,7 +153,6 @@ Preposition,Next to,Di sebelah,Restoran ada di sebelah hotel. (The restaurant is
 Preposition,Above,Di atas,Lampu ada di atas meja. (The lamp is above the table.),Lampu ada di atas meja.,The lamp is above the table.,3,
 Preposition,Below,Di bawah,Sepatu ada di bawah tempat tidur. (The shoes are below the bed.),Sepatu ada di bawah tempat tidur.,The shoes are below the bed.,3,
 Preposition,Until,Sampai,Saya tinggal di sini sampai besok. (I’m staying here until tomorrow.),Saya tinggal di sini sampai besok.,I’m staying here until tomorrow.,3,
-Preposition,With,Sama / Dengan (inf/formal),Saya jalan sama dia. (I walk with him/her.),Saya jalan sama dia.,I walk with him/her.,4,
 Travel,Hello,Halo,Halo! Apa kabar? (Hello! How are you?),Halo! Apa kabar?,Hello! How are you?,5,
 Travel,Goodbye,Selamat tinggal,Selamat tinggal! Sampai jumpa lagi. (Goodbye! See you again.),Selamat tinggal! Sampai jumpa lagi.,Goodbye! See you again.,5,
 Travel,Thank you,Terima kasih,Terima kasih untuk bantuan Anda. (Thank you for your help.),Terima kasih untuk bantuan Anda.,Thank you for your help.,5,
@@ -238,87 +237,87 @@ Numbers,More,Lebih,Saya perlu lebih banyak air. (I need more water.),Saya perlu 
 Numbers,Less,Kurang,Nasi goreng ini kurang garam. (This fried rice has less salt.),Nasi goreng ini kurang garam.,This fried rice has less salt.,4,CURAtiNG means less is shown
 Numbers,Some,Beberapa,Saya punya beberapa teman di Indonesia. (I have some friends in Indonesia.),Saya punya beberapa teman di Indonesia.,I have some friends in Indonesia.,4,"Drink, father "
 Numbers,All,Semua,Saya suka semua makanan ini. (I like all this food.),Saya suka semua makanan ini. ,I like all this food.,4,All of samoa is in the US
-Noun,House,Rumah,Rumah kami di dekat pantai. (Our house is near the beach.),Rumah kami di dekat pantai.,Our house is near the beach.,4,
-Noun,Car,Mobil,Kami menyewa mobil untuk perjalanan. (We rent a car for the trip.),Kami menyewa mobil untuk perjalanan.,We rent a car for the trip.,4,
+Noun,House,Rumah,Rumah kami di dekat pantai. (Our house is near the beach.),Rumah kami di dekat pantai.,Our house is near the beach.,4,many rooms in the house
+Noun,Car,Mobil,Kami menyewa mobil untuk perjalanan. (We rent a car for the trip.),Kami menyewa mobil untuk perjalanan.,We rent a car for the trip.,4,the car makes me mobile
 Noun,Road,Jalan,Jalan ini menuju ke gunung. (This road leads to the mountain.),Jalan ini menuju ke gunung.,This road leads to the mountain.,5,
-Noun,Street,Jalan raya,Restoran ada di jalan raya utama. (The restaurant is on the main street.),Restoran ada di jalan raya utama.,The restaurant is on the main street.,1,
+Noun,Main road/ Highway,Jalan raya,Restoran ada di jalan raya utama. (The restaurant is on the main street.),Restoran ada di jalan raya utama.,The restaurant is on the main street.,1,such an important road that rays shine out of it
 Noun,City,Kota,Kota ini memiliki banyak tempat wisata. (This city has many tourist attractions.),Kota ini memiliki banyak tempat wisata.,This city has many tourist attractions.,2,
-Noun,Village,Desa,Desa tradisional sangat menarik. (Traditional villages are very interesting.),Desa tradisional sangat menarik.,Traditional villages are very interesting.,4,
-Noun,Market,Pasar,Pasar tradisional buka pagi hari. (The traditional market opens in the morning.),Pasar tradisional buka pagi hari.,The traditional market opens in the morning.,4,
+Noun,Village,Desa,Desa tradisional sangat menarik. (Traditional villages are very interesting.),Desa tradisional sangat menarik.,Traditional villages are very interesting.,4,desi's village / in the desert
+Noun,Market,Pasar,Pasar tradisional buka pagi hari. (The traditional market opens in the morning.),Pasar tradisional buka pagi hari.,The traditional market opens in the morning.,4,pasar por el mercado
 Noun,Shop,Toko,Toko ini menjual suvenir murah. (This shop sells cheap souvenirs.),Toko ini menjual suvenir murah.,This shop sells cheap souvenirs.,3,
-Noun,School,Sekolah,Sekolah tutup selama liburan. (Schools are closed during holidays.),Sekolah tutup selama liburan.,Schools are closed during holidays.,4,
-Noun,Office,Kantor,Kantor wisata buka jam sembilan. (The tourist office opens at nine o'clock.),Kantor wisata buka jam sembilan.,The tourist office opens at nine o'clock.,3,
-Noun,Hospital,Rumah sakit,Rumah sakit terdekat lima kilometer dari sini. (The nearest hospital is five kilometers from here.),Rumah sakit terdekat lima kilometer dari sini.,The nearest hospital is five kilometers from here.,3,
+Noun,School,Sekolah,Sekolah tutup selama liburan. (Schools are closed during holidays.),Sekolah tutup selama liburan.,Schools are closed during holidays.,4,no coca COLA in the school
+Noun,Office,Kantor,Kantor wisata buka jam sembilan. (The tourist office opens at nine o'clock.),Kantor wisata buka jam sembilan.,The tourist office opens at nine o'clock.,3,same as in afrikaans
+Noun,Restaurant,Rumah makan,Kita cari rumah makan enak. (Let's look for a good restaurant.),Kita cari rumah makan enak.,Let's look for a good restaurant. ,4,house of food
+Noun,Hospital,Rumah sakit,Rumah sakit terdekat lima kilometer dari sini. (The nearest hospital is five kilometers from here.),Rumah sakit terdekat lima kilometer dari sini.,The nearest hospital is five kilometers from here.,3,house of the suck (ill/sick)
 Noun,Doctor,Dokter,Saya butuh dokter segera. (I need a doctor immediately.),Saya butuh dokter segera.,I need a doctor immediately.,3,
 Noun,Police,Polisi,Polisi membantu turis yang tersesat. (Police help tourists who are lost.),Polisi membantu turis yang tersesat.,Police help tourists who are lost.,3,
-Noun,Airport,Bandara,Berapa jauh ke bandara? (How far is it to the airport?),Berapa jauh ke bandara?,How far is it to the airport?,3,
+Noun,Airport,Bandara,Berapa jauh ke bandara? (How far is it to the airport?),Berapa jauh ke bandara?,How far is it to the airport?,3,the bandera's on the airplane wing
 Noun,Bus,Bus,Bus ke Yogyakarta berangkat setiap jam. (The bus to Yogyakarta departs every hour.),Bus ke Yogyakarta berangkat setiap jam.,The bus to Yogyakarta departs every hour.,3,
-Noun,Train,Kereta,Kereta lebih cepat dari bus. (The train is faster than the bus.),Kereta lebih cepat dari bus.,The train is faster than the bus.,2,
-Noun,Bridge,Jembatan,Jembatan kayu menghubungkan kedua pulau. (The wooden bridge connects the two islands.),Jembatan kayu menghubungkan kedua pulau.,The wooden bridge connects the two islands.,1,
-Noun,Mountain,Gunung,Gunung itu sangat tinggi dan indah. (That mountain is very tall and beautiful.),Gunung itu sangat tinggi dan indah.,That mountain is very tall and beautiful.,3,
-Noun,River,Sungai,Sungai ini mengalir ke laut. (This river flows to the sea.),Sungai ini mengalir ke laut.,This river flows to the sea.,3,
-Noun,Sea,Laut,Laut di sini sangat jernih. (The sea here is very clear.),Laut di sini sangat jernih.,The sea here is very clear.,3,
-Noun,Island,Pulau,Pulau kecil itu sangat indah. (That small island is very beautiful.),Pulau kecil itu sangat indah.,That small island is very beautiful.,3,
-Noun,Forest,Hutan,Hutan hujan memiliki banyak satwa liar. (The rainforest has many wildlife.),Hutan hujan memiliki banyak satwa liar.,The rainforest has many wildlife.,3,
-Noun,Tree,Pohon,Banyak pohon di taman ini. (Many trees in this park.),Banyak pohon di taman ini.,Many trees in this park.,2,
-Noun,Flower,Bunga,Bunga-bunga ini sangat indah. (These flowers are very beautiful.),Bunga-bunga ini sangat indah.,These flowers are very beautiful.,1,
-Noun,Grass,Rumput,Rumput di taman ini sangat hijau. (The grass in this park is very green.),Rumput di taman ini sangat hijau.,The grass in this park is very green.,1,
-Noun,Sun,Matahari,Matahari terbit dari timur. (The sun rises from the east.),Matahari terbit dari timur.,The sun rises from the east.,2,
-Noun,Moon,Bulan,Bulan sangat terang malam ini. (The moon is very bright tonight.),Bulan sangat terang malam ini.,The moon is very bright tonight.,1,
-Noun,Star,Bintang,Banyak bintang di langit malam. (Many stars in the night sky.),Banyak bintang di langit malam.,Many stars in the night sky.,1,
-Noun,Sky,Langit,Langit biru dan cerah hari ini. (The sky is blue and clear today.),Langit biru dan cerah hari ini.,The sky is blue and clear today.,1,
-Noun,Cloud,Awan,Ada banyak awan di langit. (There are many clouds in the sky.),Ada banyak awan di langit.,There are many clouds in the sky.,2,
-Noun,Rain,Hujan,Hujan turun sejak pagi. (Rain has been falling since morning.),Hujan turun sejak pagi.,Rain has been falling since morning.,3,
-Noun,Wind,Angin,Angin kencang di pantai. (Strong wind at the beach.),Angin kencang di pantai.,Strong wind at the beach.,3,
-Noun,Fire,Api,Hati-hati dengan api saat camping. (Be careful with fire when camping.),Hati-hati dengan api saat camping.,Be careful with fire when camping.,4,
-Noun,Water,Air,Saya minum air setiap hari. (I drink water every day.),Saya minum air setiap hari.,I drink water every day.,4,
-Noun,Land,Tanah,Tanah di sini sangat subur. (The land here is very fertile.),Tanah di sini sangat subur.,The land here is very fertile.,1,
-Noun,Clothes,Pakaian,Pakaian musim panas sangat ringan. (Summer clothes are very light.),Pakaian musim panas sangat ringan.,Summer clothes are very light.,3,
-Noun,Shoes,Sepatu,Sepatu ini nyaman untuk berjalan jauh. (These shoes are comfortable for walking long distances.),Sepatu ini nyaman untuk berjalan jauh.,These shoes are comfortable for walking long distances.,3,
-Noun,Bag,Tas,Tas saya cukup berat. (My bag is quite heavy.),Tas saya cukup berat.,My bag is quite heavy.,3,
-Noun,Gift (noun),Hadiah,Saya membeli hadiah untuk keluarga. (I buy gifts for my family.),Saya membeli hadiah untuk keluarga.,I buy gifts for my family.,3,
-Noun,Money,Uang,Saya perlu menukar uang. (I need to exchange money.),Saya perlu menukar uang.,I need to exchange money.,3,
-Noun,Phone,Telepon,Boleh saya pinjam telepon Anda? (May I borrow your phone?),Boleh saya pinjam telepon Anda?,May I borrow your phone?,3,
+Noun,Train,Kereta,Kereta lebih cepat dari bus. (The train is faster than the bus.),Kereta lebih cepat dari bus.,The train is faster than the bus.,2,"not a bullet train, a carrot train"
+Noun,Bridge,Jembatan,Jembatan kayu menghubungkan kedua pulau. (The wooden bridge connects the two islands.),Jembatan kayu menghubungkan kedua pulau.,The wooden bridge connects the two islands.,1,gem of a baton spanning two sides
+Noun,Mountain,Gunung,Gunung itu sangat tinggi dan indah. (That mountain is very tall and beautiful.),Gunung itu sangat tinggi dan indah.,That mountain is very tall and beautiful.,3,goon of a mountain
+Noun,River,Sungai,Sungai ini mengalir ke laut. (This river flows to the sea.),Sungai ini mengalir ke laut.,This river flows to the sea.,3,fungi grow near the... (river) ☀️
+Noun,Sea,Laut,Laut di sini sangat jernih. (The sea here is very clear.),Laut di sini sangat jernih.,The sea here is very clear.,3,Lau's love the sea?
+Noun,Island,Pulau,Pulau kecil itu sangat indah. (That small island is very beautiful.),Pulau kecil itu sangat indah.,That small island is very beautiful.,3,palau is a... 
+Noun,Forest,Hutan,Hutan hujan memiliki banyak satwa liar. (The rainforest has many wildlife.),Hutan hujan memiliki banyak satwa liar.,The rainforest has many wildlife.,3,who can tan in a dense forest?!
+Noun,Tree,Pohon,Banyak pohon di taman ini. (Many trees in this park.),Banyak pohon di taman ini.,Many trees in this park.,2,pocohontas loved trees
+Noun,Flower,Bunga,Bunga-bunga ini sangat indah. (These flowers are very beautiful.),Bunga-bunga ini sangat indah.,These flowers are very beautiful.,1,a boon in your house (fresh flowers)
+Noun,Grass,Rumput,Rumput di taman ini sangat hijau. (The grass in this park is very green.),Rumput di taman ini sangat hijau.,The grass in this park is very green.,1,room to putt putt on the grass
+Noun,Sun,Matahari,Matahari terbit dari timur. (The sun rises from the east.),Matahari terbit dari timur.,The sun rises from the east.,2,it's a killer day when the sun's out
+Noun,Moon,Bulan,Bulan sangat terang malam ini. (The moon is very bright tonight.),Bulan sangat terang malam ini.,The moon is very bright tonight.,1,(same as month)
+Noun,Star,Bintang,Banyak bintang di langit malam. (Many stars in the night sky.),Banyak bintang di langit malam.,Many stars in the night sky.,1,star of a beer
+Noun,Sky,Langit,Langit biru dan cerah hari ini. (The sky is blue and clear today.),Langit biru dan cerah hari ini.,The sky is blue and clear today.,1,the sky is big and... long?
+Noun,Cloud,Awan,Ada banyak awan di langit. (There are many clouds in the sky.),Ada banyak awan di langit.,There are many clouds in the sky.,2,"""i won"" claimed the cloud when covering the sun"
+Noun,Rain,Hujan,Hujan turun sejak pagi. (Rain has been falling since morning.),Hujan turun sejak pagi.,Rain has been falling since morning.,3,who likes rain? john?
+Noun,Wind,Angin,Angin kencang di pantai. (Strong wind at the beach.),Angin kencang di pantai.,Strong wind at the beach.,3,the wind is angry
+Noun,Fire,Api,Hati-hati dengan api saat camping. (Be careful with fire when camping.),Hati-hati dengan api saat camping.,Be careful with fire when camping.,4,fire ape 
+Noun,Water,Air,Saya minum air setiap hari. (I drink water every day.),Saya minum air setiap hari.,I drink water every day.,4,wrong element! (also not earth/wind)
+Noun,Land,Tanah,Tanah di sini sangat subur. (The land here is very fertile.),Tanah di sini sangat subur.,The land here is very fertile.,1,land of the Torajas
+Noun,Clothes,Pakaian,Pakaian musim panas sangat ringan. (Summer clothes are very light.),Pakaian musim panas sangat ringan.,Summer clothes are very light.,3,what you use
+Noun,Shoes,Sepatu,Sepatu ini nyaman untuk berjalan jauh. (These shoes are comfortable for walking long distances.),Sepatu ini nyaman untuk berjalan jauh.,These shoes are comfortable for walking long distances.,3,zapato
+Noun,Bag,Tas,Tas saya cukup berat. (My bag is quite heavy.),Tas saya cukup berat.,My bag is quite heavy.,3,toss things in the bag
+Noun,Gift (noun),Hadiah,Saya membeli hadiah untuk keluarga. (I buy gifts for my family.),Saya membeli hadiah untuk keluarga.,I buy gifts for my family.,3,the hadith is a gift to the ppl?
+Noun,Money,Uang,Saya perlu menukar uang. (I need to exchange money.),Saya perlu menukar uang.,I need to exchange money.,3,oooh 
+Noun,Phone,Telepon,Boleh saya pinjam telepon Anda? (May I borrow your phone?),Boleh saya pinjam telepon Anda?,May I borrow your phone?,3,tele...
 Noun,Computer,Komputer,Komputer tersedia di lobi hotel. (Computers are available in the hotel lobby.),Komputer tersedia di lobi hotel.,Computers are available in the hotel lobby.,2,
 Noun,Book,Buku,Buku panduan wisata sangat berguna. (The travel guidebook is very useful.),Buku panduan wisata sangat berguna.,The travel guidebook is very useful.,1,
-Noun,Pen,Pulpen,Bisakah saya pinjam pulpen Anda? (Can I borrow your pen?),Bisakah saya pinjam pulpen Anda?,Can I borrow your pen?,1,
-Noun,Church,Gereja,Gereja itu sangat tua dan indah. (That church is very old and beautiful.),Gereja itu sangat tua dan indah.,That church is very old and beautiful.,3,
-Noun,Bird,Burung,Banyak burung di taman. (Many birds in the park.),Banyak burung di taman.,Many birds in the park.,2,
-Noun,Friend,Teman,Dia tinggal sama teman saya. (He/she lives with my friend.),Dia tinggal sama teman saya.,He/she lives with my friend.,3,
-Noun,Family,Keluarga,Saya liburan dengan keluarga. (I'm on vacation with my family.),Saya liburan dengan keluarga.,I'm on vacation with my family.,3,
-Noun,Husband,Suami,Suami saya suka makanan Indonesia. (My husband likes Indonesian food.),Suami saya suka makanan Indonesia.,My husband likes Indonesian food.,3,
-Noun,Wife,Istri,Istri saya sedang belanja di pasar. (My wife is shopping at the market.),Istri saya sedang belanja di pasar.,My wife is shopping at the market.,3,
-Noun,Child,Anak,Anak-anak suka bermain di pantai. (Children like to play on the beach.),Anak-anak suka bermain di pantai.,Children like to play on the beach.,3,
-Noun,Man,Pria,Pria itu adalah pemandu wisata kami. (That man is our tour guide.),Pria itu adalah pemandu wisata kami.,That man is our tour guide.,4,
-Noun,Woman,Wanita,Wanita itu menjual buah-buahan. (That woman sells fruits.),Wanita itu menjual buah-buahan.,That woman sells fruits.,4,
-Noun,Food,Makanan,Makanan Indonesia sangat enak. (Indonesian food is very delicious.),Makanan Indonesia sangat enak.,Indonesian food is very delicious.,5,
-Noun,Drink,Minuman,Minuman ini enak sekali. (This drink is really good.),Minuman ini enak sekali.,This drink is really good.,5,
-Noun,Everything,Semuanya,Saya suka semuanya. (I like everything (all of it)).,Saya suka semuanya.,I like everything (all of it).,3,
-Noun,Nothing,Tidak (ada) apa-apa. ,Apa yang terjadi? Tidak ada apa-apa. (What happened? Nothing.),Apa yang terjadi? Tidak ada apa-apa. // Tidak terjadi apa-apa.,What happened? Nothing // Nothing happened.,4,
+Noun,Pen,Pulpen,Bisakah saya pinjam pulpen Anda? (Can I borrow your pen?),Bisakah saya pinjam pulpen Anda?,Can I borrow your pen?,1,speech and pen at the pulpit
+Noun,Church,Gereja,Gereja itu sangat tua dan indah. (That church is very old and beautiful.),Gereja itu sangat tua dan indah.,That church is very old and beautiful.,3,Gary's at the edge o' the pew
+Noun,Bird,Burung,Banyak burung di taman. (Many birds in the park.),Banyak burung di taman.,Many birds in the park.,2,"boo, rung out the weird bird call "
+Noun,Friend,Teman,Dia tinggal sama teman saya. (He/she lives with my friend.),Dia tinggal sama teman saya.,He/she lives with my friend.,3,he's the man!
+Noun,Family,Keluarga,Saya liburan dengan keluarga. (I'm on vacation with my family.),Saya liburan dengan keluarga.,I'm on vacation with my family.,3,kelly and her large family 
+Noun,Husband,Suami,Suami saya suka makanan Indonesia. (My husband likes Indonesian food.),Suami saya suka makanan Indonesia.,My husband likes Indonesian food.,3,swami is married to god (or me?)
+Noun,Wife,Istri,Istri saya sedang belanja di pasar. (My wife is shopping at the market.),Istri saya sedang belanja di pasar.,My wife is shopping at the market.,3,is dressed in camo (like a tree)
+Noun,Child,Anak,Anak-anak suka bermain di pantai. (Children like to play on the beach.),Anak-anak suka bermain di pantai.,Children like to play on the beach.,3,child in an anorak
+Noun,Man,Pria,Pria itu adalah pemandu wisata kami. (That man is our tour guide.),Pria itu adalah pemandu wisata kami.,That man is our tour guide.,4,"weirdly, priya is a man... "
+Noun,Woman,Wanita,Wanita itu menjual buah-buahan. (That woman sells fruits.),Wanita itu menjual buah-buahan.,That woman sells fruits.,4,and juanita is a woman... 
+Noun,Food,Makanan,Makanan Indonesia sangat enak. (Indonesian food is very delicious.),Makanan Indonesia sangat enak.,Indonesian food is very delicious.,5,eat AN apple
+Noun,Drink,Minuman,Minuman ini enak sekali. (This drink is really good.),Minuman ini enak sekali.,This drink is really good.,5,drink AN ale
+Noun,Everything,Semuanya,Saya suka semuanya. (I like everything (all of it)).,Saya suka semuanya.,I like everything (all of it).,3,all (possessive)
+Noun,Nothing,Tidak (ada) apa-apa. ,Apa yang terjadi? Tidak ada apa-apa. (What happened? Nothing.),Apa yang terjadi? Tidak ada apa-apa. // Tidak terjadi apa-apa.,What happened? Nothing // Nothing happened.,4,not (is there) __ - __
 Food,Rice,Nasi,Nasi adalah makanan pokok di Indonesia. (Rice is a staple food in Indonesia.),Nasi adalah makanan pokok di Indonesia.,Rice is a staple food in Indonesia.,5,
 Food,Meat,Daging,Saya tidak makan daging. (I don't eat meat.),Saya tidak makan daging.,I don't eat meat.,5,
 Food,Fish,Ikan,Ikan bakar adalah makanan favorit saya. (Grilled fish is my favorite food.),Ikan bakar adalah makanan favorit saya.,Grilled fish is my favorite food.,5,
-Food,Vegetable,Sayur,Sayur sangat sehat untuk tubuh. (Vegetables are very healthy for the body.),Sayur sangat sehat untuk tubuh.,Vegetables are very healthy for the body.,5,
-Food,Fruit,Buah,Buah-buahan di Indonesia sangat segar. (Fruits in Indonesia are very fresh.),Buah-buahan di Indonesia sangat segar.,Fruits in Indonesia are very fresh.,5,
+Food,Vegetable,Sayur(an),Sayur sangat sehat untuk tubuh. (Vegetables are very healthy for the body.),Sayur sangat sehat untuk tubuh.,Vegetables are very healthy for the body.,5,
+Food,Fruit,Buah(an),Buah-buahan di Indonesia sangat segar. (Fruits in Indonesia are very fresh.),Buah-buahan di Indonesia sangat segar.,Fruits in Indonesia are very fresh.,5,
 Food,Noodles,Mie,Mie ayam sangat populer di Indonesia. (Chicken noodles are very popular in Indonesia.),Mie ayam sangat populer di Indonesia.,Chicken noodles are very popular in Indonesia.,5,
 Food,Bread,Roti,Saya makan roti untuk sarapan. (I eat bread for breakfast.),Saya makan roti untuk sarapan.,I eat bread for breakfast.,3,
 Food,Chicken,Ayam,Ayam goreng sangat enak. (Fried chicken is very delicious.),Ayam goreng sangat enak.,Fried chicken is very delicious.,4,
-Food,Beef,Daging sapi,Saya suka daging sapi rendang. (I like beef rendang.),Saya suka daging sapi rendang.,I like beef rendang.,4,
-Food,Pork,Daging babi,Beberapa orang tidak makan daging babi. (Some people don't eat pork.),Beberapa orang tidak makan daging babi.,Some people don't eat pork.,4,
+Food,Beef,Daging sapi,Saya suka daging sapi rendang. (I like beef rendang.),Saya suka daging sapi rendang.,I like beef rendang.,4,a soppy emotional cow
+Food,Pork,Daging babi,Beberapa orang tidak makan daging babi. (Some people don't eat pork.),Beberapa orang tidak makan daging babi.,Some people don't eat pork.,4,bobby the pig (bobs his head to eat his slop)
 Food,Fish,Ikan,Ikan bakar adalah makanan favorit saya. (Grilled fish is my favorite food.),Ikan bakar adalah makanan favorit saya.,Grilled fish is my favorite food.,4,
-Food,Shrimp,Udang,Udang goreng sangat enak. (Fried shrimp is very delicious.),Udang goreng sangat enak.,Fried shrimp is very delicious.,4,
+Food,Shrimp,Udang,Udang goreng sangat enak. (Fried shrimp is very delicious.),Udang goreng sangat enak.,Fried shrimp is very delicious.,4,"ooh dang, Werner can't eat that"
 Food,Egg,Telur,Saya makan telur untuk sarapan. (I eat eggs for breakfast.),Saya makan telur untuk sarapan.,I eat eggs for breakfast.,4,
-Food,Milk,Susu,Anak-anak suka minum susu. (Children like to drink milk.),Anak-anak suka minum susu.,Children like to drink milk.,4,
-Food,Cheese,Keju,Keju tidak umum di masakan Indonesia. (Cheese is not common in Indonesian cuisine.),Keju tidak umum di masakan Indonesia.,Cheese is not common in Indonesian cuisine.,3,
-Food,Butter,Mentega,Roti ini menggunakan mentega. (This bread uses butter.),Roti ini menggunakan mentega.,This bread uses butter.,3,
-Food,Vegetables,Sayuran,Sayuran sangat penting untuk kesehatan. (Vegetables are very important for health.),Sayuran sangat penting untuk kesehatan.,Vegetables are very important for health.,4,
-Food,Spicy,Pedas,Makanan Indonesia sering pedas. (Indonesian food is often spicy.),Makanan Indonesia sering pedas.,Indonesian food is often spicy.,3,
-Food,Sweet,Manis,Saya suka minuman manis. (I like sweet drinks.),Saya suka minuman manis.,I like sweet drinks.,3,
-Food,Salty,Asin,Makanan ini terlalu asin. (This food is too salty.),Makanan ini terlalu asin.,This food is too salty.,3,
-Food,Sour,Asam,Buah jeruk rasanya asam. (Oranges taste sour.),Buah jeruk rasanya asam.,Oranges taste sour.,3,
+Food,Milk,Susu,Anak-anak suka minum susu. (Children like to drink milk.),Anak-anak suka minum susu.,Children like to drink milk.,4,sue the girl cow gives milk
+Food,Cheese,Keju,Keju tidak umum di masakan Indonesia. (Cheese is not common in Indonesian cuisine.),Keju tidak umum di masakan Indonesia.,Cheese is not common in Indonesian cuisine.,3,vegan cashew cheese
+Food,Butter,Mentega,Roti ini menggunakan mentega. (This bread uses butter.),Roti ini menggunakan mentega.,This bread uses butter.,3,E.G. manteca
+Food,Spicy,Pedas,Makanan Indonesia sering pedas. (Indonesian food is often spicy.),Makanan Indonesia sering pedas.,Indonesian food is often spicy.,3,pedros makes spicy chicken
+Food,Sweet,Manis,Saya suka minuman manis. (I like sweet drinks.),Saya suka minuman manis.,I like sweet drinks.,3,like sweet soya (kecap...)
+Food,Salty,Asin,Makanan ini terlalu asin. (This food is too salty.),Makanan ini terlalu asin.,This food is too salty.,3,"salty, as in, NaCl "
+Food,Sour,Asam,Buah jeruk rasanya asam. (Oranges taste sour.),Buah jeruk rasanya asam.,Oranges taste sour.,3,Sam loved sweet & SOUR chicken
 Food,Vegetarian,Vegetarian,Saya vegetarian. Tidak makan daging. (I am vegetarian. I don't eat meat.),Saya vegetarian. Tidak makan daging.,I am vegetarian. I don't eat meat.,4,
 Food,Allergy,Alergi,Saya alergi terhadap kacang. (I am allergic to peanuts.),Saya alergi terhadap kacang.,I am allergic to peanuts.,4,
-Food,So tasty! ,Enak banget!,Enak banget! (So tasty!),Enak banget!,So tasty!,4,
+Food,So tasty! ,Enak banget!,Enak banget! (So tasty!),Enak banget!,So tasty!,4,E is bang on it!
 Time,Now,Sekarang,Sekarang adalah waktu makan siang. (Now is lunch time.),Sekarang adalah waktu makan siang.,Now is lunch time.,4,SE + karen wants it now 
 Time,Soon,Segera,Bus akan berangkat segera. (The bus will depart soon.),Bus akan berangkat segera.,The bus will depart soon.,4,SE + garah just wants it soon 
 Time,Next,Berikutnya,Stasiun berikutnya adalah Bandung. (The next station is Bandung.),Stasiun berikutnya adalah Bandung.,The next station is Bandung.,4,Russian bear is next in line
