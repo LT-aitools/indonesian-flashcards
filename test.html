@@ -322,11 +322,16 @@
             const word = filteredVocabulary[currentWordIndex];
             document.getElementById('answer').innerText = word.indonesian;
             
-            // Show response buttons and hide reveal
+            // Hide hint buttons and reveal button
+            document.getElementById('hint1').style.display = 'none';
+            document.getElementById('hint2').style.display = 'none';
+            document.getElementById('hint3').style.display = 'none';
+            document.getElementById('reveal').style.display = 'none';
+            
+            // Show response buttons
             document.getElementById('correct').style.display = 'inline';
             document.getElementById('sorta').style.display = 'inline';
             document.getElementById('incorrect').style.display = 'inline';
-            document.getElementById('reveal').style.display = 'none';
             if (word.exampleSentence) {
                 document.getElementById('example').style.display = 'inline';
             }
