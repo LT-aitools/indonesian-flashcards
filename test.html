@@ -12,32 +12,36 @@
     <div class="content">
         <h1>Indonesian Flashcard Game - Level 4</h1>
         
-        <div class="game-area">
-            <h2 id="question">Loading...</h2>
-            <h3 id="answer"></h3>
-            <div class="button-container">
-                <button id="hint1" class="game-button">Hint 1</button>
-                <button id="reveal" class="game-button">Reveal 👀</button>
+        <div class="white-card">
+            <div class="game-area">
+                <h2 id="question">Loading...</h2>
+                <h3 id="answer"></h3>
+                <div class="button-container">
+                    <button id="hint1" class="game-button">Hint 1</button>
+                    <button id="reveal" class="game-button">Reveal 👀</button>
+                </div>
+                <div class="button-container">
+                    <button id="correct" class="game-button">Correct ✅</button>
+                    <button id="sorta" class="game-button">Sorta 🫤</button>
+                    <button id="incorrect" class="game-button">Incorrect ❌</button>
+                </div>
+                <div id="stats" class="stats-container"></div>
             </div>
-            <div class="button-container">
-                <button id="correct" class="game-button">Correct ✅</button>
-                <button id="sorta" class="game-button">Sorta 🫤</button>
-                <button id="incorrect" class="game-button">Incorrect ❌</button>
+            
+            <div class="categories-section">
+                <div class="categories-container">
+                    <div class="categories-title">Select Categories:</div>
+                    <div id="categories" class="categories-grid">
+                        <!-- Categories will be populated here -->
+                    </div>
+                </div>
             </div>
-            <div id="stats" class="stats-container"></div>
-        </div>
-        
-        <div class="categories-container">
-            <div class="categories-title">Select Categories:</div>
-            <div id="categories" class="categories-grid">
-                <!-- Categories will be populated here -->
+            
+            <div class="reset-container">
+                <button id="resetDeck" class="reset-button">
+                    Reset Deck 🔄
+                </button>
             </div>
-        </div>
-        
-        <div class="reset-container">
-            <button id="resetDeck" class="reset-button">
-                Reset Deck 🔄
-            </button>
         </div>
         
         <a href="index.html" class="back-link">
@@ -54,6 +58,9 @@
         let globalWordCounter = 0;
         let selectedCategories = [];
         
+        // Add reset button event listener
+        document.getElementById('resetDeck').addEventListener('click', resetDeck);
+
         // Parse CSV function
         function parseCSV(csvText) {
             try {
@@ -88,7 +95,7 @@
                     cells.push(currentCell.trim());
                     
                     return {
-                        category: cells[0] ? cells[0].trim() : "Uncategorized",
+                        type: cells[0] ? cells[0].trim() : "Uncategorized",
                         english: cells[1].trim(),
                         indonesian: cells[2].trim(),
                         exampleSentence: cells[3],
@@ -116,15 +123,25 @@
         }
 
         // Load vocabulary from CSV
+        console.log('Starting to load vocabulary...');
         fetch('vocabulary.csv')
-            .then(response => response.text())
+            .then(response => {
+                console.log('Fetched vocabulary.csv');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text();
+            })
             .then(csvText => {
+                console.log('Got CSV text, length:', csvText.length);
                 const vocabulary = parseCSV(csvText);
+                console.log('Parsed vocabulary, items:', vocabulary.length);
+                
                 initializeWordStats();
                 
                 // Initialize stats for words that don't have them yet
                 vocabulary.forEach(word => {
-                    const wordKey = `${word.english}:${word.indonesian}:4`; // Level 4 identifier
+                    const wordKey = `${word.english}:${word.indonesian}:4`;
                     if (!wordStats[wordKey]) {
                         wordStats[wordKey] = initializeWordInSpacedRepetition();
                     }
@@ -133,15 +150,21 @@
                 // Set up category checkboxes
                 const categories = new Set();
                 vocabulary.forEach(word => {
-                    if (word.category) {
-                        word.category.split(',').forEach(cat => categories.add(cat.trim()));
+                    if (word.type) {
+                        categories.add(word.type.trim());
                     }
                 });
                 
+                console.log('Categories found:', Array.from(categories));
+                
                 const categoriesArray = Array.from(categories).sort();
                 const checkboxContainer = document.getElementById('categories');
+                checkboxContainer.innerHTML = ''; // Clear any existing content
+                
                 categoriesArray.forEach(category => {
                     const div = document.createElement('div');
+                    div.className = 'category-item';
+                    
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
                     checkbox.id = category;
@@ -162,11 +185,23 @@
                     checkboxContainer.appendChild(div);
                 });
                 
+                // Initial category selection
+                updateSelectedCategories();
+                
                 // Initial filtering
                 filterVocabularyByCategory(vocabulary);
-                showNextWord();
+                
+                // Show first word
+                if (filteredVocabulary.length > 0) {
+                    showNextWord();
+                } else {
+                    document.getElementById('question').innerText = "No words found in selected categories";
+                }
             })
-            .catch(error => console.error('Error loading vocabulary:', error));
+            .catch(error => {
+                console.error('Error loading vocabulary:', error);
+                document.getElementById('question').innerText = "Error loading vocabulary data: " + error.message;
+            });
 
         function updateSelectedCategories() {
             const checkboxes = document.querySelectorAll('#categories input[type="checkbox"]');
@@ -177,9 +212,8 @@
 
         function filterVocabularyByCategory(vocabulary) {
             filteredVocabulary = vocabulary.filter(word => {
-                if (!word.category) return false;
-                const wordCategories = word.category.split(',').map(c => c.trim());
-                return wordCategories.some(cat => selectedCategories.includes(cat));
+                if (!word.type) return false;
+                return selectedCategories.includes(word.type.trim());
             });
             
             // Sort by spaced repetition priority
