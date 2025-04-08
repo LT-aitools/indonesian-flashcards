@@ -1,0 +1,134 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('images/background.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    opacity: 0.2;
+    z-index: -1;
+}
+
+#content {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+button {
+    margin: 10px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#correct {
+    background-color: lightgreen;
+}
+
+#sorta {
+    background-color: lightsalmon;
+}
+
+#incorrect {
+    background-color: lightcoral;
+}
+
+#reveal {
+    background-color: yellow;
+}
+
+#correct, #sorta, #incorrect, #example {
+    display: none;
+}
+
+#answer {
+    color: green;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+#exampleSentence {
+    color: blue;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+#stats {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+.category-container {
+    margin: 30px 0;
+    background: rgba(240, 255, 240, 0.6);
+    padding: 15px;
+    border-radius: 10px;
+    max-width: 800px;
+    width: 90%;
+}
+
+.category-title {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#categoryCheckboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+}
+
+.category-label {
+    display: inline-flex;
+    align-items: center;
+    margin: 2px;
+    padding: 3px 8px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.category-checkbox {
+    margin-right: 4px;
+}
+
+#resetDeck {
+    background-color: #e0e0e0;
+    color: black;
+    padding: 10px 20px;
+    border: 1px solid #c0c0c0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    background-color: lightblue;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.page-title {
+    color: darkgrey;
+    margin-bottom: 20px;
+} 

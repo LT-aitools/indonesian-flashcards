@@ -5,157 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Indonesian Flashcards</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('images/background.jpeg') no-repeat center center fixed;
-            background-size: cover;
-            opacity: 0.2;
-            z-index: -1;
-        }
-
-        #content {
-            position: relative;
-            z-index: 1;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-        }
-        
-        button {
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        #correct {
-            background-color: lightgreen;
-        }
-        #sorta {
-            background-color: lightsalmon;
-        }
-        #incorrect {
-            background-color: lightcoral;
-        }
-        #reveal {
-            background-color: yellow;
-        }
-        #correct, #sorta, #incorrect, #example {
-            display: none;
-        }
-        #answer {
-            color: green;
-            font-size: 20px;
-            margin-top: 10px;
-        }
-        #exampleSentence {
-            color: blue;
-            font-size: 18px;
-            margin-top: 10px;
-        }
-        #stats {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #666;
-        }
-        
-        /* Voice selector - hidden by default */
-        .voice-selector {
-            display: none; /* Hidden by default */
-            margin: 10px auto;
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            flex-direction: column;
-            align-items: center;
-            max-width: 90%;
-            width: 400px;
-        }
-        .voice-selector label {
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        .voice-selector select {
-            padding: 8px;
-            width: 100%;
-            max-width: 350px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-        .voice-selector button {
-            padding: 6px 12px;
-            background-color: #4a86e8;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-    </style>
+    <link rel="stylesheet" href="combined-styles.css">
 </head>
-<body>
+<body class="game-container">
     <div class="background"></div>
-    <!-- Hidden voice selector for advanced users -->
-    <div class="voice-selector">
-        <label for="voice-select">Select Voice for Indonesian Pronunciation:</label>
-        <select id="voice-select" onchange="updateSelectedVoice()">
-            <option value="">Auto-select best voice</option>
-            <!-- Will be populated with available voices -->
-        </select>
-        <button onclick="testSelectedVoice()">Test Voice ("Selamat pagi")</button>
-    </div>
     <div id="content">
-        <h1 style="color: darkgrey; margin-bottom: 20px;">Indonesian Flashcard Game - Level 1</h1>
+        <h1 class="game-title">Indonesian Flashcard Game - Level 1</h1>
         
         <h2 id="question">Loading...</h2>
         <h3 id="answer"></h3>
         <h3 id="exampleSentence"></h3>
-        <button id="hint1">Hint 1</button>
-        <button id="hint2">Hint 2</button>
-        <button id="hint3" style="display: none;">Personal Note 📝</button>
-        <button id="reveal">Reveal 👀</button>
+        <button id="hint1" class="game-button">Hint 1</button>
+        <button id="hint2" class="game-button">Hint 2</button>
+        <button id="hint3" class="game-button" style="display: none;">Personal Note 📝</button>
+        <button id="reveal" class="game-button">Reveal 👀</button>
         <br>
-        <button id="correct" style="display: none;">Correct ✅</button>
-        <button id="sorta" style="display: none;">Sorta 🫤</button>
-        <button id="incorrect" style="display: none;">Incorrect ❌</button>
-        <button id="example" style="display: none;">Example</button>
+        <button id="correct" class="game-button">Correct ✅</button>
+        <button id="sorta" class="game-button">Sorta 🫤</button>
+        <button id="incorrect" class="game-button">Incorrect ❌</button>
+        <button id="example" class="game-button">Example</button>
         <div id="stats"></div>
     </div>
     
-    <div style="margin: 30px 0; background: rgba(240, 255, 240, 0.6); padding: 15px; border-radius: 10px; max-width: 800px; width: 90%;">
-        <div style="margin-bottom: 10px; font-weight: bold;">Select Categories:</div>
-        <div id="categoryCheckboxes" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;">
+    <div class="category-container">
+        <div class="category-title">Select Categories:</div>
+        <div id="categoryCheckboxes">
             <!-- Categories will be populated here -->
         </div>
     </div>
     
-    <div style="margin-top: 30px;">
-        <button id="resetDeck" style="background-color: #e0e0e0; color: black; padding: 10px 20px; border: 1px solid #c0c0c0; border-radius: 5px; cursor: pointer;">
-            Reset Deck 🔄
-        </button>
+    <div>
+        <button id="resetDeck">Reset Deck 🔄</button>
     </div>
     
-    <a href="https://lt-aitools.github.io/indonesian-flashcards/"
-        style="display: inline-block; margin-top: 20px; text-decoration: none; 
-                background-color: lightblue; padding: 10px 20px; border-radius: 5px;">
+    <a href="https://lt-aitools.github.io/indonesian-flashcards/" class="back-link">
         Back to Main
     </a>
 
@@ -254,19 +137,12 @@
                 const checkboxContainer = document.getElementById('categoryCheckboxes');
                 categories.forEach(category => {
                     const label = document.createElement('label');
-                    label.style.display = 'inline-flex';
-                    label.style.alignItems = 'center';
-                    label.style.margin = '2px';
-                    label.style.padding = '3px 8px';
-                    label.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-                    label.style.borderRadius = '4px';
-                    label.style.cursor = 'pointer';
-                    label.style.fontSize = '14px';
+                    label.className = 'category-label';
                     
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
                     checkbox.value = category;
-                    checkbox.style.marginRight = '4px';
+                    checkbox.className = 'category-checkbox';
                     checkbox.addEventListener('change', function() {
                         if (this.checked) {
                             selectedCategories.add(category);
@@ -473,8 +349,27 @@
             // Update spaced repetition stats - pass the entire word object
             SpacedRepetition.updateStats(word, response);
             
-            // Move to next word
-            currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
+            // If multiple categories are selected, try to avoid repeating the same category
+            if (selectedCategories.size > 1) {
+                const currentCategory = word.type;
+                let nextIndex = (currentWordIndex + 1) % filteredVocabulary.length;
+                let attempts = 0;
+                const maxAttempts = filteredVocabulary.length;  // Prevent infinite loop
+                
+                // Keep looking for a word from a different category
+                while (attempts < maxAttempts && 
+                       filteredVocabulary[nextIndex].type === currentCategory && 
+                       nextIndex !== currentWordIndex) {
+                    nextIndex = (nextIndex + 1) % filteredVocabulary.length;
+                    attempts++;
+                }
+                
+                currentWordIndex = nextIndex;
+            } else {
+                // Single category selected - just move to next word
+                currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
+            }
+            
             showNextWord();
         }
 

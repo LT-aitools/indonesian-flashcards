@@ -1,0 +1,308 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Landing page and navigation styles */
+.site-container body, .site-container html {
+    min-height: 100%;
+    overflow-y: auto;
+}
+
+/* Game page styles */
+.game-container body {
+    text-align: center;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Background styles */
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('images/background.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    opacity: 0.2;
+    z-index: -1;
+}
+
+/* Landing page title styling */
+.site-title {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    color: black;
+    padding: 20px 0;
+    margin-bottom: 20px;
+    text-shadow:
+        -1px -1px 0 #fff,
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff,
+        1px 1px 0 #fff;
+}
+
+/* Game page title */
+.game-title {
+    color: darkgrey;
+    margin-bottom: 20px;
+}
+
+/* Main layout containers */
+.site-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.game-container {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Navigation button grid */
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 250px);
+    gap: 20px;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    grid-auto-flow: row;
+    grid-auto-rows: 250px;
+}
+
+/* Navigation button styling */
+.nav-button {
+    width: 250px;
+    height: 250px;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    text-decoration: none;
+    color: black;
+    transition: transform 0.2s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 15px;
+}
+
+.nav-button:hover {
+    transform: scale(1.05);
+}
+
+.nav-button-label {
+    text-align: center;
+    padding: 2px;
+    font-size: 18px;
+    line-height: 1.2;
+    margin-bottom: 15px;
+}
+
+.nav-button img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Study button special styling */
+.study-button {
+    background-color: #1a5f1a;
+}
+
+.study-button .nav-button-label {
+    color: white;
+}
+
+/* Game buttons styling */
+.game-button {
+    margin: 10px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#correct { background-color: lightgreen; }
+#sorta { background-color: lightsalmon; }
+#incorrect { background-color: lightcoral; }
+#reveal { background-color: yellow; }
+
+#correct, #sorta, #incorrect, #example {
+    display: none;
+}
+
+/* Game text elements */
+#answer {
+    color: green;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+#exampleSentence {
+    color: blue;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+#stats {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Category selection styling */
+.category-container {
+    margin: 30px 0;
+    background: rgba(240, 255, 240, 0.6);
+    padding: 15px;
+    border-radius: 10px;
+    max-width: 800px;
+    width: 90%;
+}
+
+.category-title {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#categoryCheckboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+}
+
+.category-label {
+    display: inline-flex;
+    align-items: center;
+    margin: 2px;
+    padding: 3px 8px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.category-checkbox {
+    margin-right: 4px;
+}
+
+/* Reset button */
+#resetDeck {
+    background-color: #e0e0e0;
+    color: black;
+    padding: 10px 20px;
+    border: 1px solid #c0c0c0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Back link */
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    background-color: lightblue;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1200px) {
+    .button-grid {
+        grid-template-columns: repeat(3, 250px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    body, html {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .site-title {
+        font-size: 28px;
+        padding: 15px 10px;
+        margin-bottom: 15px;
+    }
+
+    .site-container {
+        padding: 15px;
+        margin-top: 15px;
+    }
+
+    .button-grid {
+        grid-template-columns: repeat(2, 250px);
+        gap: 15px;
+    }
+
+    .nav-button {
+        width: 45vw;
+        height: 45vw;
+        max-width: 200px;
+        max-height: 200px;
+        padding-top: 10px;
+    }
+
+    .nav-button-label {
+        font-size: 14px;
+        padding: 2px;
+        margin-bottom: 8px;
+    }
+
+    .nav-button img {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .site-title {
+        font-size: 24px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .site-container {
+        padding: 10px;
+        margin-top: 10px;
+    }
+
+    .button-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-button {
+        width: 70vw;
+        height: 70vw;
+        max-width: 250px;
+        max-height: 250px;
+    }
+
+    .nav-button-label {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+} 
