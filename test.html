@@ -467,8 +467,8 @@
         function handleResponse(response) {
             const word = filteredVocabulary[currentWordIndex];
             
-            // Update spaced repetition stats
-            SpacedRepetition.updateStats(word.english, response);
+            // Update spaced repetition stats - pass the entire word object
+            SpacedRepetition.updateStats(word, response);
             
             // Move to next word
             currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
