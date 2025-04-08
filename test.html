@@ -27,21 +27,19 @@
                 </div>
                 <div id="stats" class="stats-container"></div>
             </div>
-            
-            <div class="categories-section">
-                <div class="categories-container">
-                    <div class="categories-title">Select Categories:</div>
-                    <div id="categories" class="categories-grid">
-                        <!-- Categories will be populated here -->
-                    </div>
-                </div>
+        </div>
+        
+        <div style="margin: 30px 0; background: rgba(240, 255, 240, 0.6); padding: 15px; border-radius: 10px; max-width: 800px; width: 90%;">
+            <div style="margin-bottom: 10px; font-weight: bold;">Select Categories:</div>
+            <div id="categoryCheckboxes" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;">
+                <!-- Categories will be populated here -->
             </div>
-            
-            <div class="reset-container">
-                <button id="resetDeck" class="reset-button">
-                    Reset Deck 🔄
-                </button>
-            </div>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <button id="resetDeck" style="background-color: #e0e0e0; color: black; padding: 10px 20px; border: 1px solid #c0c0c0; border-radius: 5px; cursor: pointer;">
+                Reset Deck 🔄
+            </button>
         </div>
         
         <a href="index.html" class="back-link">
@@ -56,7 +54,7 @@
         let currentWordIndex = 0;
         let wordStats = {};
         let globalWordCounter = 0;
-        let selectedCategories = [];
+        let selectedCategories = new Set();  // Changed from array to Set
         
         // Add reset button event listener
         document.getElementById('resetDeck').addEventListener('click', resetDeck);
@@ -124,7 +122,7 @@
 
         // Load vocabulary from CSV
         console.log('Starting to load vocabulary...');
-        fetch('vocabulary.csv')
+        fetch('https://raw.githubusercontent.com/LT-aitools/indonesian-flashcards/main/Indonesian_vocabulary.csv')
             .then(response => {
                 console.log('Fetched vocabulary.csv');
                 if (!response.ok) {
@@ -158,38 +156,59 @@
                 console.log('Categories found:', Array.from(categories));
                 
                 const categoriesArray = Array.from(categories).sort();
-                const checkboxContainer = document.getElementById('categories');
+                const checkboxContainer = document.getElementById('categoryCheckboxes');
                 checkboxContainer.innerHTML = ''; // Clear any existing content
                 
                 categoriesArray.forEach(category => {
-                    const div = document.createElement('div');
-                    div.className = 'category-item';
+                    const label = document.createElement('label');
+                    label.style.display = 'inline-flex';
+                    label.style.alignItems = 'center';
+                    label.style.margin = '2px';
+                    label.style.padding = '3px 8px';
+                    label.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+                    label.style.borderRadius = '4px';
+                    label.style.cursor = 'pointer';
+                    label.style.fontSize = '14px';
                     
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
-                    checkbox.id = category;
-                    checkbox.checked = true;
-                    checkbox.addEventListener('change', () => {
-                        updateSelectedCategories();
-                        filterVocabularyByCategory(vocabulary);
+                    checkbox.value = category;
+                    checkbox.style.marginRight = '4px';
+                    checkbox.checked = true;  // Start with all categories checked
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            selectedCategories.add(category);
+                        } else {
+                            selectedCategories.delete(category);
+                        }
+                        filterByCategory(vocabulary);
                         currentWordIndex = 0;
                         showNextWord();
                     });
                     
-                    const label = document.createElement('label');
-                    label.htmlFor = category;
-                    label.textContent = category;
-                    
-                    div.appendChild(checkbox);
-                    div.appendChild(label);
-                    checkboxContainer.appendChild(div);
+                    label.appendChild(checkbox);
+                    label.appendChild(document.createTextNode(category));
+                    checkboxContainer.appendChild(label);
                 });
                 
-                // Initial category selection
-                updateSelectedCategories();
+                // Load saved category preferences
+                const savedCategories = localStorage.getItem('selectedCategories');
+                if (savedCategories) {
+                    const categories = JSON.parse(savedCategories);
+                    categories.forEach(category => {
+                        selectedCategories.add(category);
+                        const checkbox = document.querySelector(`input[value="${category}"]`);
+                        if (checkbox) checkbox.checked = true;
+                    });
+                } else {
+                    // If no saved preferences, select all categories
+                    categoriesArray.forEach(category => {
+                        selectedCategories.add(category);
+                    });
+                }
                 
                 // Initial filtering
-                filterVocabularyByCategory(vocabulary);
+                filterByCategory(vocabulary);
                 
                 // Show first word
                 if (filteredVocabulary.length > 0) {
@@ -203,25 +222,27 @@
                 document.getElementById('question').innerText = "Error loading vocabulary data: " + error.message;
             });
 
-        function updateSelectedCategories() {
-            const checkboxes = document.querySelectorAll('#categories input[type="checkbox"]');
-            selectedCategories = Array.from(checkboxes)
-                .filter(cb => cb.checked)
-                .map(cb => cb.id);
-        }
-
-        function filterVocabularyByCategory(vocabulary) {
-            filteredVocabulary = vocabulary.filter(word => {
-                if (!word.type) return false;
-                return selectedCategories.includes(word.type.trim());
-            });
-            
-            // Sort by spaced repetition priority
-            filteredVocabulary.sort((a, b) => {
-                const keyA = `${a.english}:${a.indonesian}:4`;
-                const keyB = `${b.english}:${b.indonesian}:4`;
-                return getSpacedRepetitionPriority(wordStats[keyB]) - getSpacedRepetitionPriority(wordStats[keyA]);
-            });
+        function filterByCategory(vocabulary) {
+            try {
+                if (selectedCategories.size === 0) {
+                    filteredVocabulary = [...vocabulary]; // Use all vocabulary if no categories selected
+                } else {
+                    filteredVocabulary = vocabulary.filter(word => selectedCategories.has(word.type));
+                }
+                
+                // Save selected categories to localStorage
+                localStorage.setItem('selectedCategories', JSON.stringify(Array.from(selectedCategories)));
+                
+                // Update debug message if no words in selected categories
+                if (filteredVocabulary.length === 0) {
+                    document.getElementById('question').innerText = "No words found in selected categories";
+                    // Hide all buttons
+                    document.getElementById('hint1').style.display = 'none';
+                    document.getElementById('reveal').style.display = 'none';
+                }
+            } catch (error) {
+                console.error("Error filtering by category:", error);
+            }
         }
 
         function showNextWord() {
