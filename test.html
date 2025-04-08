@@ -7,18 +7,38 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="combined-styles.css">
     <style>
-        .white-card {
-            background: rgba(255, 255, 255, 0.95);
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/background.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        #content {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.8);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 20px auto;
             max-width: 800px;
             width: 90%;
-        }
-        
-        .game-area {
-            text-align: center;
+            margin: 20px auto;
         }
         
         .button-container {
@@ -31,47 +51,54 @@
             background: rgba(240, 248, 255, 0.6);
             border-radius: 5px;
         }
+
+        #question {
+            margin-top: 20px;
+            font-size: 1.5em;
+        }
+
+        #answer {
+            color: green;
+            font-size: 1.3em;
+            margin-top: 10px;
+        }
     </style>
 </head>
-<body class="game-container">
+<body>
     <div class="background"></div>
-    <div class="content">
-        <h1>Indonesian Flashcard Game - Level 4</h1>
+    <div id="content">
+        <h1 style="color: darkgrey; margin-bottom: 20px;">Indonesian Flashcard Game - Level 4</h1>
         
-        <div class="white-card">
-            <div class="game-area">
-                <h2 id="question">Loading...</h2>
-                <h3 id="answer"></h3>
-                <div class="button-container">
-                    <button id="hint1" class="game-button">Hint 1</button>
-                    <button id="reveal" class="game-button">Reveal 👀</button>
-                </div>
-                <div class="button-container">
-                    <button id="correct" class="game-button">Correct ✅</button>
-                    <button id="sorta" class="game-button">Sorta 🫤</button>
-                    <button id="incorrect" class="game-button">Incorrect ❌</button>
-                </div>
-                <div id="stats" class="stats-container"></div>
-            </div>
+        <h2 id="question">Loading...</h2>
+        <h3 id="answer"></h3>
+        <div class="button-container">
+            <button id="hint1" class="game-button">Hint 1</button>
+            <button id="reveal" class="game-button">Reveal 👀</button>
         </div>
-        
-        <div style="margin: 30px 0; background: rgba(240, 255, 240, 0.6); padding: 15px; border-radius: 10px; max-width: 800px; width: 90%;">
-            <div style="margin-bottom: 10px; font-weight: bold;">Select Categories:</div>
-            <div id="categoryCheckboxes" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;">
-                <!-- Categories will be populated here -->
-            </div>
+        <div class="button-container">
+            <button id="correct" class="game-button">Correct ✅</button>
+            <button id="sorta" class="game-button">Sorta 🫤</button>
+            <button id="incorrect" class="game-button">Incorrect ❌</button>
         </div>
-        
-        <div style="margin-top: 30px;">
-            <button id="resetDeck" style="background-color: #e0e0e0; color: black; padding: 10px 20px; border: 1px solid #c0c0c0; border-radius: 5px; cursor: pointer;">
-                Reset Deck 🔄
-            </button>
-        </div>
-        
-        <a href="index.html" class="back-link">
-            Back to Main
-        </a>
+        <div id="stats" class="stats-container"></div>
     </div>
+    
+    <div style="margin: 30px 0; background: rgba(240, 255, 240, 0.6); padding: 15px; border-radius: 10px; max-width: 800px; width: 90%;">
+        <div style="margin-bottom: 10px; font-weight: bold;">Select Categories:</div>
+        <div id="categoryCheckboxes" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;">
+            <!-- Categories will be populated here -->
+        </div>
+    </div>
+    
+    <div style="margin-top: 30px;">
+        <button id="resetDeck" style="background-color: #e0e0e0; color: black; padding: 10px 20px; border: 1px solid #c0c0c0; border-radius: 5px; cursor: pointer;">
+            Reset Deck 🔄
+        </button>
+    </div>
+    
+    <a href="index.html" class="back-link">
+        Back to Main
+    </a>
 
     <script src="azure-text-to-speech.js"></script>
     <script src="spaced-repetition.js"></script>
@@ -358,7 +385,7 @@
                 // Show stats
                 const stats = SpacedRepetition.getWordStats(word, 4);
                 if (stats) {
-                    document.getElementById('stats').innerHTML = SpacedRepetition.generateStats(stats);
+                    document.getElementById('stats').innerHTML = SpacedRepetition.generateStatsHtml(stats);
                 }
             } catch (error) {
                 console.error("Error in revealAnswer:", error);
@@ -370,7 +397,7 @@
                 const word = filteredVocabulary[currentWordIndex];
                 if (!word) return;
                 
-                SpacedRepetition.updateStatsForCorrectAnswer(word, 4);
+                SpacedRepetition.markCorrect(word, 4);
                 currentWordIndex++;
                 showNextWord();
             } catch (error) {
@@ -383,7 +410,7 @@
                 const word = filteredVocabulary[currentWordIndex];
                 if (!word) return;
                 
-                SpacedRepetition.updateStatsForPartiallyCorrectAnswer(word, 4);
+                SpacedRepetition.markPartiallyCorrect(word, 4);
                 currentWordIndex++;
                 showNextWord();
             } catch (error) {
@@ -396,7 +423,7 @@
                 const word = filteredVocabulary[currentWordIndex];
                 if (!word) return;
                 
-                SpacedRepetition.updateStatsForIncorrectAnswer(word, 4);
+                SpacedRepetition.markIncorrect(word, 4);
                 currentWordIndex++;
                 showNextWord();
             } catch (error) {
