@@ -338,6 +338,15 @@
         // Start game
         function startGame() {
             try {
+                // If the filtered vocabulary is empty, no need to proceed
+                if (filteredVocabulary.length === 0) {
+                    return;
+                }
+                
+                // Sort words by priority using the spaced repetition module
+                SpacedRepetition.sortByPriority(filteredVocabulary);
+                
+                currentWordIndex = 0;
                 showNextWord();
             } catch (error) {
                 console.error("Error in startGame:", error);
@@ -356,13 +365,9 @@
                     return;
                 }
                 
-                // Use spaced repetition to get next word
-                const nextWordResult = SpacedRepetition.getNextWord(filteredVocabulary, wordStats, globalWordCounter, currentWordIndex, 3);
-                currentWordIndex = nextWordResult.index;
-                
                 const word = filteredVocabulary[currentWordIndex];
                 if (!word || !word.exampleIndo || !word.exampleEnglish) {
-                    currentWordIndex++;
+                    currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
                     showNextWord();
                     return;
                 }
