@@ -382,7 +382,7 @@
                 saveWordStats();
                 
                 // Display Indonesian example sentence and speak it
-                AzureTTS.speakWord(word.exampleIndo);
+                AzureTTS.speakWord(word.exampleIndo, 'id-ID');
                 
                 document.getElementById('question').innerText = word.exampleIndo;
                 document.getElementById('answer').innerText = "";
@@ -398,6 +398,18 @@
                 // Hide stats initially
                 document.getElementById('stats').innerHTML = '';
                 
+                // Preload next word's audio
+                const nextIndex = (currentWordIndex + 1) % filteredVocabulary.length;
+                if (nextIndex !== currentWordIndex) {
+                    const nextWord = filteredVocabulary[nextIndex];
+                    if (nextWord && nextWord.exampleIndo) {
+                        AzureTTS.preloadAudio(nextWord.exampleIndo, 'id-ID');
+                    }
+                    if (nextWord && nextWord.indonesian) {
+                        AzureTTS.preloadAudio(nextWord.indonesian, 'id-ID');
+                    }
+                }
+                
                 document.getElementById('hint1').onclick = () => showHint(1);
                 document.getElementById('hint2').onclick = () => showHint(2);
                 document.getElementById('reveal').onclick = revealAnswer;
@@ -409,7 +421,7 @@
             }
         }
 
-        // Hints and Reveal for Level 3
+        // Show hints
         function showHint(level) {
             try {
                 const word = filteredVocabulary[currentWordIndex];
@@ -417,7 +429,7 @@
                 
                 if (level === 1) {
                     // First hint shows and speaks the Indonesian word
-                    AzureTTS.speakWord(word.indonesian);
+                    AzureTTS.speakWord(word.indonesian, 'id-ID');
                     document.getElementById('hint1').innerText = `Indonesian word: ${word.indonesian}`;
                 } else if (level === 2) {
                     // Second hint shows the English word (no speaking)
@@ -458,14 +470,14 @@
                 const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
                 
                 // Use spaced repetition module to update stats
-                SpacedRepetition.markCorrect(wordStats[wordKey], globalWordCounter);
+                SpacedRepetition.updateStats(word, 'correct');
                 saveWordStats();
                 
-                currentWordIndex++;
+                currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
                 showNextWord();
             } catch (error) {
                 console.error("Error marking correct:", error);
-                currentWordIndex++;
+                currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
                 showNextWord();
             }
         }
@@ -476,14 +488,14 @@
                 const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
                 
                 // Use spaced repetition module to update stats
-                SpacedRepetition.markSorta(wordStats[wordKey], globalWordCounter);
+                SpacedRepetition.updateStats(word, 'sorta');
                 saveWordStats();
                 
-                currentWordIndex++;
+                currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
                 showNextWord();
             } catch (error) {
                 console.error("Error marking sorta:", error);
-                currentWordIndex++;
+                currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
                 showNextWord();
             }
         }
@@ -494,14 +506,14 @@
                 const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
                 
                 // Use spaced repetition module to update stats
-                SpacedRepetition.markIncorrect(wordStats[wordKey], globalWordCounter);
+                SpacedRepetition.updateStats(word, 'incorrect');
                 saveWordStats();
                 
-                currentWordIndex++;
+                currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
                 showNextWord();
             } catch (error) {
                 console.error("Error marking incorrect:", error);
-                currentWordIndex++;
+                currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
                 showNextWord();
             }
         }
