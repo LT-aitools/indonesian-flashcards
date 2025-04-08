@@ -402,11 +402,20 @@
                 const nextIndex = (currentWordIndex + 1) % filteredVocabulary.length;
                 if (nextIndex !== currentWordIndex) {
                     const nextWord = filteredVocabulary[nextIndex];
-                    if (nextWord && nextWord.exampleIndo) {
-                        AzureTTS.preloadAudio(nextWord.exampleIndo, 'id-ID');
-                    }
-                    if (nextWord && nextWord.indonesian) {
-                        AzureTTS.preloadAudio(nextWord.indonesian, 'id-ID');
+                    if (nextWord) {
+                        // Preload both Indonesian and English audio
+                        if (nextWord.exampleIndo) {
+                            AzureTTS.preloadAudio(nextWord.exampleIndo, 'id-ID');
+                        }
+                        if (nextWord.indonesian) {
+                            AzureTTS.preloadAudio(nextWord.indonesian, 'id-ID');
+                        }
+                        if (nextWord.english) {
+                            AzureTTS.preloadAudio(nextWord.english, 'en-US');
+                        }
+                        if (nextWord.exampleEnglish) {
+                            AzureTTS.preloadAudio(nextWord.exampleEnglish, 'en-US');
+                        }
                     }
                 }
                 
@@ -432,7 +441,8 @@
                     AzureTTS.speakWord(word.indonesian, 'id-ID');
                     document.getElementById('hint1').innerText = `Indonesian word: ${word.indonesian}`;
                 } else if (level === 2) {
-                    // Second hint shows the English word (no speaking)
+                    // Second hint shows and speaks the English word
+                    AzureTTS.speakWord(word.english, 'en-US');
                     document.getElementById('hint2').innerText = `English word: ${word.english}`;
                 }
             } catch (error) {
@@ -447,8 +457,10 @@
                 
                 const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
                 
-                // Show the English translation of the sentence (no speaking)
+                // Show and speak the English translation of the sentence
                 document.getElementById('answer').innerText = word.exampleEnglish;
+                AzureTTS.speakWord(word.exampleEnglish, 'en-US');
+                
                 document.getElementById('hint1').style.display = 'none';
                 document.getElementById('hint2').style.display = 'none';
                 document.getElementById('reveal').style.display = 'none';
