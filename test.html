@@ -141,7 +141,7 @@
                 vocabulary.forEach(word => {
                     const wordKey = `${word.english}:${word.indonesian}:4`;
                     if (!wordStats[wordKey]) {
-                        wordStats[wordKey] = initializeWordInSpacedRepetition();
+                        wordStats[wordKey] = SpacedRepetition.initWordStats(word);
                     }
                 });
                 
@@ -261,7 +261,7 @@
                 // Update last seen counter
                 const wordKey = `${word.english}:${word.indonesian}:4`;
                 const stats = wordStats[wordKey];
-                updateLastSeen(stats);
+                SpacedRepetition.updateLastSeen(stats);
                 
                 // Increment global counter for each word shown
                 globalWordCounter++;
@@ -345,7 +345,7 @@
             
             const wordKey = `${word.english}:${word.indonesian}:4`;
             const stats = wordStats[wordKey];
-            updateStatsForCorrectAnswer(stats);
+            SpacedRepetition.updateStatsForCorrectAnswer(stats);
             saveWordStats();
             
             currentWordIndex++;
@@ -358,7 +358,7 @@
             
             const wordKey = `${word.english}:${word.indonesian}:4`;
             const stats = wordStats[wordKey];
-            updateStatsForPartiallyCorrectAnswer(stats);
+            SpacedRepetition.updateStatsForPartiallyCorrectAnswer(stats);
             saveWordStats();
             
             currentWordIndex++;
@@ -371,7 +371,7 @@
             
             const wordKey = `${word.english}:${word.indonesian}:4`;
             const stats = wordStats[wordKey];
-            updateStatsForIncorrectAnswer(stats);
+            SpacedRepetition.updateStatsForIncorrectAnswer(stats);
             saveWordStats();
             
             currentWordIndex++;
@@ -382,7 +382,7 @@
             const stats = wordStats[wordKey];
             if (!stats) return;
             
-            const statsHtml = generateStatsHtml(stats);
+            const statsHtml = SpacedRepetition.generateStatsHtml(stats);
             document.getElementById('stats').innerHTML = statsHtml;
         }
 
