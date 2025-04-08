@@ -7,16 +7,23 @@
 }
 
 /* Landing page and navigation styles */
-.site-container body, .site-container html {
+.site-container {
     min-height: 100%;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    margin-top: 20px;
 }
 
 /* Game page styles */
-.game-container body {
+.game-container {
     text-align: center;
     margin: 0;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -59,23 +66,22 @@
     margin-bottom: 20px;
 }
 
-/* Main layout containers */
-.site-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-    margin-top: 20px;
-}
-
-.game-container {
+/* Game content container */
+#content {
     position: relative;
     z-index: 1;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    min-width: 300px;
+}
+
+#question {
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
 /* Navigation button grid */
@@ -139,15 +145,34 @@
 /* Game buttons styling */
 .game-button {
     margin: 10px;
-    padding: 10px;
+    padding: 12px 20px;
     font-size: 16px;
     cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: transform 0.1s ease;
 }
 
-#correct { background-color: lightgreen; }
-#sorta { background-color: lightsalmon; }
-#incorrect { background-color: lightcoral; }
-#reveal { background-color: yellow; }
+.game-button:hover {
+    transform: scale(1.05);
+}
+
+#correct { 
+    background-color: lightgreen;
+    border: 1px solid #90EE90;
+}
+#sorta { 
+    background-color: lightsalmon;
+    border: 1px solid #FFA07A;
+}
+#incorrect { 
+    background-color: lightcoral;
+    border: 1px solid #F08080;
+}
+#reveal { 
+    background-color: yellow;
+    border: 1px solid #FFD700;
+}
 
 #correct, #sorta, #incorrect, #example {
     display: none;
