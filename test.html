@@ -388,13 +388,16 @@
             // Update stats display
             updateStatsDisplay(word);
             
-            // Preload audio for current word
+            // Speak English word and preload both languages
+            AzureTTS.speakWord(word.english, 'en-US');
+            AzureTTS.preloadAudio(word.english, 'en-US');
             AzureTTS.preloadAudio(word.indonesian, 'id-ID');
             
             // Preload audio for next word if available
             const nextIndex = (currentWordIndex + 1) % filteredVocabulary.length;
             if (nextIndex !== currentWordIndex) {
                 const nextWord = filteredVocabulary[nextIndex];
+                AzureTTS.preloadAudio(nextWord.english, 'en-US');
                 AzureTTS.preloadAudio(nextWord.indonesian, 'id-ID');
             }
 
