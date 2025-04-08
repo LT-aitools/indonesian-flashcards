@@ -1,0 +1,29 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Deploy to production
+      env:
+        AZURE_TTS_KEY: ${{ secrets.AZURE_TTS_KEY }}
+        AZURE_TTS_REGION: ${{ secrets.AZURE_TTS_REGION }}
+        PORT: 3000
+      run: |
+        npm run build
+        npm start 
