@@ -7,38 +7,43 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="combined-styles.css">
 </head>
-<body>
+<body class="game-container">
     <div class="background"></div>
-    <div id="content">
+    <div class="content">
         <h1>Indonesian Flashcard Game - Level 4</h1>
         
-        <h2 id="question">Loading...</h2>
-        <h3 id="answer"></h3>
-        <button id="hint1">Hint 1</button>
-        <button id="reveal">Reveal 👀</button>
-        <br>
-        <button id="correct">Correct ✅</button>
-        <button id="sorta">Sorta 🫤</button>
-        <button id="incorrect">Incorrect ❌</button>
-        <div id="stats"></div>
-    </div>
-    
-    <div style="margin: 30px 0; background: rgba(240, 255, 240, 0.6); padding: 15px; border-radius: 10px; max-width: 800px; width: 90%;">
-        <div style="margin-bottom: 10px; font-weight: bold;">Select Categories:</div>
-        <div id="categoryCheckboxes" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;">
-            <!-- Categories will be populated here -->
+        <div class="game-area">
+            <h2 id="question">Loading...</h2>
+            <h3 id="answer"></h3>
+            <div class="button-container">
+                <button id="hint1" class="game-button">Hint 1</button>
+                <button id="reveal" class="game-button">Reveal 👀</button>
+            </div>
+            <div class="button-container">
+                <button id="correct" class="game-button">Correct ✅</button>
+                <button id="sorta" class="game-button">Sorta 🫤</button>
+                <button id="incorrect" class="game-button">Incorrect ❌</button>
+            </div>
+            <div id="stats" class="stats-container"></div>
         </div>
+        
+        <div class="categories-container">
+            <div class="categories-title">Select Categories:</div>
+            <div id="categories" class="categories-grid">
+                <!-- Categories will be populated here -->
+            </div>
+        </div>
+        
+        <div class="reset-container">
+            <button id="resetDeck" class="reset-button">
+                Reset Deck 🔄
+            </button>
+        </div>
+        
+        <a href="index.html" class="back-link">
+            Back to Main
+        </a>
     </div>
-    
-    <div style="margin-top: 30px;">
-        <button id="resetDeck" style="background-color: #e0e0e0; color: black; padding: 10px 20px; border: 1px solid #c0c0c0; border-radius: 5px; cursor: pointer;">
-            Reset Deck 🔄
-        </button>
-    </div>
-    
-    <a href="index.html" class="back-link">
-        Back to Main
-    </a>
 
     <script src="azure-text-to-speech.js"></script>
     <script src="spaced-repetition.js"></script>
@@ -47,7 +52,57 @@
         let currentWordIndex = 0;
         let wordStats = {};
         let globalWordCounter = 0;
+        let selectedCategories = [];
         
+        // Parse CSV function
+        function parseCSV(csvText) {
+            try {
+                // Split into rows, handling both Windows and Unix line endings
+                const rows = csvText.split(/\r?\n/).filter(row => row.trim());
+                rows.shift(); // Remove headers
+                
+                return rows.map(row => {
+                    // Parse CSV row properly, handling quoted fields
+                    const cells = [];
+                    let currentCell = '';
+                    let insideQuotes = false;
+                    
+                    for (let i = 0; i < row.length; i++) {
+                        const char = row[i];
+                        
+                        if (char === '"') {
+                            if (insideQuotes && row[i + 1] === '"') {
+                                // Handle escaped quotes
+                                currentCell += '"';
+                                i++; // Skip the next quote
+                            } else {
+                                insideQuotes = !insideQuotes;
+                            }
+                        } else if (char === ',' && !insideQuotes) {
+                            cells.push(currentCell.trim());
+                            currentCell = '';
+                        } else {
+                            currentCell += char;
+                        }
+                    }
+                    cells.push(currentCell.trim());
+                    
+                    return {
+                        category: cells[0] ? cells[0].trim() : "Uncategorized",
+                        english: cells[1].trim(),
+                        indonesian: cells[2].trim(),
+                        exampleSentence: cells[3],
+                        exampleIndo: cells[4],
+                        exampleEnglish: cells[5],
+                        importance: cells[6] ? parseInt(cells[6]) : 3 // Default to 3 if missing
+                    };
+                });
+            } catch (error) {
+                console.error("Error parsing CSV:", error);
+                throw error;
+            }
+        }
+
         // Initialize word stats from localStorage or create new ones
         function initializeWordStats() {
             const savedStats = localStorage.getItem('wordStats');
@@ -84,7 +139,7 @@
                 });
                 
                 const categoriesArray = Array.from(categories).sort();
-                const checkboxContainer = document.getElementById('categoryCheckboxes');
+                const checkboxContainer = document.getElementById('categories');
                 categoriesArray.forEach(category => {
                     const div = document.createElement('div');
                     const checkbox = document.createElement('input');
@@ -114,7 +169,7 @@
             .catch(error => console.error('Error loading vocabulary:', error));
 
         function updateSelectedCategories() {
-            const checkboxes = document.querySelectorAll('#categoryCheckboxes input[type="checkbox"]');
+            const checkboxes = document.querySelectorAll('#categories input[type="checkbox"]');
             selectedCategories = Array.from(checkboxes)
                 .filter(cb => cb.checked)
                 .map(cb => cb.id);
