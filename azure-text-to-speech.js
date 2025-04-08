@@ -7,6 +7,7 @@ const AzureTTS = {
     voices: [], // Store available voices
     hasUserInteracted: false, // Track if user has interacted
     audioCache: new Map(), // Cache for preloaded audio
+    apiEndpoint: 'https://flashcards.letstalkaitools.com/api/tts',
     
     // Initialize voices for browser TTS
     initVoices() {
@@ -73,7 +74,7 @@ const AzureTTS = {
             console.log('Preloading audio for:', text);
             const voice = lang === 'id-ID' ? this.indonesianVoice : this.englishVoice;
             
-            const response = await fetch('/api/tts', {
+            const response = await fetch(this.apiEndpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -148,7 +149,7 @@ const AzureTTS = {
             console.log('Requesting TTS...', { text, lang, voice });
             
             // Call our secure API endpoint
-            const response = await fetch('/api/tts', {
+            const response = await fetch(this.apiEndpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
