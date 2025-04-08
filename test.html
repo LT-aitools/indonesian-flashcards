@@ -353,161 +353,73 @@
             }
         }
 
-        // Display next word
+        // Show next word
         function showNextWord() {
-            try {
-                if (filteredVocabulary.length === 0) {
-                    document.getElementById('question').innerText = "No words found in this category";
-                    // Hide all buttons
-                    document.getElementById('hint1').style.display = 'none';
-                    document.getElementById('hint2').style.display = 'none';
-                    document.getElementById('hint3').style.display = 'none';
-                    document.getElementById('reveal').style.display = 'none';
-                    return;
-                }
-                
-                const word = filteredVocabulary[currentWordIndex];
-                
-                // Display word
-                AzureTTS.speakWord(word.english, 'en-US');
-                
-                document.getElementById('question').innerText = word.english;
-                document.getElementById('answer').innerText = "";
-                document.getElementById('exampleSentence').innerText = "";
-                document.getElementById('hint1').style.display = 'inline';
-                document.getElementById('hint2').style.display = 'inline';
-                document.getElementById('hint3').style.display = word.personalNote ? 'inline' : 'none';
-                document.getElementById('hint1').innerText = "Hint 1";
-                document.getElementById('hint2').innerText = "Hint 2";
-                document.getElementById('hint3').innerText = "Personal Note 📝";
-                document.getElementById('reveal').style.display = 'inline';
-                document.getElementById('example').style.display = 'none';
-                document.getElementById('correct').style.display = 'none';
-                document.getElementById('sorta').style.display = 'none';
-                document.getElementById('incorrect').style.display = 'none';
-                
-                // Hide stats initially
-                document.getElementById('stats').innerHTML = '';
-                
-                document.getElementById('hint1').onclick = () => showHint(1);
-                document.getElementById('hint2').onclick = () => showHint(2);
-                document.getElementById('hint3').onclick = () => showHint(3);
-                document.getElementById('reveal').onclick = revealAnswer;
-                document.getElementById('example').onclick = showExample;
-                document.getElementById('correct').onclick = markCorrect;
-                document.getElementById('sorta').onclick = markSorta;
-                document.getElementById('incorrect').onclick = markIncorrect;
-            } catch (error) {
-                console.error("Error in showNextWord:", error);
-                // Emergency recovery - reset vocabulary and start over
-                currentWordIndex = 0;
-                document.getElementById('question').innerText = "An error occurred. Try refreshing the page.";
+            if (filteredVocabulary.length === 0) return;
+            
+            const word = filteredVocabulary[currentWordIndex];
+            document.getElementById('question').innerText = word.english;
+            document.getElementById('answer').innerText = '';
+            document.getElementById('exampleSentence').innerText = '';
+            
+            // Hide response buttons and show reveal
+            document.getElementById('correct').style.display = 'none';
+            document.getElementById('sorta').style.display = 'none';
+            document.getElementById('incorrect').style.display = 'none';
+            document.getElementById('reveal').style.display = 'inline';
+            document.getElementById('example').style.display = 'none';
+            
+            // Update stats display
+            updateStatsDisplay(word);
+            
+            // Preload audio for current word
+            AzureTTS.preloadAudio(word.indonesian, 'id-ID');
+            
+            // Preload audio for next word if available
+            const nextIndex = (currentWordIndex + 1) % filteredVocabulary.length;
+            if (nextIndex !== currentWordIndex) {
+                const nextWord = filteredVocabulary[nextIndex];
+                AzureTTS.preloadAudio(nextWord.indonesian, 'id-ID');
             }
         }
 
-        // Hints and Reveal
-        function showHint(level) {
-            try {
-                const word = filteredVocabulary[currentWordIndex];
-                if (!word) return;
-                
-                if (level === 1) {
-                    document.getElementById('hint1').innerText = `First letter: ${word.indonesian.charAt(0)}`;
-                } else if (level === 2) {
-                    const firstTwo = word.indonesian.substring(0, 2).toUpperCase();
-                    const lastLetter = word.indonesian.charAt(word.indonesian.length - 1).toUpperCase();
-                    const middleHyphens = '-'.repeat(word.indonesian.length - 3);
-                    document.getElementById('hint2').innerText = `Hint: ${firstTwo}${middleHyphens}${lastLetter}`;
-                } else if (level === 3) {
-                    if (word.personalNote) {
-                        document.getElementById('hint3').innerText = word.personalNote;
-                    }
-                }
-            } catch (error) {
-                console.error("Error showing hint:", error);
-            }
-        }
-
+        // Reveal answer
         function revealAnswer() {
-            try {
-                const word = filteredVocabulary[currentWordIndex];
-                if (!word) return;
-                
-                AzureTTS.speakWord(word.indonesian, 'id-ID');
-                document.getElementById('answer').innerText = word.indonesian;
-                document.getElementById('hint1').style.display = 'none';
-                document.getElementById('hint2').style.display = 'none';
-                document.getElementById('hint3').style.display = 'none';
-                document.getElementById('reveal').style.display = 'none';
+            const word = filteredVocabulary[currentWordIndex];
+            document.getElementById('answer').innerText = word.indonesian;
+            
+            // Show response buttons and hide reveal
+            document.getElementById('correct').style.display = 'inline';
+            document.getElementById('sorta').style.display = 'inline';
+            document.getElementById('incorrect').style.display = 'inline';
+            document.getElementById('reveal').style.display = 'none';
+            if (word.exampleSentence) {
                 document.getElementById('example').style.display = 'inline';
-                document.getElementById('correct').style.display = 'inline';
-                document.getElementById('sorta').style.display = 'inline';
-                document.getElementById('incorrect').style.display = 'inline';
-                
-                // Now show stats after revealing the answer
-                updateStatsDisplay(word);
-            } catch (error) {
-                console.error("Error in revealAnswer:", error);
+            }
+            
+            // Speak the word
+            AzureTTS.speakWord(word.indonesian, 'id-ID');
+            
+            // Preload next word's audio
+            const nextIndex = (currentWordIndex + 1) % filteredVocabulary.length;
+            if (nextIndex !== currentWordIndex) {
+                const nextWord = filteredVocabulary[nextIndex];
+                AzureTTS.preloadAudio(nextWord.indonesian, 'id-ID');
             }
         }
 
-        function showExample() {
-            try {
-                const word = filteredVocabulary[currentWordIndex];
-                if (!word || !word.exampleSentence) {
-                    document.getElementById('exampleSentence').innerText = "No example sentence available.";
-                    return;
-                }
-                
-                AzureTTS.speakWord(word.exampleSentence, 'id-ID');
-                document.getElementById('exampleSentence').innerText = word.exampleSentence;
-                document.getElementById('example').style.display = 'inline';
-            } catch (error) {
-                console.error("Error in showExample:", error);
-                document.getElementById('exampleSentence').innerText = "Error showing example sentence.";
-            }
+        // Handle response (correct/sorta/incorrect)
+        function handleResponse(response) {
+            const word = filteredVocabulary[currentWordIndex];
+            
+            // Update spaced repetition stats
+            SpacedRepetition.updateStats(word.english, response);
+            
+            // Move to next word
+            currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
+            showNextWord();
         }
 
-        // Track progress with spaced repetition
-        function markCorrect() {
-            try {
-                const word = filteredVocabulary[currentWordIndex];
-                SpacedRepetition.updateStats(word, 'correct');
-                currentWordIndex++;
-                showNextWord();
-            } catch (error) {
-                console.error("Error marking correct:", error);
-                currentWordIndex++;
-                showNextWord();
-            }
-        }
-        
-        function markSorta() {
-            try {
-                const word = filteredVocabulary[currentWordIndex];
-                SpacedRepetition.updateStats(word, 'sorta');
-                currentWordIndex++;
-                showNextWord();
-            } catch (error) {
-                console.error("Error marking sorta:", error);
-                currentWordIndex++;
-                showNextWord();
-            }
-        }
-
-        function markIncorrect() {
-            try {
-                const word = filteredVocabulary[currentWordIndex];
-                SpacedRepetition.updateStats(word, 'incorrect');
-                currentWordIndex++;
-                showNextWord();
-            } catch (error) {
-                console.error("Error marking incorrect:", error);
-                currentWordIndex++;
-                showNextWord();
-            }
-        }
-        
         // Display stats for current word
         function updateStatsDisplay(word) {
             try {

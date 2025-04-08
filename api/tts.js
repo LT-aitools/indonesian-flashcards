@@ -1,3 +1,8 @@
+// Token caching
+let cachedToken = null;
+let tokenExpiryTime = null;
+const TOKEN_VALIDITY_MINUTES = 9; // Use 9 minutes to be safe (actual token validity is 10 minutes)
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
       return res.status(405).json({ error: 'Method not allowed' });
@@ -17,25 +22,32 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
-      // First get Azure token
-      console.log('Requesting Azure token...');
-      const tokenResponse = await fetch(
-        `https://${process.env.AZURE_TTS_REGION}.api.cognitive.microsoft.com/sts/v1.0/issueToken`,
-        {
-          method: 'POST',
-          headers: {
-            'Ocp-Apim-Subscription-Key': process.env.AZURE_TTS_KEY
+      // Check if we have a valid cached token
+      const now = Date.now();
+      if (!cachedToken || !tokenExpiryTime || now >= tokenExpiryTime) {
+        console.log('Token expired or not cached, requesting new token...');
+        // Get new token
+        const tokenResponse = await fetch(
+          `https://${process.env.AZURE_TTS_REGION}.api.cognitive.microsoft.com/sts/v1.0/issueToken`,
+          {
+            method: 'POST',
+            headers: {
+              'Ocp-Apim-Subscription-Key': process.env.AZURE_TTS_KEY
+            }
           }
+        );
+    
+        if (!tokenResponse.ok) {
+          console.error('Failed to get Azure token:', tokenResponse.status, await tokenResponse.text());
+          throw new Error('Failed to get Azure token');
         }
-      );
-  
-      if (!tokenResponse.ok) {
-        console.error('Failed to get Azure token:', tokenResponse.status, await tokenResponse.text());
-        throw new Error('Failed to get Azure token');
+    
+        cachedToken = await tokenResponse.text();
+        tokenExpiryTime = now + (TOKEN_VALIDITY_MINUTES * 60 * 1000); // Set expiry time
+        console.log('Got new Azure token successfully');
+      } else {
+        console.log('Using cached token');
       }
-  
-      const accessToken = await tokenResponse.text();
-      console.log('Got Azure token successfully');
   
       // Then use token to get speech
       const ssml = `
@@ -52,7 +64,7 @@ export default async function handler(req, res) {
         {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${accessToken}`,
+            'Authorization': `Bearer ${cachedToken}`,
             'Content-Type': 'application/ssml+xml',
             'X-Microsoft-OutputFormat': 'audio-16khz-128kbitrate-mono-mp3'
           },

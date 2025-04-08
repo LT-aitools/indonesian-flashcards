@@ -6,6 +6,7 @@ const AzureTTS = {
     isLocal: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1',
     voices: [], // Store available voices
     hasUserInteracted: false, // Track if user has interacted
+    audioCache: new Map(), // Cache for preloaded audio
     
     // Initialize voices for browser TTS
     initVoices() {
@@ -58,7 +59,46 @@ const AzureTTS = {
         return voice;
     },
     
-    // Speak a word using either Azure TTS or browser TTS
+    // Preload audio for the next word
+    async preloadAudio(text, lang) {
+        if (!text || !lang) return;
+        
+        const cacheKey = `${text}-${lang}`;
+        if (this.audioCache.has(cacheKey)) {
+            console.log('Audio already cached for:', text);
+            return;
+        }
+
+        try {
+            console.log('Preloading audio for:', text);
+            const voice = lang === 'id-ID' ? this.indonesianVoice : this.englishVoice;
+            
+            const response = await fetch('/api/tts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text,
+                    lang,
+                    voice
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to preload audio');
+            }
+
+            const audioBlob = await response.blob();
+            const audioUrl = URL.createObjectURL(audioBlob);
+            this.audioCache.set(cacheKey, audioUrl);
+            console.log('Audio preloaded for:', text);
+        } catch (error) {
+            console.error('Error preloading audio:', error);
+        }
+    },
+    
+    // Use cached audio if available, otherwise fetch new audio
     async speakWord(text, lang) {
         try {
             if (!text) return;
@@ -77,8 +117,17 @@ const AzureTTS = {
                 await this.useBrowserTTS(text, lang);
                 return;
             }
+
+            // Check cache first
+            const cacheKey = `${text}-${lang}`;
+            if (this.audioCache.has(cacheKey)) {
+                console.log('Using cached audio for:', text);
+                const audio = new Audio(this.audioCache.get(cacheKey));
+                await audio.play();
+                return;
+            }
             
-            // Use Azure TTS via our secure API endpoint
+            // If not in cache, fetch and play
             try {
                 await this.useAzureTTS(text, lang);
             } catch (error) {
@@ -188,6 +237,18 @@ const AzureTTS = {
                 reject(error);
             }
         });
+    },
+    
+    // Clean up old cached audio URLs
+    clearOldCache() {
+        if (this.audioCache.size > 20) { // Keep last 20 items
+            const entries = Array.from(this.audioCache.entries());
+            const toRemove = entries.slice(0, entries.length - 20);
+            toRemove.forEach(([key, url]) => {
+                URL.revokeObjectURL(url);
+                this.audioCache.delete(key);
+            });
+        }
     }
 };
 
