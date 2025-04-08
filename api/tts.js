@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   
     try {
       // Validate environment variables
-      if (!process.env.AZURE_SUBSCRIPTION_KEY || !process.env.AZURE_REGION) {
+      if (!process.env.AZURE_TTS_KEY || !process.env.AZURE_TTS_REGION) {
         console.error('Azure credentials not configured in environment');
         return res.status(500).json({ error: 'Azure credentials not configured' });
       }
@@ -20,11 +20,11 @@ export default async function handler(req, res) {
       // First get Azure token
       console.log('Requesting Azure token...');
       const tokenResponse = await fetch(
-        `https://${process.env.AZURE_REGION}.api.cognitive.microsoft.com/sts/v1.0/issueToken`,
+        `https://${process.env.AZURE_TTS_REGION}.api.cognitive.microsoft.com/sts/v1.0/issueToken`,
         {
           method: 'POST',
           headers: {
-            'Ocp-Apim-Subscription-Key': process.env.AZURE_SUBSCRIPTION_KEY
+            'Ocp-Apim-Subscription-Key': process.env.AZURE_TTS_KEY
           }
         }
       );
@@ -48,7 +48,7 @@ export default async function handler(req, res) {
   
       console.log('Requesting TTS audio...', { lang, voice });
       const ttsResponse = await fetch(
-        `https://${process.env.AZURE_REGION}.tts.speech.microsoft.com/cognitiveservices/v1`,
+        `https://${process.env.AZURE_TTS_REGION}.tts.speech.microsoft.com/cognitiveservices/v1`,
         {
           method: 'POST',
           headers: {
