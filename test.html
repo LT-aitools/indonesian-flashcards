@@ -3,90 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indonesian Flashcards - Level 3</title>
+    <title>Indonesian Flashcards - Level 4</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="combined-styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('images/background.jpeg') no-repeat center center fixed;
-            background-size: cover;
-            opacity: 0.2;
-            z-index: -1;
-        }
-
-        #content {
-            position: relative;
-            z-index: 1;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-        }
-        
-        button {
-            margin: 10px;
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        #correct {
-            background-color: lightgreen;
-        }
-        #sorta {
-            background-color: lightsalmon;
-        }
-        #incorrect {
-            background-color: lightcoral;
-        }
-        #reveal {
-            background-color: yellow;
-        }
-        #correct, #sorta, #incorrect {
-            display: none;
-        }
-        #answer {
-            color: green;
-            font-size: 20px;
-            margin-top: 10px;
-        }
-        #stats {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #666;
-        }
-    </style>
 </head>
 <body>
     <div class="background"></div>
     <div id="content">
-        <h1 style="color: darkgrey; margin-bottom: 20px;">Indonesian Flashcard Game - Level 3</h1>
+        <h1>Indonesian Flashcard Game - Level 4</h1>
         
-        <h3 id="question"></h3>
+        <h2 id="question">Loading...</h2>
         <h3 id="answer"></h3>
-        <h3 id="exampleSentence"></h3>
         <button id="hint1">Hint 1</button>
-        <button id="hint2">Hint 2</button>
         <button id="reveal">Reveal 👀</button>
         <br>
-        <button id="correct" style="display: none;">Correct ✅</button>
-        <button id="sorta" style="display: none;">Sorta 🫤</button>
-        <button id="incorrect" style="display: none;">Incorrect ❌</button>
-        <button id="example" style="display: none;">Example</button>
+        <button id="correct">Correct ✅</button>
+        <button id="sorta">Sorta 🫤</button>
+        <button id="incorrect">Incorrect ❌</button>
         <div id="stats"></div>
     </div>
     
@@ -110,341 +43,163 @@
     <script src="azure-text-to-speech.js"></script>
     <script src="spaced-repetition.js"></script>
     <script>
-        // Data structures
-        const vocabulary = [];
         let filteredVocabulary = [];
         let currentWordIndex = 0;
-        let categories = [];
-        let selectedCategories = new Set();
-        
-        // Word stats
         let wordStats = {};
-        
-        // Global counter
         let globalWordCounter = 0;
         
-        // Initial setup
-        window.onload = function() {
-            loadCSV();
-            
-            // Add reset button event listener
-            document.getElementById('resetDeck').addEventListener('click', resetDeck);
-        };
-
-        // Load CSV Data
-        async function loadCSV() {
-            try {
-                console.log('Attempting to load CSV...');
-                const response = await fetch("https://raw.githubusercontent.com/LT-aitools/indonesian-flashcards/refs/heads/main/Indonesian_vocabulary.csv");
-                const data = await response.text();
-                parseCSV(data);
-            } catch (error) {
-                console.error("Error loading CSV:", error);
-                document.getElementById('question').innerText = "Error loading vocabulary data.";
+        // Initialize word stats from localStorage or create new ones
+        function initializeWordStats() {
+            const savedStats = localStorage.getItem('wordStats');
+            if (savedStats) {
+                wordStats = JSON.parse(savedStats);
             }
         }
 
-        // Parse CSV and store words
-        function parseCSV(data) {
-            try {
-                // Split into rows, handling both Windows and Unix line endings
-                const rows = data.split(/\r?\n/).filter(row => row.trim());
-                rows.shift(); // Remove headers
+        function saveWordStats() {
+            localStorage.setItem('wordStats', JSON.stringify(wordStats));
+        }
+
+        // Load vocabulary from CSV
+        fetch('vocabulary.csv')
+            .then(response => response.text())
+            .then(csvText => {
+                const vocabulary = parseCSV(csvText);
+                initializeWordStats();
                 
-                // Extract unique categories
-                const categorySet = new Set();
-                
-                rows.forEach(row => {
-                    // Parse CSV row properly, handling quoted fields
-                    const cells = [];
-                    let currentCell = '';
-                    let insideQuotes = false;
-                    
-                    for (let i = 0; i < row.length; i++) {
-                        const char = row[i];
-                        
-                        if (char === '"') {
-                            if (insideQuotes && row[i + 1] === '"') {
-                                // Handle escaped quotes
-                                currentCell += '"';
-                                i++; // Skip the next quote
-                            } else {
-                                insideQuotes = !insideQuotes;
-                            }
-                        } else if (char === ',' && !insideQuotes) {
-                            cells.push(currentCell.trim());
-                            currentCell = '';
-                        } else {
-                            currentCell += char;
-                        }
+                // Initialize stats for words that don't have them yet
+                vocabulary.forEach(word => {
+                    const wordKey = `${word.english}:${word.indonesian}:4`; // Level 4 identifier
+                    if (!wordStats[wordKey]) {
+                        wordStats[wordKey] = initializeWordInSpacedRepetition();
                     }
-                    cells.push(currentCell.trim());
-                    
-                    // Add the importance weight from column G (index 6)
-                    const importanceWeight = cells[6] ? parseInt(cells[6]) : 3; // Default to 3 if missing
-                    const category = cells[0] ? cells[0].trim() : "Uncategorized";
-                    const personalNote = cells[7] ? cells[7].trim() : ""; // Get personal note from column H (index 7)
-                    
-                    // Add to category set
-                    categorySet.add(category);
-                    
-                    vocabulary.push({
-                        type: category, // Store the category/type
-                        english: cells[1].trim(), // Column B (index 1) - English word
-                        indonesian: cells[2].trim(), // Column C (index 2) - Indonesian word
-                        exampleSentence: cells[3], // Column D (index 3) - Example Sentence
-                        exampleIndo: cells[4], // Column E (index 4) - Example in Indonesian
-                        exampleEnglish: cells[5], // Column F (index 5) - Example in English
-                        importance: importanceWeight,
-                        personalNote: personalNote
-                    });
                 });
                 
-                // Convert Set to Array and sort alphabetically
-                categories = Array.from(categorySet).sort();
+                // Set up category checkboxes
+                const categories = new Set();
+                vocabulary.forEach(word => {
+                    if (word.category) {
+                        word.category.split(',').forEach(cat => categories.add(cat.trim()));
+                    }
+                });
                 
-                // Populate checkboxes with categories
+                const categoriesArray = Array.from(categories).sort();
                 const checkboxContainer = document.getElementById('categoryCheckboxes');
-                categories.forEach(category => {
-                    const label = document.createElement('label');
-                    label.style.display = 'inline-flex';
-                    label.style.alignItems = 'center';
-                    label.style.margin = '2px';
-                    label.style.padding = '3px 8px';
-                    label.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-                    label.style.borderRadius = '4px';
-                    label.style.cursor = 'pointer';
-                    label.style.fontSize = '14px';
-                    
+                categoriesArray.forEach(category => {
+                    const div = document.createElement('div');
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
-                    checkbox.value = category;
-                    checkbox.style.marginRight = '4px';
-                    checkbox.addEventListener('change', function() {
-                        if (this.checked) {
-                            selectedCategories.add(category);
-                        } else {
-                            selectedCategories.delete(category);
-                        }
-                        filterByCategory();
+                    checkbox.id = category;
+                    checkbox.checked = true;
+                    checkbox.addEventListener('change', () => {
+                        updateSelectedCategories();
+                        filterVocabularyByCategory(vocabulary);
                         currentWordIndex = 0;
-                        startGame();
+                        showNextWord();
                     });
                     
-                    label.appendChild(checkbox);
-                    label.appendChild(document.createTextNode(category));
-                    checkboxContainer.appendChild(label);
+                    const label = document.createElement('label');
+                    label.htmlFor = category;
+                    label.textContent = category;
+                    
+                    div.appendChild(checkbox);
+                    div.appendChild(label);
+                    checkboxContainer.appendChild(div);
                 });
                 
-                // Load saved category preferences
-                const savedCategories = localStorage.getItem('selectedCategories');
-                if (savedCategories) {
-                    const categories = JSON.parse(savedCategories);
-                    categories.forEach(category => {
-                        selectedCategories.add(category);
-                        const checkbox = document.querySelector(`input[value="${category}"]`);
-                        if (checkbox) checkbox.checked = true;
-                    });
-                }
-                
-                // Load saved word stats
-                loadWordStats();
-                
-                // Initialize stats for new words
-                vocabulary.forEach(word => {
-                    const wordKey = `${word.english}:${word.indonesian}:3`; // Add level identifier
-                    if (!wordStats[wordKey]) {
-                        wordStats[wordKey] = {
-                            correctCount: 0,
-                            sortaCount: 0,
-                            incorrectCount: 0,
-                            lastSeenCount: 0,
-                            nextReviewCount: 0, // 0 means ready to be shown
-                            importance: word.importance || 3, // Store importance in stats
-                            level: 3 // Level 3 - sentence translation
-                        };
-                    } else {
-                        // Update importance in case it changed in the CSV
-                        wordStats[wordKey].importance = word.importance || wordStats[wordKey].importance;
-                    }
-                });
-                
-                // Initial filtering by category and randomization
-                filterByCategory();
-                
-                // Add randomness to the initial global counter so sessions don't always start from the same point
-                globalWordCounter = Math.floor(Math.random() * 10);
-                
-                startGame();
-            } catch (error) {
-                console.error("Error parsing CSV:", error);
-                document.getElementById('question').innerText = "Error processing vocabulary data.";
-            }
-        }
-        
-        // Filter vocabulary by selected categories
-        function filterByCategory() {
-            try {
-                if (selectedCategories.size === 0) {
-                    filteredVocabulary = [...vocabulary]; // Use all vocabulary if no categories selected
-                } else {
-                    filteredVocabulary = vocabulary.filter(word => selectedCategories.has(word.type));
-                }
-                
-                // Filter out words without example sentences
-                filteredVocabulary = filteredVocabulary.filter(word => 
-                    word.exampleIndo && word.exampleIndo.trim() && 
-                    word.exampleEnglish && word.exampleEnglish.trim()
-                );
-                
-                // Save selected categories to localStorage
-                localStorage.setItem('selectedCategories', JSON.stringify(Array.from(selectedCategories)));
-                
-                // Update debug message if no words in selected categories
-                if (filteredVocabulary.length === 0) {
-                    document.getElementById('question').innerText = "No words with example sentences found in selected categories";
-                    // Hide all buttons
-                    document.getElementById('hint1').style.display = 'none';
-                    document.getElementById('hint2').style.display = 'none';
-                    document.getElementById('reveal').style.display = 'none';
-                }
-            } catch (error) {
-                console.error("Error filtering by category:", error);
-            }
-        }
-
-        // Load word stats from localStorage
-        function loadWordStats() {
-            try {
-                const savedStats = localStorage.getItem('indonesianFlashcardStats');
-                if (savedStats) {
-                    wordStats = JSON.parse(savedStats);
-                }
-            } catch (error) {
-                console.error("Error loading word stats:", error);
-                wordStats = {};
-            }
-        }
-        
-        // Save word stats to localStorage
-        function saveWordStats() {
-            try {
-                localStorage.setItem('indonesianFlashcardStats', JSON.stringify(wordStats));
-            } catch (error) {
-                console.error("Error saving word stats:", error);
-            }
-        }
-        
-        // Start game
-        function startGame() {
-            try {
-                // If the filtered vocabulary is empty, no need to proceed
-                if (filteredVocabulary.length === 0) {
-                    return;
-                }
-                
-                // Sort words by priority using the spaced repetition module
-                SpacedRepetition.sortByPriority(filteredVocabulary);
-                
-                currentWordIndex = 0;
+                // Initial filtering
+                filterVocabularyByCategory(vocabulary);
                 showNextWord();
-            } catch (error) {
-                console.error("Error in startGame:", error);
-            }
+            })
+            .catch(error => console.error('Error loading vocabulary:', error));
+
+        function updateSelectedCategories() {
+            const checkboxes = document.querySelectorAll('#categoryCheckboxes input[type="checkbox"]');
+            selectedCategories = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.id);
         }
 
-        // Display next word
+        function filterVocabularyByCategory(vocabulary) {
+            filteredVocabulary = vocabulary.filter(word => {
+                if (!word.category) return false;
+                const wordCategories = word.category.split(',').map(c => c.trim());
+                return wordCategories.some(cat => selectedCategories.includes(cat));
+            });
+            
+            // Sort by spaced repetition priority
+            filteredVocabulary.sort((a, b) => {
+                const keyA = `${a.english}:${a.indonesian}:4`;
+                const keyB = `${b.english}:${b.indonesian}:4`;
+                return getSpacedRepetitionPriority(wordStats[keyB]) - getSpacedRepetitionPriority(wordStats[keyA]);
+            });
+        }
+
         function showNextWord() {
             try {
-                if (filteredVocabulary.length === 0) {
-                    document.getElementById('question').innerText = "No words with example sentences found in this category";
-                    // Hide all buttons
-                    document.getElementById('hint1').style.display = 'none';
-                    document.getElementById('hint2').style.display = 'none';
-                    document.getElementById('reveal').style.display = 'none';
-                    return;
+                if (currentWordIndex >= filteredVocabulary.length) {
+                    currentWordIndex = 0;
                 }
                 
                 const word = filteredVocabulary[currentWordIndex];
                 if (!word || !word.exampleIndo || !word.exampleEnglish) {
-                    currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
+                    currentWordIndex++;
                     showNextWord();
                     return;
                 }
                 
                 // Update last seen counter
-                const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
+                const wordKey = `${word.english}:${word.indonesian}:4`;
                 const stats = wordStats[wordKey];
-                stats.lastSeenCount = globalWordCounter;
+                updateLastSeen(stats);
                 
                 // Increment global counter for each word shown
                 globalWordCounter++;
                 saveWordStats();
                 
-                // Display Indonesian example sentence and speak it
-                AzureTTS.speakWord(word.exampleIndo, 'id-ID');
-                
-                document.getElementById('question').innerText = word.exampleIndo;
-                document.getElementById('answer').innerText = "";
-                document.getElementById('hint1').style.display = 'inline';
-                document.getElementById('hint2').style.display = 'inline';
-                document.getElementById('hint1').innerText = "Hint 1";
-                document.getElementById('hint2').innerText = "Hint 2";
-                document.getElementById('reveal').style.display = 'inline';
-                document.getElementById('correct').style.display = 'none';
-                document.getElementById('sorta').style.display = 'none';
-                document.getElementById('incorrect').style.display = 'none';
-                
-                // Hide stats initially
-                document.getElementById('stats').innerHTML = '';
-                
-                // Preload next word's audio
-                const nextIndex = (currentWordIndex + 1) % filteredVocabulary.length;
-                if (nextIndex !== currentWordIndex) {
-                    const nextWord = filteredVocabulary[nextIndex];
-                    if (nextWord) {
-                        // Preload both Indonesian and English audio
-                        if (nextWord.exampleIndo) {
-                            AzureTTS.preloadAudio(nextWord.exampleIndo, 'id-ID');
-                        }
-                        if (nextWord.indonesian) {
-                            AzureTTS.preloadAudio(nextWord.indonesian, 'id-ID');
-                        }
-                        if (nextWord.english) {
-                            AzureTTS.preloadAudio(nextWord.english, 'en-US');
-                        }
-                        if (nextWord.exampleEnglish) {
-                            AzureTTS.preloadAudio(nextWord.exampleEnglish, 'en-US');
-                        }
-                    }
-                }
-                
-                document.getElementById('hint1').onclick = () => showHint(1);
-                document.getElementById('hint2').onclick = () => showHint(2);
-                document.getElementById('reveal').onclick = revealAnswer;
-                document.getElementById('correct').onclick = markCorrect;
-                document.getElementById('sorta').onclick = markSorta;
-                document.getElementById('incorrect').onclick = markIncorrect;
+                // Preload all audio that will be needed for this word
+                Promise.all([
+                    AzureTTS.preloadAudio(word.exampleEnglish), // English example sentence
+                    AzureTTS.preloadAudio(word.indonesian),     // Indonesian word for hint
+                    AzureTTS.preloadAudio(word.exampleIndo)     // Indonesian example for reveal
+                ]).then(() => {
+                    // Display English example sentence
+                    AzureTTS.speakWord(word.exampleEnglish);
+                    
+                    document.getElementById('question').innerText = word.exampleEnglish;
+                    document.getElementById('answer').innerText = "";
+                    document.getElementById('hint1').style.display = 'inline';
+                    document.getElementById('hint1').innerText = "Hint 1";
+                    document.getElementById('reveal').style.display = 'inline';
+                    document.getElementById('correct').style.display = 'none';
+                    document.getElementById('sorta').style.display = 'none';
+                    document.getElementById('incorrect').style.display = 'none';
+                    
+                    // Hide stats initially
+                    document.getElementById('stats').innerHTML = '';
+                    
+                    document.getElementById('hint1').onclick = () => showHint();
+                    document.getElementById('reveal').onclick = revealAnswer;
+                    document.getElementById('correct').onclick = markCorrect;
+                    document.getElementById('sorta').onclick = markSorta;
+                    document.getElementById('incorrect').onclick = markIncorrect;
+                }).catch(error => {
+                    console.error("Error preloading audio:", error);
+                });
             } catch (error) {
                 console.error("Error in showNextWord:", error);
             }
         }
 
-        // Show hints
-        function showHint(level) {
+        // Hint for Level 4 - only one hint
+        function showHint() {
             try {
                 const word = filteredVocabulary[currentWordIndex];
                 if (!word) return;
                 
-                if (level === 1) {
-                    // First hint shows and speaks the Indonesian word
-                    AzureTTS.speakWord(word.indonesian, 'id-ID');
-                    document.getElementById('hint1').innerText = `Indonesian word: ${word.indonesian}`;
-                } else if (level === 2) {
-                    // Second hint shows and speaks the English word
-                    AzureTTS.speakWord(word.english, 'en-US');
-                    document.getElementById('hint2').innerText = `English word: ${word.english}`;
-                }
+                // Show and speak the Indonesian word
+                AzureTTS.speakWord(word.indonesian);
+                document.getElementById('hint1').innerText = `Indonesian word: ${word.indonesian}`;
             } catch (error) {
                 console.error("Error showing hint:", error);
             }
@@ -455,14 +210,13 @@
                 const word = filteredVocabulary[currentWordIndex];
                 if (!word) return;
                 
-                const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
+                const wordKey = `${word.english}:${word.indonesian}:4`;
+                const stats = wordStats[wordKey];
                 
-                // Show and speak the English translation of the sentence
-                document.getElementById('answer').innerText = word.exampleEnglish;
-                AzureTTS.speakWord(word.exampleEnglish, 'en-US');
-                
+                // Show the Indonesian translation of the sentence
+                AzureTTS.speakWord(word.exampleIndo);
+                document.getElementById('answer').innerText = word.exampleIndo;
                 document.getElementById('hint1').style.display = 'none';
-                document.getElementById('hint2').style.display = 'none';
                 document.getElementById('reveal').style.display = 'none';
                 document.getElementById('correct').style.display = 'inline';
                 document.getElementById('sorta').style.display = 'inline';
@@ -475,114 +229,57 @@
             }
         }
 
-        // Track progress with spaced repetition
         function markCorrect() {
-            try {
-                const word = filteredVocabulary[currentWordIndex];
-                const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
-                
-                // Use spaced repetition module to update stats
-                SpacedRepetition.updateStats(word, 'correct');
-                saveWordStats();
-                
-                currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
-                showNextWord();
-            } catch (error) {
-                console.error("Error marking correct:", error);
-                currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
-                showNextWord();
-            }
+            const word = filteredVocabulary[currentWordIndex];
+            if (!word) return;
+            
+            const wordKey = `${word.english}:${word.indonesian}:4`;
+            const stats = wordStats[wordKey];
+            updateStatsForCorrectAnswer(stats);
+            saveWordStats();
+            
+            currentWordIndex++;
+            showNextWord();
         }
-        
+
         function markSorta() {
-            try {
-                const word = filteredVocabulary[currentWordIndex];
-                const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
-                
-                // Use spaced repetition module to update stats
-                SpacedRepetition.updateStats(word, 'sorta');
-                saveWordStats();
-                
-                currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
-                showNextWord();
-            } catch (error) {
-                console.error("Error marking sorta:", error);
-                currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
-                showNextWord();
-            }
+            const word = filteredVocabulary[currentWordIndex];
+            if (!word) return;
+            
+            const wordKey = `${word.english}:${word.indonesian}:4`;
+            const stats = wordStats[wordKey];
+            updateStatsForPartiallyCorrectAnswer(stats);
+            saveWordStats();
+            
+            currentWordIndex++;
+            showNextWord();
         }
 
         function markIncorrect() {
-            try {
-                const word = filteredVocabulary[currentWordIndex];
-                const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
-                
-                // Use spaced repetition module to update stats
-                SpacedRepetition.updateStats(word, 'incorrect');
-                saveWordStats();
-                
-                currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
-                showNextWord();
-            } catch (error) {
-                console.error("Error marking incorrect:", error);
-                currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
-                showNextWord();
-            }
-        }
-        
-        // Display stats for current word
-        function updateStatsDisplay(wordKey) {
-            try {
-                const stats = wordStats[wordKey];
-                const statsElement = document.getElementById('stats');
-                
-                if (stats) {
-                    const totalReviews = stats.correctCount + stats.sortaCount + stats.incorrectCount;
-                    let accuracy = 0;
-                    if (totalReviews > 0) {
-                        accuracy = Math.round((stats.correctCount / totalReviews) * 100);
-                    }
-                    
-                    statsElement.innerHTML = `
-                        Times seen: ${totalReviews} | 
-                        Correct: ${stats.correctCount} | 
-                        Sorta: ${stats.sortaCount} | 
-                        Incorrect: ${stats.incorrectCount} | 
-                        Accuracy: ${accuracy}%
-                    `;
-                }
-            } catch (error) {
-                console.error("Error updating stats display:", error);
-            }
+            const word = filteredVocabulary[currentWordIndex];
+            if (!word) return;
+            
+            const wordKey = `${word.english}:${word.indonesian}:4`;
+            const stats = wordStats[wordKey];
+            updateStatsForIncorrectAnswer(stats);
+            saveWordStats();
+            
+            currentWordIndex++;
+            showNextWord();
         }
 
-        // Reset deck
+        function updateStatsDisplay(wordKey) {
+            const stats = wordStats[wordKey];
+            if (!stats) return;
+            
+            const statsHtml = generateStatsHtml(stats);
+            document.getElementById('stats').innerHTML = statsHtml;
+        }
+
         function resetDeck() {
             if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
-                wordStats = {};
-                vocabulary.forEach(word => {
-                    const wordKey = `${word.english}:${word.indonesian}:3`;
-                    wordStats[wordKey] = {
-                        correctCount: 0,
-                        sortaCount: 0,
-                        incorrectCount: 0,
-                        lastSeenCount: 0,
-                        nextReviewCount: 0, // 0 means ready to be shown
-                        importance: word.importance || 3, // Store importance in stats
-                        level: 3 // Level 3 - sentence translation
-                    };
-                });
-                saveWordStats();
-                currentWordIndex = 0;
-                showNextWord();
-            }
-        }
-
-        // Utility function to shuffle array
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+                localStorage.removeItem('wordStats');
+                location.reload();
             }
         }
     </script>
