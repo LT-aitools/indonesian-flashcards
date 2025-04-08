@@ -355,12 +355,28 @@
 
         // Show next word
         function showNextWord() {
-            if (filteredVocabulary.length === 0) return;
+            if (filteredVocabulary.length === 0) {
+                document.getElementById('question').innerText = "No words found in this category";
+                // Hide all buttons
+                document.getElementById('hint1').style.display = 'none';
+                document.getElementById('hint2').style.display = 'none';
+                document.getElementById('hint3').style.display = 'none';
+                document.getElementById('reveal').style.display = 'none';
+                return;
+            }
             
             const word = filteredVocabulary[currentWordIndex];
             document.getElementById('question').innerText = word.english;
             document.getElementById('answer').innerText = '';
             document.getElementById('exampleSentence').innerText = '';
+            
+            // Show and reset hints
+            document.getElementById('hint1').style.display = 'inline';
+            document.getElementById('hint2').style.display = 'inline';
+            document.getElementById('hint3').style.display = word.personalNote ? 'inline' : 'none';
+            document.getElementById('hint1').innerText = "Hint 1";
+            document.getElementById('hint2').innerText = "Hint 2";
+            document.getElementById('hint3').innerText = "Personal Note 📝";
             
             // Hide response buttons and show reveal
             document.getElementById('correct').style.display = 'none';
@@ -381,6 +397,45 @@
                 const nextWord = filteredVocabulary[nextIndex];
                 AzureTTS.preloadAudio(nextWord.indonesian, 'id-ID');
             }
+
+            // Set up button event listeners
+            document.getElementById('hint1').onclick = () => showHint(1);
+            document.getElementById('hint2').onclick = () => showHint(2);
+            document.getElementById('hint3').onclick = () => showHint(3);
+            document.getElementById('reveal').onclick = revealAnswer;
+            document.getElementById('example').onclick = showExample;
+            document.getElementById('correct').onclick = () => handleResponse('correct');
+            document.getElementById('sorta').onclick = () => handleResponse('sorta');
+            document.getElementById('incorrect').onclick = () => handleResponse('incorrect');
+        }
+
+        // Show hints
+        function showHint(level) {
+            const word = filteredVocabulary[currentWordIndex];
+            if (!word) return;
+            
+            if (level === 1) {
+                document.getElementById('hint1').innerText = `First letter: ${word.indonesian.charAt(0)}`;
+            } else if (level === 2) {
+                const firstTwo = word.indonesian.substring(0, 2).toUpperCase();
+                const lastLetter = word.indonesian.charAt(word.indonesian.length - 1).toUpperCase();
+                const middleHyphens = '-'.repeat(word.indonesian.length - 3);
+                document.getElementById('hint2').innerText = `Hint: ${firstTwo}${middleHyphens}${lastLetter}`;
+            } else if (level === 3 && word.personalNote) {
+                document.getElementById('hint3').innerText = word.personalNote;
+            }
+        }
+
+        // Show example sentence
+        function showExample() {
+            const word = filteredVocabulary[currentWordIndex];
+            if (!word || !word.exampleSentence) {
+                document.getElementById('exampleSentence').innerText = "No example sentence available.";
+                return;
+            }
+            
+            AzureTTS.speakWord(word.exampleSentence, 'id-ID');
+            document.getElementById('exampleSentence').innerText = word.exampleSentence;
         }
 
         // Reveal answer
