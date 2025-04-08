@@ -1,23 +1,29 @@
 // Spaced repetition module
 const SpacedRepetition = {
-    // Constants
-    CORRECT_INTERVAL: 60,
-    SORTA_INTERVAL: 30,
-    INCORRECT_INTERVAL: 15,
+    // Constants for intervals
+    CORRECT_INTERVAL: 90,  // Longer delay for words you know well
+    SORTA_INTERVAL: 30,    // Medium delay for partially known words
+    INCORRECT_INTERVAL: 15, // Quick review for words you got wrong
+    
+    // Session tracking
+    sessionStartTime: null,
+    
+    // Word stats
+    wordStats: {},
+    sessionStats: {}, // New: separate stats for current session
     
     // Global counter
     globalWordCounter: 0,
     
-    // Word stats
-    wordStats: {},
-    
     // Initialize the module
     init() {
-        this.loadWordStats();
+        this.sessionStartTime = Date.now();
+        this.loadWordStats(); // Load persistent stats for reference only
+        this.resetSessionStats(); // Start fresh session stats
         this.globalWordCounter = Math.floor(Math.random() * 10);
     },
     
-    // Load word stats from localStorage
+    // Load word stats from localStorage (for reference/history)
     loadWordStats() {
         try {
             const savedStats = localStorage.getItem('indonesianFlashcardStats');
@@ -30,20 +36,19 @@ const SpacedRepetition = {
         }
     },
     
-    // Save word stats to localStorage
-    saveWordStats() {
-        try {
-            localStorage.setItem('indonesianFlashcardStats', JSON.stringify(this.wordStats));
-        } catch (error) {
-            console.error("Error saving word stats:", error);
-        }
+    // Reset session stats
+    resetSessionStats() {
+        this.sessionStats = {};
+        console.log('Session stats reset');
     },
     
     // Initialize stats for new words
     initWordStats(word) {
         const wordKey = `${word.english}:${word.indonesian}`;
-        if (!this.wordStats[wordKey]) {
-            this.wordStats[wordKey] = {
+        
+        // Initialize session stats
+        if (!this.sessionStats[wordKey]) {
+            this.sessionStats[wordKey] = {
                 correctCount: 0,
                 sortaCount: 0,
                 incorrectCount: 0,
@@ -52,22 +57,34 @@ const SpacedRepetition = {
                 importance: word.importance || 3,
                 level: 1
             };
-        } else {
-            // Update importance in case it changed
-            this.wordStats[wordKey].importance = word.importance || this.wordStats[wordKey].importance;
         }
     },
     
-    // Get word stats
+    // Get word stats (combines session and historical data)
     getWordStats(word) {
         const wordKey = `${word.english}:${word.indonesian}`;
-        return this.wordStats[wordKey];
+        const sessionStat = this.sessionStats[wordKey];
+        const historicalStat = this.wordStats[wordKey];
+        
+        if (!sessionStat) return null;
+        
+        // Return session stats with historical totals
+        return {
+            ...sessionStat,
+            totalCorrect: (historicalStat?.correctCount || 0) + sessionStat.correctCount,
+            totalSorta: (historicalStat?.sortaCount || 0) + sessionStat.sortaCount,
+            totalIncorrect: (historicalStat?.incorrectCount || 0) + sessionStat.incorrectCount
+        };
     },
     
     // Update stats after a response
     updateStats(word, responseType) {
         const wordKey = `${word.english}:${word.indonesian}`;
-        const stats = this.wordStats[wordKey];
+        const stats = this.sessionStats[wordKey];
+        
+        if (!stats) {
+            this.initWordStats(word);
+        }
         
         // Update appropriate counter
         if (responseType === 'correct') {
@@ -97,30 +114,30 @@ const SpacedRepetition = {
         // Increment global counter
         this.globalWordCounter++;
         
-        // Save updated stats
-        this.saveWordStats();
-        
         return stats;
     },
     
     // Get stats display string
     getStatsDisplay(word) {
-        const wordKey = `${word.english}:${word.indonesian}`;
-        const stats = this.wordStats[wordKey];
+        const stats = this.getWordStats(word);
         
         if (stats) {
-            const totalReviews = stats.correctCount + stats.sortaCount + stats.incorrectCount;
-            let accuracy = 0;
+            const sessionReviews = stats.correctCount + stats.sortaCount + stats.incorrectCount;
+            const totalReviews = stats.totalCorrect + stats.totalSorta + stats.totalIncorrect;
+            
+            let sessionAccuracy = 0;
+            if (sessionReviews > 0) {
+                sessionAccuracy = Math.round((stats.correctCount / sessionReviews) * 100);
+            }
+            
+            let totalAccuracy = 0;
             if (totalReviews > 0) {
-                accuracy = Math.round((stats.correctCount / totalReviews) * 100);
+                totalAccuracy = Math.round((stats.totalCorrect / totalReviews) * 100);
             }
             
             return `
-                Times seen: ${totalReviews} | 
-                Correct: ${stats.correctCount} | 
-                Sorta: ${stats.sortaCount} | 
-                Incorrect: ${stats.incorrectCount} | 
-                Accuracy: ${accuracy}%
+                This session: ${sessionReviews} reviews, ${sessionAccuracy}% accuracy | 
+                All time: ${totalReviews} reviews, ${totalAccuracy}% accuracy
             `;
         }
         return 'New word';
@@ -128,27 +145,26 @@ const SpacedRepetition = {
     
     // Sort words by priority
     sortByPriority(words) {
-        // First, assign scores to each word based on importance and next review count
+        // First, assign scores to each word
         words.forEach(word => {
             if (!word) return;
             
             const wordKey = `${word.english}:${word.indonesian}`;
-            const stats = this.wordStats[wordKey];
-            if (!stats) return;
+            const stats = this.sessionStats[wordKey];
+            if (!stats) {
+                this.initWordStats(word);
+                return;
+            }
             
-            const importanceScore = (6 - (stats.importance || 3)) * 10; // Invert so 5 is lowest score
+            const importanceScore = (6 - (stats.importance || 3)) * 10;
             const reviewScore = (stats.nextReviewCount || 0) - this.globalWordCounter;
             
             // Calculate priority score - lower is higher priority
             let priorityScore = reviewScore;
             
-            // If the word is due for review (reviewScore <= 0), prioritize by importance
+            // If the word is due for review, prioritize by importance
             if (reviewScore <= 0) {
                 priorityScore = importanceScore;
-            } else {
-                // For words not yet due, adjust their priority based on importance
-                const importanceFactor = 1 - (((stats.importance || 3) - 1) * 0.15);
-                priorityScore = reviewScore * importanceFactor;
             }
             
             stats.priorityScore = priorityScore;
@@ -158,17 +174,12 @@ const SpacedRepetition = {
         return words.sort((a, b) => {
             if (!a || !b) return 0;
             
-            const keyA = `${a.english}:${a.indonesian}`;
-            const keyB = `${b.english}:${b.indonesian}`;
-            
-            const statsA = this.wordStats[keyA];
-            const statsB = this.wordStats[keyB];
+            const statsA = this.sessionStats[`${a.english}:${a.indonesian}`];
+            const statsB = this.sessionStats[`${b.english}:${b.indonesian}`];
             
             if (!statsA || !statsB) return 0;
             
-            const scoreA = statsA.priorityScore || 0;
-            const scoreB = statsB.priorityScore || 0;
-            return scoreA - scoreB;
+            return (statsA.priorityScore || 0) - (statsB.priorityScore || 0);
         });
     },
     
