@@ -5,6 +5,7 @@ const AzureTTS = {
     englishVoice: 'en-US-JennyNeural', // Female English voice
     isLocal: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1',
     voices: [], // Store available voices
+    hasUserInteracted: false, // Track if user has interacted
     
     // Initialize voices for browser TTS
     initVoices() {
@@ -64,6 +65,13 @@ const AzureTTS = {
             
             console.log('Speaking word:', { text, lang, isLocal: this.isLocal });
             
+            // Always use browser TTS until user interacts
+            if (!this.hasUserInteracted) {
+                console.log('No user interaction yet - using browser TTS');
+                await this.useBrowserTTS(text, lang);
+                return;
+            }
+            
             // Use browser TTS in local development
             if (this.isLocal) {
                 await this.useBrowserTTS(text, lang);
@@ -71,11 +79,14 @@ const AzureTTS = {
             }
             
             // Use Azure TTS via our secure API endpoint
-            await this.useAzureTTS(text, lang);
+            try {
+                await this.useAzureTTS(text, lang);
+            } catch (error) {
+                console.error('Azure TTS failed, falling back to browser TTS:', error);
+                await this.useBrowserTTS(text, lang);
+            }
         } catch (error) {
             console.error('Error with TTS:', error);
-            // Fall back to browser TTS
-            await this.useBrowserTTS(text, lang);
         }
     },
     
@@ -187,4 +198,12 @@ window.addEventListener('load', () => {
     // Log browser capabilities
     console.log('Browser TTS supported:', 'speechSynthesis' in window);
     console.log('Audio playback supported:', 'Audio' in window);
+    
+    // Add click handler to enable audio after user interaction
+    document.addEventListener('click', () => {
+        if (!AzureTTS.hasUserInteracted) {
+            console.log('User has interacted - enabling Azure TTS');
+            AzureTTS.hasUserInteracted = true;
+        }
+    }, { once: true }); // Only need to capture the first click
 }); 
