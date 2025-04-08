@@ -201,41 +201,46 @@ const AzureTTS = {
     
     // Use browser TTS
     async useBrowserTTS(text, lang) {
+        console.log(`[Browser TTS] Attempting to speak: "${text}" in ${lang}`);
         return new Promise((resolve, reject) => {
-            try {
-                console.log('Using browser TTS:', { text, lang });
-                
-                // Cancel any ongoing speech
-                window.speechSynthesis.cancel();
-                
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = lang;
-                utterance.rate = 0.9;
-                
-                // Find the best voice for this language
-                const voice = this.findBestVoice(lang);
-                if (voice) {
-                    utterance.voice = voice;
-                }
-                
-                // Add event handlers
-                utterance.onend = () => {
-                    console.log('Browser TTS finished');
-                    resolve();
-                };
-                
-                utterance.onerror = (event) => {
-                    console.error('Browser TTS error:', event);
-                    reject(event);
-                };
-                
-                // Speak the text
-                window.speechSynthesis.speak(utterance);
-                console.log('Browser TTS started');
-            } catch (error) {
-                console.error('Browser TTS error:', error);
-                reject(error);
+            if (!window.speechSynthesis) {
+                console.error('[Browser TTS] Speech synthesis not supported');
+                reject(new Error('Speech synthesis not supported'));
+                return;
             }
+
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            const voice = this.findBestVoice(lang);
+            
+            if (voice) {
+                console.log(`[Browser TTS] Selected voice: ${voice.name} (${voice.lang})`);
+                utterance.voice = voice;
+            } else {
+                console.warn(`[Browser TTS] No suitable voice found for ${lang}, using default`);
+            }
+
+            utterance.lang = lang;
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+
+            utterance.onstart = () => {
+                console.log(`[Browser TTS] Started speaking: "${text}"`);
+            };
+
+            utterance.onend = () => {
+                console.log(`[Browser TTS] Finished speaking: "${text}"`);
+                resolve();
+            };
+
+            utterance.onerror = (event) => {
+                console.error(`[Browser TTS] Error speaking: "${text}"`, event);
+                reject(event);
+            };
+
+            window.speechSynthesis.speak(utterance);
         });
     },
     
