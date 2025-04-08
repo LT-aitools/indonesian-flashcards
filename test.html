@@ -6,6 +6,32 @@
     <title>Indonesian Flashcards - Level 4</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="combined-styles.css">
+    <style>
+        .white-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 800px;
+            width: 90%;
+        }
+        
+        .game-area {
+            text-align: center;
+        }
+        
+        .button-container {
+            margin: 10px 0;
+        }
+        
+        .stats-container {
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(240, 248, 255, 0.6);
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body class="game-container">
     <div class="background"></div>
@@ -268,13 +294,13 @@
                 
                 // Preload audio for this word
                 Promise.all([
-                    AzureTTS.preloadAudio(word.exampleEnglish),
-                    AzureTTS.preloadAudio(word.indonesian),
-                    AzureTTS.preloadAudio(word.exampleIndo)
+                    AzureTTS.preloadAudio(word.exampleEnglish, 'en-US'),
+                    AzureTTS.preloadAudio(word.indonesian, 'id-ID'),
+                    AzureTTS.preloadAudio(word.exampleIndo, 'id-ID')
                 ]).then(() => {
                     // Display English example sentence and speak it
                     document.getElementById('question').innerText = word.exampleEnglish;
-                    AzureTTS.speakWord(word.exampleEnglish);
+                    AzureTTS.speakWord(word.exampleEnglish, 'en-US');
                     
                     // Reset display
                     document.getElementById('answer').innerText = '';
@@ -287,11 +313,11 @@
                     document.getElementById('stats').innerHTML = '';
                     
                     // Set up button handlers
-                    document.getElementById('hint1').onclick = showHint;
-                    document.getElementById('reveal').onclick = revealAnswer;
-                    document.getElementById('correct').onclick = markCorrect;
-                    document.getElementById('sorta').onclick = markSorta;
-                    document.getElementById('incorrect').onclick = markIncorrect;
+                    document.getElementById('hint1').onclick = () => showHint();
+                    document.getElementById('reveal').onclick = () => revealAnswer();
+                    document.getElementById('correct').onclick = () => markCorrect();
+                    document.getElementById('sorta').onclick = () => markSorta();
+                    document.getElementById('incorrect').onclick = () => markIncorrect();
                 }).catch(error => {
                     console.error("Error preloading audio:", error);
                 });
@@ -307,7 +333,7 @@
                 
                 // Show and speak the Indonesian word
                 document.getElementById('hint1').innerText = `Indonesian word: ${word.indonesian}`;
-                AzureTTS.speakWord(word.indonesian);
+                AzureTTS.speakWord(word.indonesian, 'id-ID');
             } catch (error) {
                 console.error("Error showing hint:", error);
             }
@@ -320,7 +346,7 @@
                 
                 // Show the Indonesian translation of the sentence and speak it
                 document.getElementById('answer').innerText = word.exampleIndo;
-                AzureTTS.speakWord(word.exampleIndo);
+                AzureTTS.speakWord(word.exampleIndo, 'id-ID');
                 
                 // Update button visibility
                 document.getElementById('hint1').style.display = 'none';
@@ -332,7 +358,7 @@
                 // Show stats
                 const stats = SpacedRepetition.getWordStats(word, 4);
                 if (stats) {
-                    document.getElementById('stats').innerHTML = SpacedRepetition.generateStatsHtml(stats);
+                    document.getElementById('stats').innerHTML = SpacedRepetition.generateStats(stats);
                 }
             } catch (error) {
                 console.error("Error in revealAnswer:", error);
