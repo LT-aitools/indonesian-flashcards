@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indonesian Flashcards</title>
+    <title>Indonesian Flashcards - Level 2</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="combined-styles.css">
 </head>
 <body class="game-container">
     <div class="background"></div>
     <div id="content">
-        <h1 class="game-title">Indonesian Flashcard Game - Level 1</h1>
+        <h1 class="game-title">Indonesian Flashcard Game - Level 2</h1>
         
         <h2 id="question">Loading...</h2>
         <h3 id="answer"></h3>
         <h3 id="exampleSentence"></h3>
         <button id="hint1" class="game-button">Hint 1</button>
         <button id="hint2" class="game-button">Hint 2</button>
-        <button id="hint3" class="game-button" style="display: none;">Personal Note 📝</button>
         <button id="reveal" class="game-button">Reveal 👀</button>
         <br>
         <button id="correct" class="game-button">Correct ✅</button>
@@ -52,8 +51,16 @@
         let categories = [];
         let selectedCategories = new Set();
         
-        // Initialize modules
-        SpacedRepetition.init();
+        // Word stats
+        let wordStats = {};
+        
+        // Spaced repetition intervals (in word count)
+        const CORRECT_INTERVAL = 50;
+        const SORTA_INTERVAL = 20;
+        const INCORRECT_INTERVAL = 10;
+        
+        // Global counter
+        let globalWordCounter = 0;
         
         // Initial setup
         window.onload = function() {
@@ -62,7 +69,7 @@
             // Add reset button event listener
             document.getElementById('resetDeck').addEventListener('click', resetDeck);
         };
-        
+
         // Load CSV Data
         async function loadCSV() {
             try {
@@ -115,7 +122,6 @@
                     // Add the importance weight from column G (index 6)
                     const importanceWeight = cells[6] ? parseInt(cells[6]) : 3; // Default to 3 if missing
                     const category = cells[0] ? cells[0].trim() : "Uncategorized";
-                    const personalNote = cells[7] ? cells[7].trim() : ""; // Get personal note from column H (index 7)
                     
                     // Add to category set
                     categorySet.add(category);
@@ -125,8 +131,9 @@
                         english: cells[1].trim(), // Column B (index 1) - English word
                         indonesian: cells[2].trim(), // Column C (index 2) - Indonesian word
                         exampleSentence: cells[3], // Column D (index 3) - Example Sentence
-                        importance: importanceWeight, // Add importance weight
-                        personalNote: personalNote // Add personal note
+                        exampleIndo: cells[4], // Column E (index 4) - Example in Indonesian
+                        exampleEnglish: cells[5], // Column F (index 5) - Example in English
+                        importance: importanceWeight // Add importance weight
                     });
                 });
                 
@@ -203,7 +210,6 @@
                     // Hide all buttons
                     document.getElementById('hint1').style.display = 'none';
                     document.getElementById('hint2').style.display = 'none';
-                    document.getElementById('hint3').style.display = 'none';
                     document.getElementById('reveal').style.display = 'none';
                 }
             } catch (error) {
@@ -236,23 +242,20 @@
                 // Hide all buttons
                 document.getElementById('hint1').style.display = 'none';
                 document.getElementById('hint2').style.display = 'none';
-                document.getElementById('hint3').style.display = 'none';
                 document.getElementById('reveal').style.display = 'none';
                 return;
             }
             
             const word = filteredVocabulary[currentWordIndex];
-            document.getElementById('question').innerText = word.english;
+            document.getElementById('question').innerText = word.indonesian;
             document.getElementById('answer').innerText = '';
             document.getElementById('exampleSentence').innerText = '';
             
             // Show and reset hints
             document.getElementById('hint1').style.display = 'inline';
             document.getElementById('hint2').style.display = 'inline';
-            document.getElementById('hint3').style.display = word.personalNote ? 'inline' : 'none';
             document.getElementById('hint1').innerText = "Hint 1";
             document.getElementById('hint2').innerText = "Hint 2";
-            document.getElementById('hint3').innerText = "Personal Note 📝";
             
             // Hide response buttons and show reveal
             document.getElementById('correct').style.display = 'none';
@@ -264,23 +267,22 @@
             // Update stats display
             updateStatsDisplay(word);
             
-            // Speak English word and preload both languages
-            AzureTTS.speakWord(word.english, 'en-US');
-            AzureTTS.preloadAudio(word.english, 'en-US');
+            // Speak Indonesian word and preload both languages
+            AzureTTS.speakWord(word.indonesian, 'id-ID');
             AzureTTS.preloadAudio(word.indonesian, 'id-ID');
+            AzureTTS.preloadAudio(word.english, 'en-US');
             
             // Preload audio for next word if available
             const nextIndex = (currentWordIndex + 1) % filteredVocabulary.length;
             if (nextIndex !== currentWordIndex) {
                 const nextWord = filteredVocabulary[nextIndex];
-                AzureTTS.preloadAudio(nextWord.english, 'en-US');
                 AzureTTS.preloadAudio(nextWord.indonesian, 'id-ID');
+                AzureTTS.preloadAudio(nextWord.english, 'en-US');
             }
 
             // Set up button event listeners
             document.getElementById('hint1').onclick = () => showHint(1);
             document.getElementById('hint2').onclick = () => showHint(2);
-            document.getElementById('hint3').onclick = () => showHint(3);
             document.getElementById('reveal').onclick = revealAnswer;
             document.getElementById('example').onclick = showExample;
             document.getElementById('correct').onclick = () => handleResponse('correct');
@@ -294,56 +296,58 @@
             if (!word) return;
             
             if (level === 1) {
-                document.getElementById('hint1').innerText = `First letter: ${word.indonesian.charAt(0)}`;
+                // First hint is the word type (category)
+                document.getElementById('hint1').innerText = `${word.type}`;
             } else if (level === 2) {
-                const firstTwo = word.indonesian.substring(0, 2).toUpperCase();
-                const lastLetter = word.indonesian.charAt(word.indonesian.length - 1).toUpperCase();
-                const middleHyphens = '-'.repeat(word.indonesian.length - 3);
-                document.getElementById('hint2').innerText = `Hint: ${firstTwo}${middleHyphens}${lastLetter}`;
-            } else if (level === 3 && word.personalNote) {
-                document.getElementById('hint3').innerText = word.personalNote;
+                // Second hint is the example sentence in Indonesian
+                if (word.exampleIndo) {
+                    AzureTTS.speakWord(word.exampleIndo, 'id-ID');
+                    document.getElementById('hint2').innerText = `Example: ${word.exampleIndo}`;
+                } else {
+                    document.getElementById('hint2').innerText = "No example available";
+                }
             }
         }
 
         // Show example sentence
         function showExample() {
             const word = filteredVocabulary[currentWordIndex];
-            if (!word || !word.exampleSentence) {
+            if (!word || !word.exampleIndo) {
                 document.getElementById('exampleSentence').innerText = "No example sentence available.";
                 return;
             }
             
-            AzureTTS.speakWord(word.exampleSentence, 'id-ID');
-            document.getElementById('exampleSentence').innerText = word.exampleSentence;
+            AzureTTS.speakWord(word.exampleIndo, 'id-ID');
+            document.getElementById('exampleSentence').innerText = word.exampleIndo;
         }
 
         // Reveal answer
         function revealAnswer() {
             const word = filteredVocabulary[currentWordIndex];
-            document.getElementById('answer').innerText = word.indonesian;
+            document.getElementById('answer').innerText = word.english;
             
             // Hide hint buttons and reveal button
             document.getElementById('hint1').style.display = 'none';
             document.getElementById('hint2').style.display = 'none';
-            document.getElementById('hint3').style.display = 'none';
             document.getElementById('reveal').style.display = 'none';
             
             // Show response buttons
             document.getElementById('correct').style.display = 'inline';
             document.getElementById('sorta').style.display = 'inline';
             document.getElementById('incorrect').style.display = 'inline';
-            if (word.exampleSentence) {
+            if (word.exampleIndo) {
                 document.getElementById('example').style.display = 'inline';
             }
             
-            // Speak the word
-            AzureTTS.speakWord(word.indonesian, 'id-ID');
+            // Speak the English word
+            AzureTTS.speakWord(word.english, 'en-US');
             
             // Preload next word's audio
             const nextIndex = (currentWordIndex + 1) % filteredVocabulary.length;
             if (nextIndex !== currentWordIndex) {
                 const nextWord = filteredVocabulary[nextIndex];
                 AzureTTS.preloadAudio(nextWord.indonesian, 'id-ID');
+                AzureTTS.preloadAudio(nextWord.english, 'en-US');
             }
         }
 
@@ -351,30 +355,11 @@
         function handleResponse(response) {
             const word = filteredVocabulary[currentWordIndex];
             
-            // Update spaced repetition stats - pass the entire word object
+            // Update spaced repetition stats
             SpacedRepetition.updateStats(word, response);
             
-            // If multiple categories are selected, try to avoid repeating the same category
-            if (selectedCategories.size > 1) {
-                const currentCategory = word.type;
-                let nextIndex = (currentWordIndex + 1) % filteredVocabulary.length;
-                let attempts = 0;
-                const maxAttempts = filteredVocabulary.length;  // Prevent infinite loop
-                
-                // Keep looking for a word from a different category
-                while (attempts < maxAttempts && 
-                       filteredVocabulary[nextIndex].type === currentCategory && 
-                       nextIndex !== currentWordIndex) {
-                    nextIndex = (nextIndex + 1) % filteredVocabulary.length;
-                    attempts++;
-                }
-                
-                currentWordIndex = nextIndex;
-            } else {
-                // Single category selected - just move to next word
-                currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
-            }
-            
+            // Move to next word
+            currentWordIndex = (currentWordIndex + 1) % filteredVocabulary.length;
             showNextWord();
         }
 
@@ -394,6 +379,14 @@
                 SpacedRepetition.resetStats();
                 startGame();
                 alert('Deck has been reset! Starting fresh...');
+            }
+        }
+
+        // Utility function to shuffle an array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
             }
         }
     </script>
