@@ -254,7 +254,18 @@
                 vocabulary.forEach(word => {
                     const wordKey = `${word.english}:${word.indonesian}:3`; // Add level identifier
                     if (!wordStats[wordKey]) {
-                        wordStats[wordKey] = SpacedRepetition.createNewWordStats(3);
+                        wordStats[wordKey] = {
+                            correctCount: 0,
+                            sortaCount: 0,
+                            incorrectCount: 0,
+                            lastSeenCount: 0,
+                            nextReviewCount: 0, // 0 means ready to be shown
+                            importance: word.importance || 3, // Store importance in stats
+                            level: 3 // Level 3 - sentence translation
+                        };
+                    } else {
+                        // Update importance in case it changed in the CSV
+                        wordStats[wordKey].importance = word.importance || wordStats[wordKey].importance;
                     }
                 });
                 
@@ -522,7 +533,15 @@
                 wordStats = {};
                 vocabulary.forEach(word => {
                     const wordKey = `${word.english}:${word.indonesian}:3`;
-                    wordStats[wordKey] = SpacedRepetition.createNewWordStats(3); // Initialize with level 3
+                    wordStats[wordKey] = {
+                        correctCount: 0,
+                        sortaCount: 0,
+                        incorrectCount: 0,
+                        lastSeenCount: 0,
+                        nextReviewCount: 0, // 0 means ready to be shown
+                        importance: word.importance || 3, // Store importance in stats
+                        level: 3 // Level 3 - sentence translation
+                    };
                 });
                 saveWordStats();
                 currentWordIndex = 0;
