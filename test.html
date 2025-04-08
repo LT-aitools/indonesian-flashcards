@@ -6,44 +6,99 @@
     <title>Indonesian Flashcards - Level 3</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="combined-styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/background.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        #content {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #correct {
+            background-color: lightgreen;
+        }
+        #sorta {
+            background-color: lightsalmon;
+        }
+        #incorrect {
+            background-color: lightcoral;
+        }
+        #reveal {
+            background-color: yellow;
+        }
+        #correct, #sorta, #incorrect {
+            display: none;
+        }
+        #answer {
+            color: green;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        #stats {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
     <div class="background"></div>
-    <!-- Hidden voice selector for advanced users -->
-    <div class="voice-selector">
-        <label for="voice-select">Select Voice for Indonesian Pronunciation:</label>
-        <select id="voice-select" onchange="updateSelectedVoice()">
-            <option value="">Auto-select best voice</option>
-            <!-- Will be populated with available voices -->
-        </select>
-        <button onclick="testSelectedVoice()">Test Voice ("Selamat pagi")</button>
-    </div>
-    <div id="content" class="game-container">
-        <h1 class="game-title">Indonesian Flashcard Game - Level 3</h1>
+    <div id="content">
+        <h1 style="color: darkgrey; margin-bottom: 20px;">Indonesian Flashcard Game - Level 3</h1>
         
         <h3 id="question"></h3>
         <h3 id="answer"></h3>
         <h3 id="exampleSentence"></h3>
-        <button id="hint1" class="game-button">Hint 1</button>
-        <button id="hint2" class="game-button">Hint 2</button>
-        <button id="reveal" class="game-button">Reveal 👀</button>
+        <button id="hint1">Hint 1</button>
+        <button id="hint2">Hint 2</button>
+        <button id="reveal">Reveal 👀</button>
         <br>
-        <button id="correct" class="game-button correct" style="display: none;">Correct ✅</button>
-        <button id="sorta" class="game-button sorta" style="display: none;">Sorta 🫤</button>
-        <button id="incorrect" class="game-button incorrect" style="display: none;">Incorrect ❌</button>
-        <button id="example" class="game-button" style="display: none;">Example</button>
+        <button id="correct" style="display: none;">Correct ✅</button>
+        <button id="sorta" style="display: none;">Sorta 🫤</button>
+        <button id="incorrect" style="display: none;">Incorrect ❌</button>
+        <button id="example" style="display: none;">Example</button>
         <div id="stats"></div>
     </div>
     
-    <div class="category-container">
-        <div class="category-title">Select Categories:</div>
-        <div id="categoryCheckboxes" class="category-checkboxes">
+    <div style="margin: 30px 0; background: rgba(240, 255, 240, 0.6); padding: 15px; border-radius: 10px; max-width: 800px; width: 90%;">
+        <div style="margin-bottom: 10px; font-weight: bold;">Select Categories:</div>
+        <div id="categoryCheckboxes" style="display: flex; flex-wrap: wrap; gap: 5px; justify-content: center;">
             <!-- Categories will be populated here -->
         </div>
     </div>
     
-    <div class="reset-container">
-        <button id="resetDeck" class="game-button reset">
+    <div style="margin-top: 30px;">
+        <button id="resetDeck" style="background-color: #e0e0e0; color: black; padding: 10px 20px; border: 1px solid #c0c0c0; border-radius: 5px; cursor: pointer;">
             Reset Deck 🔄
         </button>
     </div>
@@ -52,8 +107,8 @@
         Back to Main
     </a>
 
-    <script src="spaced-repetition.js"></script>
     <script src="azure-text-to-speech.js"></script>
+    <script src="spaced-repetition.js"></script>
     <script>
         // Data structures
         const vocabulary = [];
@@ -65,23 +120,12 @@
         // Word stats
         let wordStats = {};
         
-        // Spaced repetition intervals (in word count)
-        const CORRECT_INTERVAL = 50;
-        const SORTA_INTERVAL = 20;
-        const INCORRECT_INTERVAL = 10;
-        
         // Global counter
         let globalWordCounter = 0;
-        
-        // Voice selection variables
-        let voices = [];
-        let selectedVoice = null;
-        let speechSynthesisInitialized = false;
         
         // Initial setup
         window.onload = function() {
             loadCSV();
-            initSpeechSynthesis();
             
             // Add reset button event listener
             document.getElementById('resetDeck').addEventListener('click', resetDeck);
@@ -151,8 +195,8 @@
                         exampleSentence: cells[3], // Column D (index 3) - Example Sentence
                         exampleIndo: cells[4], // Column E (index 4) - Example in Indonesian
                         exampleEnglish: cells[5], // Column F (index 5) - Example in English
-                        importance: importanceWeight, // Add importance weight
-                        personalNote: personalNote // Add personal note
+                        importance: importanceWeight,
+                        personalNote: personalNote
                     });
                 });
                 
@@ -210,18 +254,7 @@
                 vocabulary.forEach(word => {
                     const wordKey = `${word.english}:${word.indonesian}:3`; // Add level identifier
                     if (!wordStats[wordKey]) {
-                        wordStats[wordKey] = {
-                            correctCount: 0,
-                            sortaCount: 0,
-                            incorrectCount: 0,
-                            lastSeenCount: 0,
-                            nextReviewCount: 0, // 0 means ready to be shown
-                            importance: word.importance || 3, // Store importance in stats
-                            level: 3 // Level 3 - sentence translation
-                        };
-                    } else {
-                        // Update importance in case it changed in the CSV
-                        wordStats[wordKey].importance = word.importance || wordStats[wordKey].importance;
+                        wordStats[wordKey] = SpacedRepetition.createNewWordStats(3);
                     }
                 });
                 
@@ -252,9 +285,6 @@
                     word.exampleIndo && word.exampleIndo.trim() && 
                     word.exampleEnglish && word.exampleEnglish.trim()
                 );
-                
-                // Shuffle the filtered vocabulary array
-                shuffleArray(filteredVocabulary);
                 
                 // Save selected categories to localStorage
                 localStorage.setItem('selectedCategories', JSON.stringify(Array.from(selectedCategories)));
@@ -294,43 +324,9 @@
             }
         }
         
-        // Shuffle and start game
+        // Start game
         function startGame() {
             try {
-                // First, assign scores to each word based on importance and next review count
-                filteredVocabulary.forEach(word => {
-                    const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
-                    const stats = wordStats[wordKey];
-                    const importanceScore = (6 - stats.importance) * 10; // Invert so 5 is lowest score (highest priority)
-                    const reviewScore = stats.nextReviewCount - globalWordCounter;
-                    
-                    // Calculate priority score - lower is higher priority
-                    // Words past due (negative reviewScore) get highest priority
-                    let priorityScore = reviewScore;
-                    
-                    // If the word is due for review (reviewScore <= 0), prioritize by importance
-                    if (reviewScore <= 0) {
-                        priorityScore = importanceScore;
-                    } else {
-                        // For words not yet due, adjust their priority based on importance
-                        // More important words (higher weight) get lower interval multipliers
-                        const importanceFactor = 1 - ((stats.importance - 1) * 0.15); // 1.0 to 0.4 factor
-                        priorityScore = reviewScore * importanceFactor;
-                    }
-                    
-                    // Store the priority score for sorting
-                    stats.priorityScore = priorityScore;
-                });
-                
-                // Sort by priority score (lower is higher priority)
-                filteredVocabulary.sort((a, b) => {
-                    const keyA = `${a.english}:${a.indonesian}:3`;
-                    const keyB = `${b.english}:${b.indonesian}:3`;
-                    const scoreA = wordStats[keyA].priorityScore;
-                    const scoreB = wordStats[keyB].priorityScore;
-                    return scoreA - scoreB;
-                });
-                
                 showNextWord();
             } catch (error) {
                 console.error("Error in startGame:", error);
@@ -349,8 +345,8 @@
                     return;
                 }
                 
-                // Use spaced repetition module to get next word
-                const nextWordResult = SpacedRepetition.getNextWord(filteredVocabulary, wordStats, globalWordCounter, currentWordIndex);
+                // Use spaced repetition to get next word
+                const nextWordResult = SpacedRepetition.getNextWord(filteredVocabulary, wordStats, globalWordCounter, currentWordIndex, 3);
                 currentWordIndex = nextWordResult.index;
                 
                 const word = filteredVocabulary[currentWordIndex];
@@ -404,11 +400,11 @@
                 if (!word) return;
                 
                 if (level === 1) {
-                    // First hint shows the Indonesian word
+                    // First hint shows and speaks the Indonesian word
                     AzureTTS.speakWord(word.indonesian);
                     document.getElementById('hint1').innerText = `Indonesian word: ${word.indonesian}`;
                 } else if (level === 2) {
-                    // Second hint shows the English word
+                    // Second hint shows the English word (no speaking)
                     document.getElementById('hint2').innerText = `English word: ${word.english}`;
                 }
             } catch (error) {
@@ -422,9 +418,8 @@
                 if (!word) return;
                 
                 const wordKey = `${word.english}:${word.indonesian}:3`; // Level 3 key
-                const stats = wordStats[wordKey];
                 
-                // Show the English translation of the sentence
+                // Show the English translation of the sentence (no speaking)
                 document.getElementById('answer').innerText = word.exampleEnglish;
                 document.getElementById('hint1').style.display = 'none';
                 document.getElementById('hint2').style.display = 'none';
@@ -520,185 +515,6 @@
                 console.error("Error updating stats display:", error);
             }
         }
-        
-        // Initialize voice options
-        function initSpeechSynthesis() {
-            if (speechSynthesisInitialized) return;
-            
-            // Load available voices
-            voices = window.speechSynthesis.getVoices();
-            console.log("Available voices:", voices.map(v => `${v.name} (${v.lang})`));
-            
-            // Initialize voice selector
-            const voiceSelect = document.getElementById('voice-select');
-            
-            // Clear voice select
-            while (voiceSelect.options.length > 1) {
-                voiceSelect.remove(1);
-            }
-            
-            // Add all voices to the selector
-            voices.forEach(voice => {
-                const option = document.createElement('option');
-                option.value = voice.name;
-                option.textContent = `${voice.name} (${voice.lang})`;
-                voiceSelect.appendChild(option);
-            });
-            
-            // Try to load the previously saved voice
-            const savedVoice = localStorage.getItem('selectedVoice');
-            if (savedVoice) {
-                selectedVoice = voices.find(v => v.name === savedVoice);
-                if (selectedVoice) {
-                    console.log("Loaded saved voice:", selectedVoice.name);
-                    voiceSelect.value = savedVoice;
-                }
-            }
-            
-            // If no saved voice, auto-select an Indonesian voice
-            if (!selectedVoice) {
-                // Try to find an Indonesian voice
-                selectedVoice = voices.find(voice => 
-                    voice.lang.includes('id') || 
-                    voice.name.toLowerCase().includes('indonesia')
-                );
-                
-                // If no Indonesian voice was found, look for other Asian voices that might work well
-                if (!selectedVoice) {
-                    const asianVoices = voices.filter(voice => 
-                        voice.lang.includes('ms') || // Malay
-                        voice.lang.includes('fil') || // Filipino
-                        voice.lang.includes('th') || // Thai
-                        voice.lang.includes('vi') || // Vietnamese
-                        voice.lang.includes('zh') // Chinese (often available on iOS)
-                    );
-                    
-                    if (asianVoices.length > 0) {
-                        selectedVoice = asianVoices[0];
-                        voiceSelect.value = selectedVoice.name;
-                    }
-                } else {
-                    voiceSelect.value = selectedVoice.name;
-                }
-            }
-            
-            // If a voice was selected, save it for future visits
-            if (selectedVoice) {
-                localStorage.setItem('selectedVoice', selectedVoice.name);
-                console.log("Selected voice:", selectedVoice.name);
-            } else {
-                console.log("No suitable voice found");
-            }
-            
-            speechSynthesisInitialized = true;
-        }
-        
-        // Update selected voice when the user changes selection
-        function updateSelectedVoice() {
-            const voiceSelect = document.getElementById('voice-select');
-            const selectedName = voiceSelect.value;
-            
-            if (selectedName) {
-                selectedVoice = voices.find(voice => voice.name === selectedName);
-                console.log("Selected voice changed to:", selectedVoice ? selectedVoice.name : "None");
-                
-                // Save to localStorage for future visits
-                localStorage.setItem('selectedVoice', selectedName);
-            } else {
-                selectedVoice = null;
-                localStorage.removeItem('selectedVoice');
-            }
-            
-            // Test the selected voice
-            testSelectedVoice();
-        }
-        
-        // Test the selected voice with a simple Indonesian phrase
-        function testSelectedVoice() {
-            if (!selectedVoice) return;
-            
-            // Cancel any ongoing speech
-            window.speechSynthesis.cancel();
-            
-            const testSpeech = new SpeechSynthesisUtterance("Selamat pagi");
-            testSpeech.voice = selectedVoice;
-            testSpeech.lang = 'id-ID';
-            testSpeech.rate = 0.9; // Slightly slower rate for better pronunciation
-            
-            window.speechSynthesis.speak(testSpeech);
-        }
-        
-        // Voice initialization timing logic
-        if (window.speechSynthesis) {
-            if (window.speechSynthesis.onvoiceschanged !== undefined) {
-                window.speechSynthesis.onvoiceschanged = function() {
-                    initSpeechSynthesis();
-                };
-            }
-        }
-
-        // Enhanced Text-to-speech function that uses the selected voice
-        function speakWord(word, lang) {
-            try {
-                if (!word) return;
-                
-                // Make sure speech synthesis is initialized
-                if (!speechSynthesisInitialized) {
-                    initSpeechSynthesis();
-                }
-                
-                // Cancel any ongoing speech
-                window.speechSynthesis.cancel();
-                
-                // Create a new utterance
-                const utterance = new SpeechSynthesisUtterance(word);
-                utterance.lang = lang;
-                
-                // Use appropriate voice based on language
-                if (lang === 'id-ID' && selectedVoice) {
-                    // Use the selected Indonesian voice
-                    utterance.voice = selectedVoice;
-                    utterance.rate = 0.9; // Slightly slower for better Indonesian pronunciation
-                } else {
-                    // For English, use default voice
-                    if (lang === 'en-US') {
-                        // Try to find an English voice
-                        const englishVoice = voices.find(voice => 
-                            voice.lang.includes('en-US') || 
-                            voice.lang.includes('en-GB')
-                        );
-                        if (englishVoice) {
-                            utterance.voice = englishVoice;
-                        }
-                    }
-                }
-                
-                // Speak the word
-                window.speechSynthesis.speak(utterance);
-            } catch (error) {
-                console.error("Error with text-to-speech:", error);
-            }
-        }
-        
-        // Add a keyboard shortcut to toggle the voice selector (press 'v' key)
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'v') {
-                const voiceSelector = document.querySelector('.voice-selector');
-                if (voiceSelector.style.display === 'flex') {
-                    voiceSelector.style.display = 'none';
-                } else {
-                    voiceSelector.style.display = 'flex';
-                }
-            }
-        });
-
-        // Shuffle helper function
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
 
         // Reset deck
         function resetDeck() {
@@ -706,11 +522,19 @@
                 wordStats = {};
                 vocabulary.forEach(word => {
                     const wordKey = `${word.english}:${word.indonesian}:3`;
-                    wordStats[wordKey] = SpacedRepetition.createNewWordStats(3); // Initialize with importance level 3
+                    wordStats[wordKey] = SpacedRepetition.createNewWordStats(3); // Initialize with level 3
                 });
                 saveWordStats();
                 currentWordIndex = 0;
                 showNextWord();
+            }
+        }
+
+        // Utility function to shuffle array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
             }
         }
     </script>
