@@ -96,6 +96,10 @@ const AzureTTS = {
             console.log('Audio preloaded for:', text);
         } catch (error) {
             console.error('Error preloading audio:', error);
+            // Log the error but don't fall back here, let speakWord handle fallback
+            this.audioCache.delete(cacheKey); // Remove preloading flag on error
+            // Optionally, re-throw or handle specific errors if needed
+            // For now, just log it, fallback will happen on speakWord if needed
         }
     },
     

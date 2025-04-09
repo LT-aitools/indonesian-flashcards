@@ -124,6 +124,7 @@
     font-weight: bold;
     font-size: 1em;
     line-height: 1.2;
+    text-align: center;
 }
 
 .nav-button-subtitle {
@@ -135,10 +136,10 @@
 }
 
 .nav-button img {
-    width: 100%;
+    width: 150px;
     height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
 }
 
 /* Study button special styling */
